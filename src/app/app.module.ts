@@ -11,12 +11,14 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { HeroComponent } from './components/hero/hero.component';
 import { HomeContentComponent } from './components/home-content/home-content.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from '../environments/environment';
+import { UploadTournamentComponent } from './components/upload-tournament/upload-tournament.component';
+import { TournamentResultsComponent } from './components/tournament-results/tournament-results.component';
+import { TournamentPageComponent } from './pages/tournament-page/tournament-page.component';
 
 @NgModule({
   declarations: [
@@ -25,10 +27,12 @@ import { environment as env } from '../environments/environment';
     ProfileComponent,
     NavBarComponent,
     FooterComponent,
-    HeroComponent,
     HomeContentComponent,
     LoadingComponent,
-    ErrorComponent
+    ErrorComponent,
+    UploadTournamentComponent,
+    TournamentResultsComponent,
+    TournamentPageComponent
   ],
   imports: [
     BrowserModule,

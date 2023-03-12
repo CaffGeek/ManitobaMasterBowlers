@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'Auth0 Angular SDK Sample';
+  title = 'Manitoba Master Bowlers';
 
   constructor() {}
 }

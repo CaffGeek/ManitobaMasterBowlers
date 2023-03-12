@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { TournamentPageComponent } from './pages/tournament-page/tournament-page.component';
 import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 
@@ -19,6 +20,12 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     pathMatch: 'full',
+  },
+  {
+    path: 'tournament',
+    component: TournamentPageComponent,
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
   },
 ];
 

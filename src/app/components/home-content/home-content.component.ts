@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home-content',
@@ -7,9 +6,10 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./home-content.component.css']
 })
 export class HomeContentComponent implements OnInit {
-  faLink = faLink;
+  content;
 
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit() {
   }
