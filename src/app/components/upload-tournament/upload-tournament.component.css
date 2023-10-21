@@ -1,0 +1,15 @@
+#upload {
+    border: 1pt solid #ccc;
+    display: block;
+    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    padding: 1em;
+    background-image: url('/assets/paste_here.png');
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 50%;
+    font-size: 16pt;
+    font-weight: bold;
+}

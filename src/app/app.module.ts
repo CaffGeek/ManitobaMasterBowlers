@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,8 +18,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from '../environments/environment';
 import { UploadTournamentComponent } from './components/upload-tournament/upload-tournament.component';
-import { TournamentResultsComponent } from './components/tournament-results/tournament-results.component';
 import { TournamentPageComponent } from './pages/tournament-page/tournament-page.component';
+import { TournamentEditorComponent } from './components/tournament-editor/tournament-editor.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -31,11 +35,12 @@ import { TournamentPageComponent } from './pages/tournament-page/tournament-page
     LoadingComponent,
     ErrorComponent,
     UploadTournamentComponent,
-    TournamentResultsComponent,
-    TournamentPageComponent
+    TournamentPageComponent,
+    TournamentEditorComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
@@ -47,6 +52,9 @@ import { TournamentPageComponent } from './pages/tournament-page/tournament-page
         ...env.httpInterceptor,
       },
     }),
+    BrowserAnimationsModule,
+    MatSortModule,
+    MatTableModule,
   ],
   providers: [
     {
