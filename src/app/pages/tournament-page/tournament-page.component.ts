@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TournamentUploadRecord } from 'src/app/models/TournamentUploadRecord.model';
+import { TournamentUploadRecord } from '@models/TournamentUploadRecord';
 
 @Component({
   selector: 'app-tournament-page',

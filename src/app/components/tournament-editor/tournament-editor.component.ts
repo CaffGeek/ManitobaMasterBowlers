@@ -1,15 +1,31 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TournamentUploadRecord } from 'src/app/models/TournamentUploadRecord.model';
+import { ApiService } from '@services/api.service';
+import { BowlerRecord } from '@models/BowlerRecord';
+import { TournamentUploadRecord } from '@models/TournamentUploadRecord';
 
 @Component({
   selector: 'app-tournament-editor',
   templateUrl: './tournament-editor.component.html',
   styleUrls: ['./tournament-editor.component.css']
 })
-export class TournamentEditorComponent implements OnChanges {
+export class TournamentEditorComponent implements OnInit, OnChanges {
   @Input() results: TournamentUploadRecord[] = [];
+  bowlers: BowlerRecord[];
+
+  constructor(
+    private api: ApiService,
+  ) {
+
+  }
+
+  ngOnInit(): void {
+    this.api.bowlers$().subscribe((bowlers) => {
+      this.bowlers = bowlers.map(x => Object.assign(new BowlerRecord(), x));
+      this.bowlers.sort((x, y) => x.Name.localeCompare(y.Name));
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.dataSource.data = changes.results.currentValue;
@@ -23,8 +39,9 @@ export class TournamentEditorComponent implements OnChanges {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
-      switch(property) {
-        case 'Scratch': return item.scratch();
+      switch(property.toLocaleLowerCase()) {
+        case 'scratch': return item.scratch();
+        case 'poa': return item.poa();
         default: return item[property];
       }
     };

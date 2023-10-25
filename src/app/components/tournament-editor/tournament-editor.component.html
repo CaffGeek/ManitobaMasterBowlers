@@ -57,3 +57,7 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns:  displayedColumns"></tr>
 </table>
+
+<div *ngFor="let bowler of bowlers">
+  {{bowler.Name}}
+</div>
