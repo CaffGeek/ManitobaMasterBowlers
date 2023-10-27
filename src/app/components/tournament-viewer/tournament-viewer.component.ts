@@ -1,19 +1,32 @@
-import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
+import { ApiService } from '@services/api.service';
 
 @Component({
   selector: 'app-tournament-viewer',
   templateUrl: './tournament-viewer.component.html',
   styleUrls: ['./tournament-viewer.component.css']
 })
-export class TournamentViewerComponent implements OnChanges {
-  @Input() results: any[] = [];
+export class TournamentViewerComponent implements OnChanges, OnInit {
+  @Input() tournament: number;
+  @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
-  dataSource = new MatTableDataSource(this.results);
+  dataSource = new MatTableDataSource([]);
 
-  @ViewChild(MatSort) sort: MatSort;
+  constructor(
+    private api: ApiService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.api.tournamentResults$(this.tournament).subscribe((results) => {
+      this.dataSource.data = results
+        .map(x => Object.assign(new TournamentResultsRecord(), x));
+    });
+  }
   
   ngOnChanges(changes: SimpleChanges): void {
     this.dataSource.data = changes.results.currentValue

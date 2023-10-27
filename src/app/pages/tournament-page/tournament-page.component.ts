@@ -12,15 +12,13 @@ import { map } from 'rxjs/operators';
   templateUrl: './tournament-page.component.html',
   styleUrls: ['./tournament-page.component.css']
 })
-export class TournamentPageComponent implements OnInit, OnDestroy {  
+export class TournamentPageComponent implements OnInit, OnDestroy {
+  @Input() division;
+  @Input() season;
+
   tournamentResults: TournamentUploadRecord[] = [];
   seasons: SeasonRecord[];
   tournaments: TournamentRecord[];
-
-  current = {
-    division: '',
-    season: '',
-  }
 
   season$: Subscription;
 
@@ -47,37 +45,24 @@ export class TournamentPageComponent implements OnInit, OnDestroy {
     });
     
     this.season$ = this.route.params.pipe(map(x => x.season)).subscribe(this.onSeasonChange);
-    this.route.params.subscribe(({division, season}) => {
-      this.current.division = division;
-      this.current.season = season;
-    })
   }
 
   changeSeason = (seasonCode) => {
-    this.router.navigate(['/results', this.route.snapshot.params['division'], seasonCode]);
+    this.router.navigate(['/results', this.division, seasonCode]);
   }
 
   changeTournament = (tournament) => {
-    this.router.navigate(['/results', this.route.snapshot.params['division'], this.route.snapshot.params['season'], tournament]);
+    this.router.navigate(['/results', this.division, this.season, tournament]);
   }
 
   onSeasonChange = (seasonCode: string) => {
     this.api.tournaments$().subscribe((tournaments) => {
       this.tournaments = tournaments
         .map(x => Object.assign(new TournamentRecord(), x))
-        .filter(x => x.Division.localeCompare(this.route.snapshot.params['division'], undefined, {sensitivity: 'base'}) === 0)
+        .filter(x => x.Division.localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
         .filter(x => x.SeasonCode === seasonCode);
         
       this.tournaments.sort((x, y) => x.TournamentNumber - y.TournamentNumber);
     });
   }
-
-  // onTournamentChange = (tournament: number) => {
-  //   console.log('tournament route changed', tournament, this.route.snapshot.params);
-
-  //   this.api.tournamentResults$(tournament).subscribe((results) => {
-  //     this.tournamentResults = results
-  //       .map(x => Object.assign(new TournamentResultsRecord(), x));
-  //   });
-  // }
 }
