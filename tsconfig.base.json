@@ -21,6 +21,7 @@
     "paths": {
       "@components/*": ["./src/app/components/*"],
       "@models/*": ["./src/app/models/*"],
+      "@pages/*": ["./src/app/pages/*"],
       "@services/*": ["./src/app/services/*"],
     },
     "resolveJsonModule": true,

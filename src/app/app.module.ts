@@ -7,9 +7,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { ErrorComponent } from './pages/error/error.component';
+import { HomeComponent } from '@pages/home/home.component';
+import { ProfileComponent } from '@pages/profile/profile.component';
+import { ErrorComponent } from '@pages/error/error.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeContentComponent } from './components/home-content/home-content.component';
@@ -18,11 +18,16 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from '../environments/environment';
 import { UploadTournamentComponent } from './components/upload-tournament/upload-tournament.component';
-import { TournamentPageComponent } from './pages/tournament-page/tournament-page.component';
+import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.component';
 import { TournamentEditorComponent } from './components/tournament-editor/tournament-editor.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { AppendValuesPipe } from './pipes/append-values.pipe';
+import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
+import { TournamentViewerComponent } from './components/tournament-viewer/tournament-viewer.component';
+import { BowlerPageComponent } from './pages/bowler-page/bowler-page.component';
+import { TournamentSummaryComponent } from './components/tournament-summary/tournament-summary.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +41,12 @@ import { MatTableModule } from '@angular/material/table';
     ErrorComponent,
     UploadTournamentComponent,
     TournamentPageComponent,
-    TournamentEditorComponent
+    TournamentEditorComponent,
+    AppendValuesPipe,
+    TournamentUploadPageComponent,
+    TournamentViewerComponent,
+    BowlerPageComponent,
+    TournamentSummaryComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,12 @@
-<app-upload-tournament (tournamentUploadedEvent)="tournamentUploaded($event)">
-    
-</app-upload-tournament>
+<select (change)="changeSeason($event.target.value)">
+    <option *ngFor="let s of seasons" [value]="s.SeasonCode" [selected]="this.current.season == s.SeasonCode">{{s.SeasonDesc}}</option>
+</select>
 
-<app-tournament-editor [results]="tournamentResults">
+<select (change)="changeTournament($event.target.value * 1)">
+    <option value="0" selected>Summary</option>
+    <option *ngFor="let t of tournaments" [value]="t.Id">{{t.TournamentNumber}} - {{t.TournamentLocation}}</option>
+</select>
 
-</app-tournament-editor>
+<div class="container flex-grow-1 flex-shrink-1">
+  <router-outlet></router-outlet>
+</div>

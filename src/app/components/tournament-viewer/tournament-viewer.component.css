@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+th, td {
+    text-align: right;
+}
+
+.mat-column-Bowler {
+    text-align: left;
+}
+
+.mdc-data-table__row {
+    height: 40px;
+}
