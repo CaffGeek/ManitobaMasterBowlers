@@ -50,4 +50,11 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
   }
 
   onSubmit() { console.log(this.dataSource.data); }
+
+  getErrors(form) {
+    return Object.keys(form.controls).map(key => {
+      const errors = form.controls[key].errors;
+      return errors;
+    }).filter(x => !!x);
+  }
 }
