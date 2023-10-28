@@ -40,7 +40,7 @@ export class TournamentPageComponent implements OnInit, OnDestroy {
       this.seasons.sort((x, y) => x.SeasonDesc.localeCompare(y.SeasonDesc) * -1);
 
       if (!this.route.snapshot.params['season']) {
-        this.changeSeason(this.seasons[1].SeasonCode); //TODO: CHAD: Change to 0
+        this.changeSeason(this.seasons[0].SeasonCode);
       }
     });
     

@@ -1,6 +1,7 @@
-import { Component, Input, ViewChild, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '@auth0/auth0-angular';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { ApiService } from '@services/api.service';
 
@@ -9,30 +10,37 @@ import { ApiService } from '@services/api.service';
   templateUrl: './tournament-viewer.component.html',
   styleUrls: ['./tournament-viewer.component.css']
 })
-export class TournamentViewerComponent implements OnChanges, OnInit {
+export class TournamentViewerComponent implements OnChanges {
+  @Input() division: string;
+  @Input() season: string;
   @Input() tournament: number;
+
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
+  displayedColumns: string[] = [];
   dataSource = new MatTableDataSource([]);
+  showPoa: boolean = false;
 
   constructor(
-    private api: ApiService
+    public auth: AuthService,
+    private api: ApiService,
   ) {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(_changes: SimpleChanges): void {
+    const scratchColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch'];
+    const poaColumns: string[] = ['Bowler', 'Average', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
+  
     this.api.tournamentResults$(this.tournament).subscribe((results) => {
+      this.displayedColumns = ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
+        ? scratchColumns
+        : poaColumns;
+
       this.dataSource.data = results
         .map(x => Object.assign(new TournamentResultsRecord(), x));
     });
   }
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    this.dataSource.data = changes.results.currentValue
-      .map((x, i) => { x.ID = i; return x; });// TODO: CHAD: Need to lookup Proper ID
-  }
-  
+
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {

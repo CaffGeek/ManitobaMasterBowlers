@@ -40,14 +40,15 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'bowlers/:bowlerId',
+    path: 'bowlers/:bowler',
     component: BowlerPageComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    bindToComponentInputs: true
+    bindToComponentInputs: true,
+    paramsInheritanceStrategy: 'always',
   })],
   exports: [RouterModule],
 })

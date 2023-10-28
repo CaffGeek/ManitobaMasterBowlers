@@ -25,6 +25,10 @@ export class ApiService {
     return this.http.get(`${config.apiUri}/bowlers`) as Observable<BowlerRecord[]>;
   }
 
+  bowlerResults$(id: number): Observable<any[]> {
+    return this.http.get(`${config.apiUri}/bowlerresults/${id}`) as Observable<any[]>; //TODO: CHAD: Types...
+  }
+
   tournaments$(): Observable<TournamentRecord[]> {
     return this.http.get(`${config.apiUri}/tournaments`) as Observable<TournamentRecord[]>;
   }
