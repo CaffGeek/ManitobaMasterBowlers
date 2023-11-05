@@ -11,8 +11,6 @@ export class TournamentUploadRecord {
     Average: number;
     Gender: string;
     NewBowler: boolean;
-    //TODO: CHAD: ID Sync
-    //TODO: CHAD: Rename
     
     ensureTypes() {
         const orZero = (x) => 1 * (Number.isNaN(Number.parseInt(`${x}`)) ? 0 : x);

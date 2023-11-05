@@ -7,8 +7,10 @@ import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.
 import { ErrorComponent } from '@pages/error/error.component';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
 import { BowlerPageComponent } from '@pages/bowler-page/bowler-page.component';
+import { BowlerResultsComponent } from '@components/bowler-results/bowler-results.component';
 import { TournamentSummaryComponent } from '@components/tournament-summary/tournament-summary.component';
 import { TournamentViewerComponent } from '@components/tournament-viewer/tournament-viewer.component';
+import { BowlerStatsComponent } from '@components/bowler-stats/bowler-stats.component';
 
 // https://stackblitz.com/run?file=src/app/app-routing.module.ts
 const routes: Routes = [
@@ -42,6 +44,10 @@ const routes: Routes = [
   {
     path: 'bowlers/:bowler',
     component: BowlerPageComponent,
+    children: [
+      {path: '', component: BowlerStatsComponent, outlet: "stats" },
+      {path: '', component: BowlerResultsComponent, outlet: "results" },
+    ]
   },
 ];
 

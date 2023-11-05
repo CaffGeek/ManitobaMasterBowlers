@@ -29,6 +29,8 @@ import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tou
 import { TournamentViewerComponent } from './components/tournament-viewer/tournament-viewer.component';
 import { BowlerPageComponent } from './pages/bowler-page/bowler-page.component';
 import { TournamentSummaryComponent } from './components/tournament-summary/tournament-summary.component';
+import { BowlerResultsComponent } from './components/bowler-results/bowler-results.component';
+import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { TournamentSummaryComponent } from './components/tournament-summary/tour
     TournamentViewerComponent,
     BowlerPageComponent,
     TournamentSummaryComponent,
-    BowlerExistsValidatorDirective
+    BowlerExistsValidatorDirective,
+    BowlerResultsComponent,
+    BowlerStatsComponent
   ],
   imports: [
     BrowserModule,

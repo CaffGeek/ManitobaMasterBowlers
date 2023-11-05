@@ -1,3 +1,4 @@
+import { ApiService } from './../../services/api.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,9 +10,11 @@ export class HomeContentComponent implements OnInit {
   content;
 
   constructor(
+    private api: ApiService,
   ) { }
 
   ngOnInit() {
+    this.api.whoami().subscribe(x => console.log(x));
   }
 
 }
