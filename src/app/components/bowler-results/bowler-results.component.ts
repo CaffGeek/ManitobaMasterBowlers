@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
+import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { ApiService } from '@services/api.service';
 import moment from 'moment';
 
@@ -15,7 +16,7 @@ export class BowlerResultsComponent implements OnChanges {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['Location', 'Date', 'Division', 'Number', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8'];
+  displayedColumns: string[] = ['Location', 'Date', 'Division', 'Number', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
   dataSource = new MatTableDataSource([]);
   
   constructor(
@@ -28,13 +29,8 @@ export class BowlerResultsComponent implements OnChanges {
     this.api.bowlerResults$(this.bowler).subscribe((results) => {
 
       this.dataSource.data = results
-      //TODO: CHAD: .map(x => Object.assign(new an(), x));
-        .map(x => {
-          return {
-            ...x,
-            Date: moment(x.TournamentDetails, ['DDMMMMY', 'MMMMDDY']).toDate(),
-          };
-        }).sort((a, b) => b.Date - a.Date)
+        .map(x => Object.assign(new BowlerResultsRecord(), x).ensureTypes()) //TODO: CHAD: Move to service?
+        .sort((a, b) => b.date() - a.date())
     });
   }
 }

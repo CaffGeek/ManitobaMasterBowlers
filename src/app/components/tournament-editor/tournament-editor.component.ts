@@ -23,7 +23,7 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.api.bowlers$().subscribe((bowlers) => {
       this.bowlers = bowlers
-        .map(x => Object.assign(new BowlerRecord(), x));
+        .map(x => Object.assign(new BowlerRecord(), x)); //TODO: CHAD: Move to service?
       this.bowlers.sort((x, y) => x.Name.localeCompare(y.Name));
     });
   }

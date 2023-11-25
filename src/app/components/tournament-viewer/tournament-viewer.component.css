@@ -14,3 +14,11 @@ th, td {
 .mdc-data-table__row {
     height: 40px;
 }
+
+#exports {
+    width: 100%;
+
+    #csv {
+        float: right;
+    }
+}

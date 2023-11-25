@@ -38,13 +38,13 @@ export class TournamentUploadRecord {
     };
 
     poa() { return 0 +
-        ((!!this.Game1 || this.Game1 === 0) ? (this.Game1 - this.Average) : 0) + 
-        ((!!this.Game2 || this.Game2 === 0) ? (this.Game2 - this.Average) : 0) +
-        ((!!this.Game3 || this.Game3 === 0) ? (this.Game3 - this.Average) : 0) +
-        ((!!this.Game4 || this.Game4 === 0) ? (this.Game4 - this.Average) : 0) +
-        ((!!this.Game5 || this.Game5 === 0) ? (this.Game5 - this.Average) : 0) +
-        ((!!this.Game6 || this.Game6 === 0) ? (this.Game6 - this.Average) : 0) +
-        ((!!this.Game7 || this.Game7 === 0) ? (this.Game7 - this.Average) : 0) +
-        ((!!this.Game8 || this.Game8 === 0) ? (this.Game8 - this.Average) : 0);
+        ((!!this.Game1 || this.Game1 > 0) ? (this.Game1 - this.Average) : 0) + 
+        ((!!this.Game2 || this.Game2 > 0) ? (this.Game2 - this.Average) : 0) +
+        ((!!this.Game3 || this.Game3 > 0) ? (this.Game3 - this.Average) : 0) +
+        ((!!this.Game4 || this.Game4 > 0) ? (this.Game4 - this.Average) : 0) +
+        ((!!this.Game5 || this.Game5 > 0) ? (this.Game5 - this.Average) : 0) +
+        ((!!this.Game6 || this.Game6 > 0) ? (this.Game6 - this.Average) : 0) +
+        ((!!this.Game7 || this.Game7 > 0) ? (this.Game7 - this.Average) : 0) +
+        ((!!this.Game8 || this.Game8 > 0) ? (this.Game8 - this.Average) : 0);
     }
 }

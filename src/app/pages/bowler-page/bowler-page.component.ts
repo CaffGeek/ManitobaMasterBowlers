@@ -20,7 +20,7 @@ export class BowlerPageComponent implements OnInit {
     this.api.bowlers$().subscribe((bowlers) => {
       this.data = bowlers
         .filter(x => x.ID == this.bowler)
-        .map(x => Object.assign(new BowlerRecord(), x))?.[0] || new BowlerRecord();
+        .map(x => Object.assign(new BowlerRecord(), x))?.[0] || new BowlerRecord(); //TODO: CHAD: Move to service?
     });
   }
   

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { ApiService } from '@services/api.service';
 import moment from 'moment';
 
@@ -29,7 +30,7 @@ export class BowlerStatsComponent implements OnInit {
   ngOnInit(): void {
     this.api.bowlerResults$(this.bowler).subscribe((data) => {
       const results = data
-      //TODO: CHAD: .map(x => Object.assign(new an(), x));
+        //.map(x => Object.assign(new BowlerResultsRecord(), x).ensureTypes()) //TODO: CHAD: Move to service?
         .map(x => {
           return {
             ...x,
@@ -49,7 +50,6 @@ export class BowlerStatsComponent implements OnInit {
       const lastTwelveGames = this.countGames(lastTwelveTournaments);
       const lastTwelvePinfall = this.sumGames(lastTwelveTournaments);
       this.stats.playingAverage = Math.trunc(lastTwelvePinfall / lastTwelveGames);
-      console.log('last12', lastTwelvePinfall, lastTwelveGames);
 
       //TODO: CHAD: Wins
     });

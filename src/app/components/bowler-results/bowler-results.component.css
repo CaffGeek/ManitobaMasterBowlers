@@ -1,3 +1,15 @@
 tr:nth-child(n+13) {
     background-color: rgb(233, 233, 233) !important;
 }
+
+a {
+    white-space: nowrap;
+}
+
+#exports {
+    width: 100%;
+
+    #csv {
+        float: right;
+    }
+}
