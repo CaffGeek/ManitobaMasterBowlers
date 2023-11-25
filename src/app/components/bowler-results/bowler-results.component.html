@@ -3,13 +3,13 @@
 </div>
 
 <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" matTableExporter #exporter="matTableExporter">
-    <ng-container matColumnDef="Location">
+    <ng-container matColumnDef="TournamentLocation">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Location</th>
         <td mat-cell *matCellDef="let element; let i = index;">{{element.TournamentLocation}}</td>
     </ng-container>
 
     <ng-container matColumnDef="Date">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef> Date </th>
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef> Date </th>
         <td mat-cell *matCellDef="let element; let i = index;">
             <a [routerLink]="['/results', element.Division, element.SeasonCode, element.TournamentId]">
             {{element.date() | date:"MMM dd, yyyy"}}
@@ -22,7 +22,7 @@
         <td mat-cell *matCellDef="let element; let i = index;">{{element.Division}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="Number">
+    <ng-container matColumnDef="TournamentNumber">
         <th mat-header-cell mat-sort-header *matHeaderCellDef width="3em"> Number </th>
         <td mat-cell *matCellDef="let element; let i = index;">{{element.TournamentNumber}}</td>
     </ng-container>
@@ -70,6 +70,11 @@
     <ng-container matColumnDef="Scratch">
         <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="3em"> Scratch </th>
         <td mat-cell *matCellDef="let element; let i = index;"> {{element.scratch()}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="BowlerAverage">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="3em">Avg</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{!!element.BowlerAverage ? element.BowlerAverage : ""}}</td>
     </ng-container>
 
     <ng-container matColumnDef="POA">

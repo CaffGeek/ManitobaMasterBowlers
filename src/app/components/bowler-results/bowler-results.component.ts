@@ -16,7 +16,7 @@ export class BowlerResultsComponent implements OnChanges {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['Location', 'Date', 'Division', 'Number', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
+  displayedColumns: string[] = ['TournamentLocation', 'Date', 'Division', 'TournamentNumber', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'BowlerAverage', 'POA'];
   dataSource = new MatTableDataSource([]);
   
   constructor(
