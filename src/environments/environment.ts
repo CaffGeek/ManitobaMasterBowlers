@@ -28,7 +28,7 @@ export const environment = {
     //https://github.com/auth0/auth0-angular/blob/main/EXAMPLES.md
     allowedList: [{
       uri: `${apiUri}/*`,
-      allowAnonymous: false,
+      allowAnonymous: true,
     }]
   },
 };

@@ -16,9 +16,11 @@ export class NavBarComponent implements OnInit {
   constructor(
     public auth: AuthService,
     @Inject(DOCUMENT) private doc: Document
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   loginWithRedirect() {
     this.auth.loginWithRedirect();
