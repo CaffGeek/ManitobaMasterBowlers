@@ -19,7 +19,6 @@ export class TournamentViewerComponent implements OnChanges {
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource([]);
-  showPoa: boolean = false;
 
   constructor(
     public auth: AuthService,

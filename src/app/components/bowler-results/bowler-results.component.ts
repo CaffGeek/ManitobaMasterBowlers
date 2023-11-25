@@ -33,4 +33,16 @@ export class BowlerResultsComponent implements OnChanges {
         .sort((a, b) => b.date() - a.date())
     });
   }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch(property.toLocaleLowerCase()) {
+        case 'date': return item.date();
+        case 'scratch': return item.scratch();
+        case 'poa': return item.poa();
+        default: return item[property];
+      }
+    };
+  }
 }
