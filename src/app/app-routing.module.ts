@@ -37,6 +37,7 @@ const routes: Routes = [
     component: TournamentPageComponent,
     children: [
       { path: '', component: TournamentSummaryComponent },
+      { path: '0', redirectTo: '' },
       { path: ':tournament', component: TournamentViewerComponent },
       { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard]},
     ]
