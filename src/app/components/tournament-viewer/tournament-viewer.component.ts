@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
@@ -30,7 +30,7 @@ export class TournamentViewerComponent implements OnChanges {
   ngOnChanges(_changes: SimpleChanges): void {
     const scratchColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch'];
     const poaColumns: string[] = ['Bowler', 'Average', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
-  
+    
     this.api.tournamentResults$(this.tournament).subscribe((results) => {
       this.displayedColumns = ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
         ? scratchColumns
@@ -42,6 +42,10 @@ export class TournamentViewerComponent implements OnChanges {
   }
 
   ngAfterViewInit() {
+    ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
+        ? this.sort.sort(({ id: 'Scratch', start: 'desc'}) as MatSortable)
+        : this.sort.sort(({ id: 'POA', start: 'desc'}) as MatSortable);
+
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property.toLocaleLowerCase()) {

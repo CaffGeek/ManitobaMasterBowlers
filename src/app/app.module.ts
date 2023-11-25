@@ -24,6 +24,7 @@ import { TournamentEditorComponent } from './components/tournament-editor/tourna
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatCardModule} from '@angular/material/card';
 import { AppendValuesPipe } from './pipes/append-values.pipe';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
 import { TournamentViewerComponent } from './components/tournament-viewer/tournament-viewer.component';
@@ -69,6 +70,7 @@ import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.com
       },
     }),
     BrowserAnimationsModule,
+    MatCardModule,
     MatSortModule,
     MatTableModule,
   ],
