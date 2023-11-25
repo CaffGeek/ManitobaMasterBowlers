@@ -28,8 +28,9 @@ export class TournamentViewerComponent implements OnChanges {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    const scratchColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch'];
-    const poaColumns: string[] = ['Bowler', 'Average', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
+    const games: string[] = ['Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8'];
+    const scratchColumns: string[] = ['Pos', 'Bowler', ...games, 'Scratch'];
+    const poaColumns: string[] = ['Pos', 'Bowler', 'Average', ...games, 'Scratch', 'POA'];
     
     this.api.tournamentResults$(this.tournament).subscribe((results) => {
       this.displayedColumns = ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
