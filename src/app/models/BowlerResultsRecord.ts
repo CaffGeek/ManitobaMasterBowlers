@@ -48,7 +48,9 @@ export class BowlerResultsRecord {
         this.Game8;
     };
 
-    poa() { return 0 +
+    poa() { return (!this.BowlerAverage || this.BowlerAverage === 450)
+        ? undefined
+        : 0 +
         ((!!this.Game1 || this.Game1 > 0) ? (this.Game1 - this.BowlerAverage) : 0) + 
         ((!!this.Game2 || this.Game2 > 0) ? (this.Game2 - this.BowlerAverage) : 0) +
         ((!!this.Game3 || this.Game3 > 0) ? (this.Game3 - this.BowlerAverage) : 0) +

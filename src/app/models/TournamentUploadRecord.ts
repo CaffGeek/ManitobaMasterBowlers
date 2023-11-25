@@ -37,7 +37,9 @@ export class TournamentUploadRecord {
         this.Game8;
     };
 
-    poa() { return 0 +
+    poa() { return (!this.Average || this.Average === 450)
+        ? undefined
+        : 0 +
         ((!!this.Game1 || this.Game1 > 0) ? (this.Game1 - this.Average) : 0) + 
         ((!!this.Game2 || this.Game2 > 0) ? (this.Game2 - this.Average) : 0) +
         ((!!this.Game3 || this.Game3 > 0) ? (this.Game3 - this.Average) : 0) +
