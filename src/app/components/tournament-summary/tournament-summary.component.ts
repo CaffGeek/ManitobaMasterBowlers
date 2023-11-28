@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-tournament-summary',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./tournament-summary.component.css']
 })
 export class TournamentSummaryComponent {
+  @Input() division;
+  @Input() season;
 
 }

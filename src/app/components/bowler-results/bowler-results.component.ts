@@ -29,8 +29,7 @@ export class BowlerResultsComponent implements OnChanges {
     this.api.bowlerResults$(this.bowler).subscribe((results) => {
 
       this.dataSource.data = results
-        .map(x => Object.assign(new BowlerResultsRecord(), x).ensureTypes()) //TODO: CHAD: Move to service?
-        .sort((a, b) => b.date() - a.date())
+        .sort((a, b) => b.date().valueOf() - a.date().valueOf())
     });
   }
 

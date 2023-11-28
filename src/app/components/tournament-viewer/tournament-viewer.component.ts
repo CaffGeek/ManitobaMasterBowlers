@@ -36,8 +36,7 @@ export class TournamentViewerComponent implements OnChanges {
         ? scratchColumns
         : poaColumns;
 
-      this.dataSource.data = results
-        .map(x => Object.assign(new TournamentResultsRecord(), x)); //TODO: CHAD: Move to service?
+      this.dataSource.data = results;
     });
   }
 

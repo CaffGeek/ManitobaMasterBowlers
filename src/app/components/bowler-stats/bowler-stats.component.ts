@@ -20,6 +20,9 @@ export class BowlerStatsComponent implements OnInit {
     tournaments: 0,
     games: 0,
     totalPinfall: 0,
+    careerAverageTeaching: 0,
+    careerAverageTournament: 0,
+    careerAverageSeniors: 0,
   };
 
   constructor(
@@ -30,13 +33,7 @@ export class BowlerStatsComponent implements OnInit {
   ngOnInit(): void {
     this.api.bowlerResults$(this.bowler).subscribe((data) => {
       const results = data
-        //.map(x => Object.assign(new BowlerResultsRecord(), x).ensureTypes()) //TODO: CHAD: Move to service?
-        .map(x => {
-          return {
-            ...x,
-            Date: moment(x.TournamentDetails, ['DDMMMMY', 'MMMMDDY']).toDate(),
-          };
-        }).sort((a, b) => b.Date - a.Date)
+        .sort((a, b) => b.date().valueOf() - a.date().valueOf())
 
       this.stats.tournaments = results.length;
       this.stats.highSet = results.map(x => x.Game1 + x.Game2 + x.Game3 + x.Game4 + x.Game5 + x.Game6 + x.Game7 + x.Game8).reduce((a, b) => Math.max(a, b), 0);

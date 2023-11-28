@@ -11,6 +11,7 @@ import { BowlerResultsComponent } from '@components/bowler-results/bowler-result
 import { TournamentSummaryComponent } from '@components/tournament-summary/tournament-summary.component';
 import { TournamentViewerComponent } from '@components/tournament-viewer/tournament-viewer.component';
 import { BowlerStatsComponent } from '@components/bowler-stats/bowler-stats.component';
+import { SchedulePageComponent } from '@pages/schedule-page/schedule-page.component';
 
 // https://stackblitz.com/run?file=src/app/app-routing.module.ts
 const routes: Routes = [
@@ -27,6 +28,10 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     pathMatch: 'full',
+  },
+  {
+    path: 'schedule',
+    component: SchedulePageComponent,
   },
   {
     path: 'results/:division',

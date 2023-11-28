@@ -35,8 +35,7 @@ export class TournamentPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.api.seasons$().subscribe((seasons) => {
-      this.seasons = seasons
-        .map(x => Object.assign(new SeasonRecord(), x)); //TODO: CHAD: Move to service?
+      this.seasons = seasons;
       this.seasons.sort((x, y) => x.SeasonDesc.localeCompare(y.SeasonDesc) * -1);
 
       if (!this.route.snapshot.params['season']) {
@@ -58,7 +57,6 @@ export class TournamentPageComponent implements OnInit, OnDestroy {
   onSeasonChange = (seasonCode: string) => {
     this.api.tournaments$().subscribe((tournaments) => {
       this.tournaments = tournaments
-        .map(x => Object.assign(new TournamentRecord(), x)) //TODO: CHAD: Move to service?
         .filter(x => x.Division.localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
         .filter(x => x.SeasonCode === seasonCode);
         

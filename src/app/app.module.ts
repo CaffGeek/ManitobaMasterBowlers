@@ -23,6 +23,7 @@ import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.
 import { TournamentEditorComponent } from './components/tournament-editor/tournament-editor.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule} from '@angular/material/card';
 import { AppendValuesPipe } from './pipes/append-values.pipe';
@@ -32,6 +33,8 @@ import { BowlerPageComponent } from './pages/bowler-page/bowler-page.component';
 import { TournamentSummaryComponent } from './components/tournament-summary/tournament-summary.component';
 import { BowlerResultsComponent } from './components/bowler-results/bowler-results.component';
 import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,8 @@ import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.com
     TournamentSummaryComponent,
     BowlerExistsValidatorDirective,
     BowlerResultsComponent,
-    BowlerStatsComponent
+    BowlerStatsComponent,
+    SchedulePageComponent
   ],
   imports: [
     BrowserModule,
@@ -71,8 +75,10 @@ import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.com
     }),
     BrowserAnimationsModule,
     MatTableExporterModule,
+    MatFormFieldModule,
     MatCardModule,
     MatSortModule,
+    MatSelectModule,
     MatTableModule,
   ],
   providers: [
