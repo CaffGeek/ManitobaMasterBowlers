@@ -2,7 +2,6 @@ import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
-import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { ApiService } from '@services/api.service';
 
 @Component({

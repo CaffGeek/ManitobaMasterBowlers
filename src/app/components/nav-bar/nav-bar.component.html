@@ -99,13 +99,14 @@
           class="navbar-nav d-md-none"
           *ngIf="(auth.isAuthenticated$ | async) === false"
         >
-          <button
+          <!-- <button
             class="btn btn-primary btn-block"
             id="qsLoginBtn"
             (click)="loginWithRedirect()"
           >
             Log in
-          </button>
+          </button> -->
+          <a href="https://manitobamastersfunc.azurewebsites.net/.auth/login/Auth0/callback">Login</a>
 
         </ul>
         <!-- /Responsive login button -->

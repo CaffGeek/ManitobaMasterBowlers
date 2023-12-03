@@ -35,6 +35,7 @@ import { BowlerResultsComponent } from './components/bowler-results/bowler-resul
 import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
+import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { SchedulePageComponent } from './pages/schedule-page/schedule-page.compo
     BowlerExistsValidatorDirective,
     BowlerResultsComponent,
     BowlerStatsComponent,
-    SchedulePageComponent
+    SchedulePageComponent,
+    ScheduleListComponent
   ],
   imports: [
     BrowserModule,
