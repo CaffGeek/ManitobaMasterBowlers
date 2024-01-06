@@ -40,4 +40,5 @@ export class ScheduleListComponent {
   }
 
   isCurrentSeason = (row: TournamentRecord) => row.SeasonCode === this.latestSeason;
+  isFutureTournament = (row: TournamentRecord) => row.SeasonCode === this.latestSeason && row.date().valueOf() > Date.now();
 }
