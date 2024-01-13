@@ -36,10 +36,10 @@ export class ApiService {
       .pipe(map(z => z.map(x => Object.assign(new BowlerRecord(), x))));
   }
 
-  bowlerResults$(id: number): Observable<BowlerResultsRecord[]> {
-    if (!id) return of([]);
+  bowlerResults$(bowlerId: number): Observable<BowlerResultsRecord[]> {
+    if (!bowlerId) return of([]);
 
-    return this.fromCache<BowlerResultsRecord[]>(`bowlerresults/${id}`)
+    return this.fromCache<BowlerResultsRecord[]>(`bowlerresults/${bowlerId}`)
       .pipe(map(z => z.map(x => Object.assign(new BowlerResultsRecord(), x).ensureTypes())));
   }
 
@@ -48,11 +48,16 @@ export class ApiService {
       .pipe(map(z => z.map(x => Object.assign(new TournamentRecord(), x))));
   }
 
-  tournamentResults$(id: number): Observable<TournamentResultsRecord[]> {
-    if (!id) return of([]);
+  tournamentResults$(tournamentId: number): Observable<TournamentResultsRecord[]> {
+    if (!tournamentId) return of([]);
     
-    return this.fromCache<TournamentResultsRecord[]>(`tournamentresults/${id}`)
+    return this.fromCache<TournamentResultsRecord[]>(`tournamentresults/${tournamentId}`)
       .pipe(map(z => z.map(x => Object.assign(new TournamentResultsRecord(), x).ensureTypes())));
+  }
+
+  saveTournamentResults(tournamentId: number, results) {
+    return this.http.put(`${config.apiUri}/tournamentresults/${tournamentId}`, results)
+      .subscribe(() => this.clearCache(`tournamentresults/${tournamentId}`));
   }
 
   whoami() {

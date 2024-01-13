@@ -11,6 +11,7 @@ import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
   styleUrls: ['./tournament-editor.component.css']
 })
 export class TournamentEditorComponent implements OnInit, OnChanges {
+  @Input() tournament: number;
   @Input() results: TournamentResultsRecord[] = [];
   bowlers: BowlerRecord[];
 
@@ -29,10 +30,10 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.dataSource.data = changes.results.currentValue
-      .map((x, i) => { x.ID = i; return x; });// TODO: CHAD: Need to lookup Proper ID
+      .map((x, i) => { x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler).ID; return x; });
   }
 
-  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
+  displayedColumns: string[] = ['Bowler', 'Average', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
   dataSource = new MatTableDataSource(this.results);
 
   @ViewChild(MatSort) sort: MatSort;
@@ -48,7 +49,27 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
     };
   }
 
-  onSubmit() { console.log(this.dataSource.data); }
+  onSubmit() {
+    var data = this.results
+      .map((c: TournamentResultsRecord) => {
+        return {
+          TournamentId: this.tournament,
+          BowlerId: c.BowlerId,
+          Game1: c.Game1,
+          Game2: c.Game2,
+          Game3: c.Game3,
+          Game4: c.Game4,
+          Game5: c.Game5,
+          Game6: c.Game6,
+          Game7: c.Game7,
+          Game8: c.Game8,
+          BowlerAverage: c.Average,
+        };
+      });
+
+    console.log(`submitting for tournament id ${this.tournament}`, data);
+    this.api.saveTournamentResults(this.tournament, data);
+  }
 
   getErrors(form) {
     return Object.keys(form.controls).map(key => {

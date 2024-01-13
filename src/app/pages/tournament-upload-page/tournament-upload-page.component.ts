@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { TournamentUploadRecord } from '@models/TournamentUploadRecord';
-import { ApiService } from '@services/api.service';
-import { distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tournament-upload-page',
@@ -10,21 +7,14 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
   styleUrls: ['./tournament-upload-page.component.css']
 })
 export class TournamentUploadPageComponent implements OnInit {
-  tournamnetId: number;
+  @Input() tournament: number;
   tournamentResults: TournamentUploadRecord[] = [];
   
   constructor(
-    private route: ActivatedRoute,
-    private api: ApiService
   ) {
-
   }
 
   ngOnInit(): void {
-    this.route.params.pipe(
-      map(params => params.tournamnetId),
-      distinctUntilChanged(),
-    ).subscribe(tournamnetId => this.tournamnetId = tournamnetId);
   }
 
   tournamentUploaded(tournamentResults: TournamentUploadRecord[]) {
