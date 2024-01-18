@@ -6,6 +6,7 @@ import { ProfileComponent } from '@pages/profile/profile.component';
 import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.component';
 import { ErrorComponent } from '@pages/error/error.component';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
+import { TournamentEditPageComponent } from '@pages/tournament-edit-page/tournament-edit-page.component';
 import { BowlerPageComponent } from '@pages/bowler-page/bowler-page.component';
 import { BowlerResultsComponent } from '@components/bowler-results/bowler-results.component';
 import { TournamentSummaryComponent } from '@components/tournament-summary/tournament-summary.component';
@@ -44,7 +45,8 @@ const routes: Routes = [
       { path: '', component: TournamentSummaryComponent },
       { path: '0', redirectTo: '' },
       { path: ':tournament', component: TournamentViewerComponent },
-      { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard],  },
+      { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
+      { path: ':tournament/edit', component: TournamentEditPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
     ]
   },
   {

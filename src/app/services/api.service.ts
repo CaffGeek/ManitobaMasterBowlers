@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, mergeAll, of, shareReplay, tap } from 'rxjs';
+import { Observable, map, of, shareReplay } from 'rxjs';
+import config from '../../../auth_config.json';
+
 import { BowlerRecord } from '@models/BowlerRecord';
+import { ContentBlockRecord } from '@models/ContentBlockRecord';
 import { SeasonRecord } from '@models/SeasonRecord';
 import { TournamentRecord } from '@models/TournamentRecord';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
-import config from '../../../auth_config.json';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 
 @Injectable({
@@ -24,6 +26,11 @@ export class ApiService {
   private clearCache = (route: string) => {
     if (!route) this.cache = {};
     if (route && this.cache?.[route]) this.cache[route] = undefined;
+  }
+
+  contentBlocks$(key:string): Observable<ContentBlockRecord[]> {
+    return this.fromCache<ContentBlockRecord[]>(`contentblocks/${key}`)
+      .pipe(map(z => z.map(x => Object.assign(new ContentBlockRecord(), x))));
   }
 
   seasons$(): Observable<SeasonRecord[]> {

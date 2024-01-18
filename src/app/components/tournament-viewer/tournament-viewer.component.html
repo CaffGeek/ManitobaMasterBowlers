@@ -1,4 +1,5 @@
-<a *ngIf="(auth.isAuthenticated$ | async)" [routerLink]="['./upload']">Upload Results</a>
+<a *ngIf="(auth.isAuthenticated$ | async) && !dataSource.data.length" [routerLink]="['./upload']">Upload Results</a>
+<a *ngIf="(auth.isAuthenticated$ | async) && !!dataSource.data.length" [routerLink]="['./edit']">Edit Results</a>
 
 <div id="exports">
     <button id="csv" mat-button (click)="exporter.exportTable('csv')">Export as CSV</button>

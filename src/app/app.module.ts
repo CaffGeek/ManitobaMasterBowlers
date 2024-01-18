@@ -36,6 +36,8 @@ import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.com
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
 import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
+import { TournamentEditPageComponent } from './pages/tournament-edit-page/tournament-edit-page.component';
+import { ContentBlockComponent } from './components/content-block/content-block.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { ScheduleListComponent } from './components/schedule-list/schedule-list.
     BowlerResultsComponent,
     BowlerStatsComponent,
     SchedulePageComponent,
-    ScheduleListComponent
+    ScheduleListComponent,
+    TournamentEditPageComponent,
+    ContentBlockComponent
   ],
   imports: [
     BrowserModule,

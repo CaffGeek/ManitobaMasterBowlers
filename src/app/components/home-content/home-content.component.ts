@@ -7,14 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-content.component.css']
 })
 export class HomeContentComponent implements OnInit {
-  content;
-
   constructor(
     private api: ApiService,
   ) { }
 
   ngOnInit() {
-    this.api.whoami().subscribe(x => console.log(x));
+    
   }
-
 }
