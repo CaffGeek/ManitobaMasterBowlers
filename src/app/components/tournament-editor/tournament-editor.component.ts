@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@services/api.service';
@@ -10,7 +10,7 @@ import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
   templateUrl: './tournament-editor.component.html',
   styleUrls: ['./tournament-editor.component.css']
 })
-export class TournamentEditorComponent implements OnInit, OnChanges {
+export class TournamentEditorComponent implements OnChanges {
   @Input() tournament: number;
   @Input() results: TournamentResultsRecord[] = [];
   bowlers: BowlerRecord[];
@@ -18,19 +18,15 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
   constructor(
     private api: ApiService,
   ) {
-
-  }  
-
-  ngOnInit(): void {
-    this.api.bowlers$().subscribe((bowlers) => {
-      this.bowlers = bowlers;
-      this.bowlers.sort((x, y) => x.Name.localeCompare(y.Name));
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.dataSource.data = changes.results.currentValue
-      .map((x, i) => { x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler).ID; return x; });
+    this.api.bowlers$().subscribe((bowlers) => {
+      this.bowlers = bowlers;
+
+      this.dataSource.data = changes.results.currentValue
+        .map((x) => { x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler).ID; return x; });
+    });
   }
 
   displayedColumns: string[] = ['Bowler', 'Average', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
