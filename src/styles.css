@@ -7,3 +7,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .ng-invalid:not(form)  {
     border: 1pt solid #a94442 !important;
 }
+
+.justify {
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,11 +1,14 @@
 <form (ngSubmit)="onSubmit()" #tournamentForm="ngForm" name="tournamentForm">
-  <button type="submit" class="btn btn-success" [disabled]="!tournamentForm.form.valid">Save</button> 
+  <div class="justify">
+    <a routerLink=".." class="nav-link">Cancel</a>
+    <button type="submit" class="btn btn-success" [disabled]="!tournamentForm.form.valid">Save</button> 
+  </div>
 
   <div *ngFor="let error of getErrors(tournamentForm.form)">
     {{error.message}}
   </div>
   
-  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">    
     <ng-container matColumnDef="Bowler">
       <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let element; let i = index;">

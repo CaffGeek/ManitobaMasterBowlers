@@ -19,7 +19,7 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
     private api: ApiService,
   ) {
 
-  }
+  }  
 
   ngOnInit(): void {
     this.api.bowlers$().subscribe((bowlers) => {
@@ -52,7 +52,7 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
   onSubmit() {
     var data = this.results
       .map((c: TournamentResultsRecord) => {
-        return {
+        let record = {
           TournamentId: this.tournament,
           BowlerId: c.BowlerId,
           Game1: c.Game1,
@@ -65,9 +65,11 @@ export class TournamentEditorComponent implements OnInit, OnChanges {
           Game8: c.Game8,
           BowlerAverage: c.Average,
         };
+
+        //If there's an Id, tack it on, so it's an update, not an insert of a new record
+        return (!!c.Id) ? { Id: c.Id, ...record } : record;
       });
 
-    console.log(`submitting for tournament id ${this.tournament}`, data);
     this.api.saveTournamentResults(this.tournament, data);
   }
 
