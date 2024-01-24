@@ -1,5 +1,6 @@
-<div id="exports">
-    <button id="csv" mat-button (click)="exporter.exportTable('csv')">Export as CSV</button>
+<div id="exports" class="justify">
+    <span>&nbsp;</span>
+    <button id="csv" class="btn btn-success" (click)="exporter.exportTable('csv')">Export as CSV</button>
 </div>
 
 <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" matTableExporter #exporter="matTableExporter">
