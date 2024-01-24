@@ -1,6 +1,6 @@
 <div class="justify">
-    <a *ngIf="(auth.isAuthenticated$ | async) && !dataSource.data.length" [routerLink]="['./upload']">Upload Results</a>
-    <a *ngIf="(auth.isAuthenticated$ | async) && !!dataSource.data.length" [routerLink]="['./edit']">Edit Results</a>
+    <a *ngIf="(canEditTournament) && !dataSource.data.length" [routerLink]="['./upload']">Upload Results</a>
+    <a *ngIf="(canEditTournament) && !!dataSource.data.length" [routerLink]="['./edit']">Edit Results</a>
     <span>&nbsp;</span>
 
     <button class="btn btn-success" (click)="exporter.exportTable('csv')">Export as CSV</button>

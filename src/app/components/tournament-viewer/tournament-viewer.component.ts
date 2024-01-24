@@ -1,15 +1,15 @@
-import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthService } from '@auth0/auth0-angular';
 import { ApiService } from '@services/api.service';
+import { PERMISSION, PermissionService } from '@services/permission.service';
 
 @Component({
   selector: 'app-tournament-viewer',
   templateUrl: './tournament-viewer.component.html',
   styleUrls: ['./tournament-viewer.component.css']
 })
-export class TournamentViewerComponent implements OnChanges {
+export class TournamentViewerComponent implements OnChanges, OnInit {
   @Input() division: string;
   @Input() season: string;
   @Input() tournament: number;
@@ -18,11 +18,18 @@ export class TournamentViewerComponent implements OnChanges {
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource([]);
+  canEditTournament: boolean = false;
 
   constructor(
-    public auth: AuthService,
+    public permissions: PermissionService,
     private api: ApiService,
   ) {
+  }
+
+  ngOnInit(): void {
+    //TODO: CHAD: can probably move to auth route guard somehow with the permissions???
+    this.permissions.checkPermission(PERMISSION.EDIT_TOURNAMENT)
+      .subscribe((canEdit) => { this.canEditTournament = canEdit });
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
