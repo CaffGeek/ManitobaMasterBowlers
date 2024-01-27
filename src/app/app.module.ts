@@ -38,6 +38,8 @@ import { SchedulePageComponent } from './pages/schedule-page/schedule-page.compo
 import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
 import { TournamentEditPageComponent } from './pages/tournament-edit-page/tournament-edit-page.component';
 import { ContentBlockComponent } from './components/content-block/content-block.component';
+import { ContentBlockListComponent } from './components/content-block-list/content-block-list.component';
+import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-blocks-page.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { ContentBlockComponent } from './components/content-block/content-block.
     SchedulePageComponent,
     ScheduleListComponent,
     TournamentEditPageComponent,
-    ContentBlockComponent
+    ContentBlockComponent,
+    ContentBlockListComponent,
+    ContentBlocksPageComponent
   ],
   imports: [
     BrowserModule,

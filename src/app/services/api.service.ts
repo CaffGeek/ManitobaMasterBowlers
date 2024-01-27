@@ -28,7 +28,7 @@ export class ApiService {
     if (route && this.cache?.[route]) this.cache[route] = undefined;
   }
 
-  contentBlocks$(key:string): Observable<ContentBlockRecord[]> {
+  contentBlocks$(key: string = ""): Observable<ContentBlockRecord[]> {
     return this.fromCache<ContentBlockRecord[]>(`contentblocks/${key}`)
       .pipe(map(z => z.map(x => Object.assign(new ContentBlockRecord(), x))));
   }

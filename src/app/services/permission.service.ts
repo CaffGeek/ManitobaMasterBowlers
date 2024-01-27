@@ -4,7 +4,8 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Observable, map } from 'rxjs';
 
 export enum PERMISSION {
-  EDIT_TOURNAMENT = "edit:tournament"
+  EDIT_TOURNAMENT = "edit:tournament",
+  READ_SITEMAP = "read:sitemap",
 }
 
 @Injectable({

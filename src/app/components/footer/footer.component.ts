@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PermissionService, PERMISSION } from '@services/permission.service';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  canViewContentBlocks: boolean = false;
 
-  ngOnInit() {
+  constructor(
+    public permissions: PermissionService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    //TODO: CHAD: can probably move to auth route guard somehow with the permissions???
+    this.permissions.checkPermission(PERMISSION.READ_SITEMAP)
+      .subscribe((canEdit) => { this.canViewContentBlocks = canEdit });
   }
 
 }
