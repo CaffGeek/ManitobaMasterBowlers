@@ -3,6 +3,7 @@ import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SeasonSummaryRecord } from '@models/SeasonSummaryRecord';
 import { TournamentRecord } from '@models/TournamentRecord';
+import { Division } from '@models/types/Division';
 import { ApiService } from '@services/api.service';
 import { forkJoin } from 'rxjs';
 
@@ -12,10 +13,22 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./tournament-summary.component.css']
 })
 export class TournamentSummaryComponent implements OnChanges {
-  @Input() division: string;
+  @Input() division: Division;
   @Input() season: string;
 
   @ViewChild(MatSort) sort: MatSort;
+
+  genderFilter = '';
+  genders = [{
+    value: '',
+    name: 'All',
+  }, {
+    value: 'M',
+    name: 'Mens',
+  }, {
+    value:  'L',
+    name: 'Womens',
+  }];
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource([]);
@@ -28,13 +41,17 @@ export class TournamentSummaryComponent implements OnChanges {
   ) {
   }
 
+  isTournament(division: Division): boolean {
+    return "Tournament".localeCompare(division.toString(), undefined, {sensitivity: 'base'}) === 0;
+  }
+
   ngOnChanges(_changes: SimpleChanges): void {
     const scratchTotals: string[] = ['Scratch1', 'Scratch2', 'Scratch3', 'Scratch4', 'Scratch5', 'Scratch6'];
     const poaTotals: string[] = ['POA1', 'POA2', 'POA3', 'POA4', 'POA5', 'POA6'];
-    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'Top4Scratch'];
-    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'Top4POA'];
+    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'Top4Scratch', 'Top3Scratch'];
+    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'Top4POA', 'Top3POA'];
 
-    ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
+    this.isTournament(this.division)
         ? this.displayedColumns = scratchColumns
         : this.displayedColumns = poaColumns;
 
@@ -53,7 +70,9 @@ export class TournamentSummaryComponent implements OnChanges {
           const tournament = this.tournaments.find(x => x.Id === results[0]?.TournamentId);
           if (!tournament) return;
 
-          results.forEach((x) => {
+          results
+            //.filter(x => !this.genderFilter || x.Gender.localeCompare(this.genderFilter, undefined, {sensitivity: 'base'}) === 0)
+            .forEach((x) => {
             const existingRecord = records.find(z => z.BowlerId === x.BowlerId);
             if (existingRecord) {
               existingRecord[`Scratch${tournament.TournamentNumber}`] = x.scratch();
@@ -81,8 +100,13 @@ export class TournamentSummaryComponent implements OnChanges {
     this.resort();
   }
 
+  filterData() {
+    this.dataSource.data = this.tournamentSummary
+      .filter(x => !this.genderFilter || x.Gender.localeCompare(this.genderFilter, undefined, {sensitivity: 'base'}) === 0);
+  }
+
   resort() {
-    ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
+    this.isTournament(this.division)
         ? this.sort.sort(({ id: 'Top4Scratch', start: 'desc'}) as MatSortable)
         : this.sort.sort(({ id: 'Top4POA', start: 'desc'}) as MatSortable);
 
@@ -90,7 +114,9 @@ export class TournamentSummaryComponent implements OnChanges {
 
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property.toLocaleLowerCase()) {
+        case 'top3scratch': return item.topNScratch(3);
         case 'top4scratch': return item.topNScratch(4);
+        case 'top3poa': return item.topNPoa(3);
         case 'top4poa': return item.topNPoa(4);
         default: return item[property];
       }

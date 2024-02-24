@@ -57,6 +57,6 @@ export class SeasonSummaryRecord {
             .sort((x, y) => y - x);
     }
 
-    topNScratch(n: number) { return this.scratchArray().slice(0, Math.max(n, this.scratchArray().length)).reduce((x, y) => x + y, 0); }
-    topNPoa(n: number) { return this.poaArray().slice(0, Math.max(n, this.poaArray().length)).reduce((x, y) => x + y, 0); }
+    topNScratch(n: number) { return this.scratchArray().slice(0, Math.min(n, this.scratchArray().length)).reduce((x, y) => x + y, 0); }
+    topNPoa(n: number) { return this.poaArray().slice(0, Math.min(n, this.poaArray().length)).reduce((x, y) => x + y, 0); }
 }

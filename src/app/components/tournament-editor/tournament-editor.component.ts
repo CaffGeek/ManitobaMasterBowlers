@@ -25,11 +25,11 @@ export class TournamentEditorComponent implements OnChanges {
       this.bowlers = bowlers;
 
       this.dataSource.data = changes.results.currentValue
-        .map((x) => { x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler).ID; return x; });
+        .map((x,i) => { x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler)?.ID || (-i); return x; });
     });
   }
 
-  displayedColumns: string[] = ['Bowler', 'Average', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'POA'];
+  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Average', 'Scratch', 'POA'];
   dataSource = new MatTableDataSource(this.results);
 
   @ViewChild(MatSort) sort: MatSort;

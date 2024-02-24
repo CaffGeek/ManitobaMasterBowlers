@@ -1,3 +1,4 @@
+import { Division } from './../../models/types/Division';
 import { Component, Input, ViewChild, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +11,7 @@ import { PERMISSION, PermissionService } from '@services/permission.service';
   styleUrls: ['./tournament-viewer.component.css']
 })
 export class TournamentViewerComponent implements OnChanges, OnInit {
-  @Input() division: string;
+  @Input() division: Division;
   @Input() season: string;
   @Input() tournament: number;
 
@@ -26,6 +27,10 @@ export class TournamentViewerComponent implements OnChanges, OnInit {
   ) {
   }
 
+  isTournament(division: Division): boolean {
+    return "Tournament".localeCompare(division.toString(), undefined, {sensitivity: 'base'}) === 0;
+  }
+
   ngOnInit(): void {
     //TODO: CHAD: can probably move to auth route guard somehow with the permissions???
     this.permissions.checkPermission(PERMISSION.EDIT_TOURNAMENT)
@@ -38,16 +43,18 @@ export class TournamentViewerComponent implements OnChanges, OnInit {
     const poaColumns: string[] = ['Pos', 'Bowler', 'Average', ...games, 'Scratch', 'POA'];
     
     this.api.tournamentResults$(this.tournament).subscribe((results) => {
-      this.displayedColumns = ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
+      this.displayedColumns = this.isTournament(this.division)
         ? scratchColumns
         : poaColumns;
 
-      this.dataSource.data = results;
+      this.dataSource.data = this.isTournament(this.division)
+        ? results.sort((x, y) => y.scratch() - x.scratch())
+        : results.sort((x, y) => y.poa() - x.poa());
     });
   }
 
   ngAfterViewInit() {
-    ("Tournament".localeCompare(this.division, undefined, {sensitivity: 'base'}) === 0)
+    this.isTournament(this.division)
         ? this.sort.sort(({ id: 'Scratch', start: 'desc'}) as MatSortable)
         : this.sort.sort(({ id: 'POA', start: 'desc'}) as MatSortable);
 
