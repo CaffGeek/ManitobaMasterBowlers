@@ -1,0 +1,10 @@
+{
+  "domain": "manitobamasterbowlers.us.auth0.com",
+  "clientId": "X62gUUDb8PcXtcoltVkOItrnefL6DLtC",
+  "authorizationParams": {
+    "audience": "https://manitobamastersfunc.azurewebsites.net/"
+  },
+  "apiUri": "https://manitobamastersfunc.azurewebsites.net/api/",
+  "appUri": "http://localhost:4200",
+  "errorPath": "/error"
+}
