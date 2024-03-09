@@ -6,16 +6,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 8.15.1
-        uses: actions/setup-node@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Adding Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 8.15.1
-      - name: Build and Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v2
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Angular App
+        run: npm run build
+
+      - name: Deploy to gh pages
+        run: |
+          npx angular-cli-ghpages --dir=dist/beta
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BASE_BRANCH: master
-          BRANCH: gh-pages
-          FOLDER: dist/ang-website
-          BUILD_SCRIPT: npm install && npm run build -- --prod
+          CI: true
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
