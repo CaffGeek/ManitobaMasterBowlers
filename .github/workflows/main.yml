@@ -1,3 +1,5 @@
+# source: https://medium.com/@alexanderkalarickal/automate-deployment-of-angular-app-to-github-pages-using-github-actions-fe147c58d6a3
+
 name: CI
 
 on: [push]
