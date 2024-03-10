@@ -920,7 +920,7 @@ class BowlerStatsComponent {
       bowler: "bowler"
     },
     decls: 37,
-    vars: 8,
+    vars: 7,
     consts: [[2, "text-align", "right"]],
     template: function BowlerStatsComponent_Template(rf, ctx) {
       if (rf & 1) {
@@ -940,7 +940,7 @@ class BowlerStatsComponent {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](12, "Wins/Stars");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](13, "td", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](14);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](14, "? ");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](15, "td");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](16, "Career Total");
@@ -978,9 +978,7 @@ class BowlerStatsComponent {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.stats.playingAverage);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.stats.careerAverage);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.stats.wins);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](9);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.stats.totalPinfall);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.stats.highGame);
