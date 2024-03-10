@@ -919,9 +919,9 @@ class BowlerStatsComponent {
     inputs: {
       bowler: "bowler"
     },
-    decls: 37,
+    decls: 39,
     vars: 7,
-    consts: [[2, "text-align", "right"]],
+    consts: [[2, "text-align", "right"], [1, "note"]],
     template: function BowlerStatsComponent_Template(rf, ctx) {
       if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "table")(1, "tr")(2, "td");
@@ -972,6 +972,9 @@ class BowlerStatsComponent {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](35, "td", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](36);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()()();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](37, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](38, "* since 2015");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
       }
       if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
@@ -990,7 +993,7 @@ class BowlerStatsComponent {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.stats.games);
       }
     },
-    styles: ["table[_ngcontent-%COMP%] {\n    width: 100%;\n}\n\ntd[_ngcontent-%COMP%] {\n    padding-left: 3em;\n    padding-right: 3em;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvY29tcG9uZW50cy9ib3dsZXItc3RhdHMvYm93bGVyLXN0YXRzLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxXQUFXO0FBQ2Y7O0FBRUE7SUFDSSxpQkFBaUI7SUFDakIsa0JBQWtCO0FBQ3RCIiwic291cmNlc0NvbnRlbnQiOlsidGFibGUge1xuICAgIHdpZHRoOiAxMDAlO1xufVxuXG50ZCB7XG4gICAgcGFkZGluZy1sZWZ0OiAzZW07XG4gICAgcGFkZGluZy1yaWdodDogM2VtO1xufSJdLCJzb3VyY2VSb290IjoiIn0= */"]
+    styles: ["table[_ngcontent-%COMP%] {\n    width: 100%;\n}\n\ntd[_ngcontent-%COMP%] {\n    padding-left: 3em;\n    padding-right: 3em;\n}\n\n.note[_ngcontent-%COMP%] {\n    font-style: italic;\n    font-size:smaller;\n    width: 100%;\n    text-align: right;\n    padding-right: 3em;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvY29tcG9uZW50cy9ib3dsZXItc3RhdHMvYm93bGVyLXN0YXRzLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxXQUFXO0FBQ2Y7O0FBRUE7SUFDSSxpQkFBaUI7SUFDakIsa0JBQWtCO0FBQ3RCOztBQUVBO0lBQ0ksa0JBQWtCO0lBQ2xCLGlCQUFpQjtJQUNqQixXQUFXO0lBQ1gsaUJBQWlCO0lBQ2pCLGtCQUFrQjtBQUN0QiIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcbiAgICB3aWR0aDogMTAwJTtcbn1cblxudGQge1xuICAgIHBhZGRpbmctbGVmdDogM2VtO1xuICAgIHBhZGRpbmctcmlnaHQ6IDNlbTtcbn1cblxuLm5vdGUge1xuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcbiAgICBmb250LXNpemU6c21hbGxlcjtcbiAgICB3aWR0aDogMTAwJTtcbiAgICB0ZXh0LWFsaWduOiByaWdodDtcbiAgICBwYWRkaW5nLXJpZ2h0OiAzZW07XG59Il0sInNvdXJjZVJvb3QiOiIifQ== */"]
   });
 }
 
