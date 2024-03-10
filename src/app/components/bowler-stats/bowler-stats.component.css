@@ -6,3 +6,11 @@ td {
     padding-left: 3em;
     padding-right: 3em;
 }
+
+.note {
+    font-style: italic;
+    font-size:smaller;
+    width: 100%;
+    text-align: right;
+    padding-right: 3em;
+}
