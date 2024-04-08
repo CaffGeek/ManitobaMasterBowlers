@@ -69,11 +69,8 @@ const routes = [{
   path: 'results/:division/:season',
   component: _pages_tournament_page_tournament_page_component__WEBPACK_IMPORTED_MODULE_2__.TournamentPageComponent,
   children: [{
-    path: '',
-    component: _components_tournament_summary_tournament_summary_component__WEBPACK_IMPORTED_MODULE_8__.TournamentSummaryComponent
-  }, {
     path: '0',
-    redirectTo: ''
+    component: _components_tournament_summary_tournament_summary_component__WEBPACK_IMPORTED_MODULE_8__.TournamentSummaryComponent
   }, {
     path: ':tournament',
     component: _components_tournament_viewer_tournament_viewer_component__WEBPACK_IMPORTED_MODULE_9__.TournamentViewerComponent
@@ -1474,7 +1471,7 @@ class NavBarComponent {
       }
     },
     dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.NgIf, _angular_router__WEBPACK_IMPORTED_MODULE_4__.RouterLink, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__.NgbCollapse, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__.NgbDropdown, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__.NgbDropdownToggle, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__.NgbDropdownMenu, _fortawesome_angular_fontawesome__WEBPACK_IMPORTED_MODULE_6__.FaIconComponent, _angular_common__WEBPACK_IMPORTED_MODULE_3__.AsyncPipe],
-    styles: [".logo[_ngcontent-%COMP%] {\n    background-image: url('/assets/MBAM.svg');\n    background-size: contain;\n    height: 64px;\n    width: 64px;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLHlDQUF5QztJQUN6Qyx3QkFBd0I7SUFDeEIsWUFBWTtJQUNaLFdBQVc7QUFDZiIsInNvdXJjZXNDb250ZW50IjpbIi5sb2dvIHtcbiAgICBiYWNrZ3JvdW5kLWltYWdlOiB1cmwoJy9hc3NldHMvTUJBTS5zdmcnKTtcbiAgICBiYWNrZ3JvdW5kLXNpemU6IGNvbnRhaW47XG4gICAgaGVpZ2h0OiA2NHB4O1xuICAgIHdpZHRoOiA2NHB4O1xufSJdLCJzb3VyY2VSb290IjoiIn0= */"]
+    styles: [".logo[_ngcontent-%COMP%] {\n    background-image: url('MBAM.svg');\n    background-size: contain;\n    height: 64px;\n    width: 64px;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvY29tcG9uZW50cy9uYXYtYmFyL25hdi1iYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGlDQUE2QztJQUM3Qyx3QkFBd0I7SUFDeEIsWUFBWTtJQUNaLFdBQVc7QUFDZiIsInNvdXJjZXNDb250ZW50IjpbIi5sb2dvIHtcbiAgICBiYWNrZ3JvdW5kLWltYWdlOiB1cmwoJ35zcmMvYXNzZXRzL01CQU0uc3ZnJyk7XG4gICAgYmFja2dyb3VuZC1zaXplOiBjb250YWluO1xuICAgIGhlaWdodDogNjRweDtcbiAgICB3aWR0aDogNjRweDtcbn0iXSwic291cmNlUm9vdCI6IiJ9 */"]
   });
 }
 
@@ -2056,6 +2053,7 @@ class TournamentEditorComponent {
     };
   }
   onSubmit() {
+    if (!window.confirm("Do you want to save?")) return;
     var data = this.results.map(c => {
       let record = {
         TournamentId: this.tournament,
@@ -3418,7 +3416,7 @@ class UploadTournamentComponent {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()()();
       }
     },
-    styles: ["#upload[_ngcontent-%COMP%] {\n    border: 1pt solid #ccc;\n    display: block;\n    margin: 1em;\n    margin-left: auto;\n    margin-right: auto;\n    height: 300px;\n    padding: 1em;\n    background-image: url('/assets/paste_here.png');\n    background-repeat: no-repeat;\n    background-position: bottom right;\n    background-size: 50%;\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvY29tcG9uZW50cy91cGxvYWQtdG91cm5hbWVudC91cGxvYWQtdG91cm5hbWVudC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksc0JBQXNCO0lBQ3RCLGNBQWM7SUFDZCxXQUFXO0lBQ1gsaUJBQWlCO0lBQ2pCLGtCQUFrQjtJQUNsQixhQUFhO0lBQ2IsWUFBWTtJQUNaLCtDQUErQztJQUMvQyw0QkFBNEI7SUFDNUIsaUNBQWlDO0lBQ2pDLG9CQUFvQjtJQUNwQixlQUFlO0lBQ2YsaUJBQWlCO0FBQ3JCIiwic291cmNlc0NvbnRlbnQiOlsiI3VwbG9hZCB7XG4gICAgYm9yZGVyOiAxcHQgc29saWQgI2NjYztcbiAgICBkaXNwbGF5OiBibG9jaztcbiAgICBtYXJnaW46IDFlbTtcbiAgICBtYXJnaW4tbGVmdDogYXV0bztcbiAgICBtYXJnaW4tcmlnaHQ6IGF1dG87XG4gICAgaGVpZ2h0OiAzMDBweDtcbiAgICBwYWRkaW5nOiAxZW07XG4gICAgYmFja2dyb3VuZC1pbWFnZTogdXJsKCcvYXNzZXRzL3Bhc3RlX2hlcmUucG5nJyk7XG4gICAgYmFja2dyb3VuZC1yZXBlYXQ6IG5vLXJlcGVhdDtcbiAgICBiYWNrZ3JvdW5kLXBvc2l0aW9uOiBib3R0b20gcmlnaHQ7XG4gICAgYmFja2dyb3VuZC1zaXplOiA1MCU7XG4gICAgZm9udC1zaXplOiAxNnB0O1xuICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xufVxuIl0sInNvdXJjZVJvb3QiOiIifQ== */"]
+    styles: ["#upload[_ngcontent-%COMP%] {\n    border: 1pt solid #ccc;\n    display: block;\n    margin: 1em;\n    margin-left: auto;\n    margin-right: auto;\n    height: 300px;\n    padding: 1em;\n    background-image: url('paste_here.png');\n    background-repeat: no-repeat;\n    background-position: bottom right;\n    background-size: 50%;\n    font-size: 16pt;\n    font-weight: bold;\n}\n\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvY29tcG9uZW50cy91cGxvYWQtdG91cm5hbWVudC91cGxvYWQtdG91cm5hbWVudC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksc0JBQXNCO0lBQ3RCLGNBQWM7SUFDZCxXQUFXO0lBQ1gsaUJBQWlCO0lBQ2pCLGtCQUFrQjtJQUNsQixhQUFhO0lBQ2IsWUFBWTtJQUNaLHVDQUFtRDtJQUNuRCw0QkFBNEI7SUFDNUIsaUNBQWlDO0lBQ2pDLG9CQUFvQjtJQUNwQixlQUFlO0lBQ2YsaUJBQWlCO0FBQ3JCIiwic291cmNlc0NvbnRlbnQiOlsiI3VwbG9hZCB7XG4gICAgYm9yZGVyOiAxcHQgc29saWQgI2NjYztcbiAgICBkaXNwbGF5OiBibG9jaztcbiAgICBtYXJnaW46IDFlbTtcbiAgICBtYXJnaW4tbGVmdDogYXV0bztcbiAgICBtYXJnaW4tcmlnaHQ6IGF1dG87XG4gICAgaGVpZ2h0OiAzMDBweDtcbiAgICBwYWRkaW5nOiAxZW07XG4gICAgYmFja2dyb3VuZC1pbWFnZTogdXJsKCd+c3JjL2Fzc2V0cy9wYXN0ZV9oZXJlLnBuZycpO1xuICAgIGJhY2tncm91bmQtcmVwZWF0OiBuby1yZXBlYXQ7XG4gICAgYmFja2dyb3VuZC1wb3NpdGlvbjogYm90dG9tIHJpZ2h0O1xuICAgIGJhY2tncm91bmQtc2l6ZTogNTAlO1xuICAgIGZvbnQtc2l6ZTogMTZwdDtcbiAgICBmb250LXdlaWdodDogYm9sZDtcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0= */"]
   });
 }
 
@@ -4206,7 +4204,7 @@ class TournamentPageComponent {
     this.api = api;
     this.tournamentResults = [];
     this.changeSeason = seasonCode => {
-      this.router.navigate(['/results', this.division, seasonCode]);
+      this.router.navigate(['/results', this.division, seasonCode, 0]);
     };
     this.changeTournament = tournament => {
       this.router.navigate(['/results', this.division, this.season, tournament]);
