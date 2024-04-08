@@ -6,7 +6,7 @@
     margin-right: auto;
     height: 300px;
     padding: 1em;
-    background-image: url('/assets/paste_here.png');
+    background-image: url('~src/assets/paste_here.png');
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: 50%;

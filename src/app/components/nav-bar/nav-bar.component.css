@@ -1,5 +1,5 @@
 .logo {
-    background-image: url('/assets/MBAM.svg');
+    background-image: url('~src/assets/MBAM.svg');
     background-size: contain;
     height: 64px;
     width: 64px;

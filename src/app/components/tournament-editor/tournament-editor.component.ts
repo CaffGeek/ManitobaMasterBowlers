@@ -46,6 +46,8 @@ export class TournamentEditorComponent implements OnChanges {
   }
 
   onSubmit() {
+    if (!window.confirm("Do you want to save?"))  return;
+    
     var data = this.results
       .map((c: TournamentResultsRecord) => {
         let record = {
