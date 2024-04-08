@@ -47,7 +47,7 @@ export class TournamentPageComponent implements OnInit, OnDestroy {
   }
 
   changeSeason = (seasonCode) => {
-    this.router.navigate(['/results', this.division, seasonCode]);
+    this.router.navigate(['/results', this.division, seasonCode, 0]);
   }
 
   changeTournament = (tournament) => {

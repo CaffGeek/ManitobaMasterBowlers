@@ -47,8 +47,7 @@ const routes: Routes = [
     path: 'results/:division/:season',
     component: TournamentPageComponent,
     children: [
-      { path: '', component: TournamentSummaryComponent },
-      { path: '0', redirectTo: '' },
+      { path: '0', component: TournamentSummaryComponent },
       { path: ':tournament', component: TournamentViewerComponent },
       { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
       { path: ':tournament/edit', component: TournamentEditPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
