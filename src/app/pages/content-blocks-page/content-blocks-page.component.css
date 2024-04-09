@@ -1,3 +1,8 @@
-.ql-omega:after {
-    content: "Ω";
+/* If you want to override Quill styles, you need to go to the root styles.css */
+
+.list {
+    width: 25%;
+}
+.editor {
+    width: 75%;
 }

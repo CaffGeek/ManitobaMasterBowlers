@@ -40,6 +40,7 @@ import { TournamentEditPageComponent } from './pages/tournament-edit-page/tourna
 import { ContentBlockComponent } from './components/content-block/content-block.component';
 import { ContentBlockListComponent } from './components/content-block-list/content-block-list.component';
 import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-blocks-page.component';
+import { ContentBlockEditorComponent } from './components/content-block-editor/content-block-editor.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-
     TournamentEditPageComponent,
     ContentBlockComponent,
     ContentBlockListComponent,
-    ContentBlocksPageComponent
+    ContentBlocksPageComponent,
+    ContentBlockEditorComponent
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,8 @@ import { TournamentViewerComponent } from '@components/tournament-viewer/tournam
 import { BowlerStatsComponent } from '@components/bowler-stats/bowler-stats.component';
 import { SchedulePageComponent } from '@pages/schedule-page/schedule-page.component';
 import { ContentBlocksPageComponent } from '@pages/content-blocks-page/content-blocks-page.component';
+import { ContentBlockListComponent } from '@components/content-block-list/content-block-list.component';
+import { ContentBlockEditorComponent } from '@components/content-block-editor/content-block-editor.component';
 
 // https://stackblitz.com/run?file=src/app/app-routing.module.ts
 const routes: Routes = [
@@ -36,12 +38,23 @@ const routes: Routes = [
     component: SchedulePageComponent,
   },
   {
-    path: 'results/:division',
-    component: TournamentPageComponent,
-  },
-  {
     path: 'contentblocks',
     component: ContentBlocksPageComponent,
+    children: [
+      { path: '', component: ContentBlockListComponent, outlet: "list" },
+    ]
+  },
+  {
+    path: 'contentblocks/:key',
+    component: ContentBlocksPageComponent,
+    children: [
+      { path: '', component: ContentBlockListComponent, outlet: "list" },
+      { path: '', component: ContentBlockEditorComponent, outlet: "editor" },
+    ]
+  },
+  {
+    path: 'results/:division',
+    component: TournamentPageComponent,
   },
   {
     path: 'results/:division/:season',
@@ -57,8 +70,8 @@ const routes: Routes = [
     path: 'bowlers/:bowler',
     component: BowlerPageComponent,
     children: [
-      {path: '', component: BowlerStatsComponent, outlet: "stats" },
-      {path: '', component: BowlerResultsComponent, outlet: "results" },
+      { path: '', component: BowlerStatsComponent, outlet: "stats" },
+      { path: '', component: BowlerResultsComponent, outlet: "results" },
     ]
   },
 ];
