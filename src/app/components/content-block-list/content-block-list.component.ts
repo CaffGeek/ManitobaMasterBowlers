@@ -7,7 +7,6 @@ import { ApiService } from '@services/api.service';
   styleUrls: ['./content-block-list.component.css']
 })
 export class ContentBlockListComponent implements OnInit {
-
   keys: string[] = [];
 
   constructor(
@@ -16,8 +15,9 @@ export class ContentBlockListComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.contentBlocks$().subscribe((blocks) => {
-      this.keys = [...new Set(blocks.map(x => x.ContentBlock))].sort();
+      this.keys = [...new Set(blocks
+        .map(x => x.ContentBlock)
+      )].sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' } ));
     });
   }
-
 }

@@ -1,4 +1,9 @@
 <h2>Content Blocks</h2>
-<ul>
-    <li *ngFor="let key of keys">{{key}}</li>
-</ul>
+
+<div class="container">
+    <ul>
+        <li *ngFor="let key of keys">
+            <a [routerLink]="['/contentblocks', key]">{{key}}</a>
+        </li>
+    </ul>
+</div>

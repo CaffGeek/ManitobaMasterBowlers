@@ -1,11 +1,8 @@
 <div class="justify">
-    <app-content-block-list></app-content-block-list>
-
-    <div id="editorContainer">
-        <div id="editor" #editor>
-            <p>Hello World!</p>
-            <p>Some initial <strong>bold</strong> text</p>
-            <p><br /></p>
-        </div>
+    <div class="list">
+        <router-outlet name="list"></router-outlet>
+    </div>
+    <div class="editor">
+        <router-outlet name="editor"></router-outlet>
     </div>
 </div>
