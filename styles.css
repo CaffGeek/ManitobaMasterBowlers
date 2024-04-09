@@ -33,6 +33,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: flex;
     justify-content: space-between;
 }
+
+/* Quill overrides */
+.ql-table > .ql-picker-label {
+    width: 6em;
+}
+.ql-table > .ql-picker-label::before {
+    content: "Table";
+}
+
+.ql-picker-item[data-value="insert"]::before { content: "Insert"; }
+.ql-picker-item[data-value="delete"]::before { content: "Delete"; }
+.ql-picker-item[data-value="insert-row-above"]::before { content: "Insert Row Above"; }
+.ql-picker-item[data-value="insert-row-below"]::before { content: "Insert Row Below"; }
+.ql-picker-item[data-value="insert-column-left"]::before { content: "Insert Column Left"; }
+.ql-picker-item[data-value="insert-column-right"]::before { content: "Insert Column Right"; }
+.ql-picker-item[data-value="delete-row"]::before { content: "Delete Row"; }
+.ql-picker-item[data-value="delete-column"]::before { content: "Delete Column"; }
+
 /*!************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[0].use[2]!./node_modules/highlight.js/styles/monokai-sublime.css?ngGlobalStyle ***!
   \************************************************************************************************************************************************************************************************************************************************************/
