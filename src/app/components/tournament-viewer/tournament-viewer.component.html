@@ -3,10 +3,10 @@
     <a *ngIf="(canEditTournament) && !!dataSource.data.length" [routerLink]="['./edit']">Edit Results</a>
     <span>&nbsp;</span>
 
-    <button class="btn btn-success" (click)="exporter.exportTable('csv')">Export as CSV</button>
+    <button class="btn btn-success" (click)="exportCsv()">Export as CSV</button>
 </div>
 
-<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" matTableExporter #exporter="matTableExporter">
+<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="Pos">
         <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element; let i = index;">{{i + 1}}</td>

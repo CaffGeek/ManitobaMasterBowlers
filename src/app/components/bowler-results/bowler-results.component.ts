@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { ApiService } from '@services/api.service';
+import { exportToCsv } from '../../utils/export-to-csv';
 import moment from 'moment';
 
 @Component({
@@ -43,5 +44,10 @@ export class BowlerResultsComponent implements OnChanges {
         default: return item[property];
       }
     };
+  }
+
+  exportCsv() {
+    const rows = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data;
+    exportToCsv('bowler-results.csv', this.displayedColumns, rows);
   }
 }

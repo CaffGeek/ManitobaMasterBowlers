@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatTableExporterModule } from 'mat-table-exporter';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from '@pages/home/home.component';
@@ -86,7 +85,6 @@ import { ContentBlockEditorComponent } from './components/content-block-editor/c
       },
     }),
     BrowserAnimationsModule,
-    MatTableExporterModule,
     MatFormFieldModule,
     MatCardModule,
     MatSortModule,

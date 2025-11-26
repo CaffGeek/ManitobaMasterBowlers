@@ -6,6 +6,7 @@ import { TournamentRecord } from '@models/TournamentRecord';
 import { Division } from '@models/types/Division';
 import { ApiService } from '@services/api.service';
 import { forkJoin } from 'rxjs';
+import { exportToCsv } from '../../utils/export-to-csv';
 
 @Component({
   selector: 'app-tournament-summary',
@@ -121,5 +122,10 @@ export class TournamentSummaryComponent implements OnChanges {
         default: return item[property];
       }
     };
+  }
+
+  exportCsv() {
+    const rows = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data;
+    exportToCsv('tournament-summary.csv', this.displayedColumns, rows);
   }
 }

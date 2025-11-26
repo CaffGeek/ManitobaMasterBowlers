@@ -4,6 +4,7 @@ import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@services/api.service';
 import { PERMISSION, PermissionService } from '@services/permission.service';
+import { exportToCsv } from '../../utils/export-to-csv';
 
 @Component({
   selector: 'app-tournament-viewer',
@@ -66,5 +67,10 @@ export class TournamentViewerComponent implements OnChanges, OnInit {
         default: return item[property];
       }
     };
+  }
+
+  exportCsv() {
+    const rows = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data;
+    exportToCsv('tournament-results.csv', this.displayedColumns, rows);
   }
 }
