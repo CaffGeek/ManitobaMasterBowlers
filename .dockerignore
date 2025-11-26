@@ -5,6 +5,11 @@ exec.*
 npm-debug.log*
 yarn-error.log
 README.md
+.angular/
+/client/.angular/
+.vscode/
+.idea/
+.git/
 
 # testing
 /coverage

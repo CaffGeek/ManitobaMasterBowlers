@@ -4,6 +4,7 @@
 /client/dist
 /client/tmp
 /client/out-tsc
+/client/.angular
 # Only exists if Bazel was run
 /bazel-out
 
