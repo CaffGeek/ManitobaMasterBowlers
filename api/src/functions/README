@@ -1,0 +1,8 @@
+https://github.com/Azure/azure-functions-sql-extension/blob/main/samples/samples-js-v4/src/functions/GetProducts.js
+
+https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-azure-sql-input?tabs=isolated-process%2Cnodejs-v4&pivots=programming-language-typescript
+
+
+security
+https://auth0.com/blog/using-serverless-azure-functions-with-auth0-and-google-apis/#Serverless-Architecture
+https://www.npmjs.com/package/auth0-js
