@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, of, shareReplay } from 'rxjs';
-import config from '../../../auth_config.json';
+import { environment } from '../../environments/environment';
 
 import { BowlerRecord } from '@models/BowlerRecord';
 import { ContentBlockRecord } from '@models/ContentBlockRecord';
@@ -20,7 +20,7 @@ export class ApiService {
   private fromCache = <T>(route: string): Observable<T> => {
     return (this.cache?.[route])
       ? this.cache[route]
-      : this.cache[route] = this.http.get(`${config.apiUri}/${route}`).pipe(shareReplay(1)) as Observable<T>;
+      : this.cache[route] = this.http.get(`${environment.apiUri}${route}`).pipe(shareReplay(1)) as Observable<T>;
   }
 
   private clearCache = (route: string) => {
@@ -63,11 +63,11 @@ export class ApiService {
   }
 
   saveTournamentResults(tournamentId: number, results) {
-    return this.http.put(`${config.apiUri}/tournamentresults/${tournamentId}`, results)
+    return this.http.put(`${environment.apiUri}tournamentresults/${tournamentId}`, results)
       .subscribe(() => this.clearCache(`tournamentresults/${tournamentId}`));
   }
 
   whoami() {
-    return this.http.get(`${config.apiUri}/whoami`);
+    return this.http.get(`${environment.apiUri}whoami`);
   }
 }

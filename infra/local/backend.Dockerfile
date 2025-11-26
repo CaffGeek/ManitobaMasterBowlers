@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/azure-functions/node:4-node20
 
-ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot/dist \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
 
 WORKDIR /home/site/wwwroot
@@ -24,4 +24,4 @@ COPY api/. .
 EXPOSE 7071
 
 # Run TypeScript watch in the background and start the Functions host
-CMD ["/bin/bash", "-c", "npm run watch & func start --javascript --port 7071"]
+CMD ["/bin/bash", "-c", "npm run watch & func start --javascript --port 7071 --script-root /home/site/wwwroot/dist"]

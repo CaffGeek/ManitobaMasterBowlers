@@ -7,6 +7,8 @@ import { ApiService } from '@services/api.service';
 import { exportToCsv } from '../../utils/export-to-csv';
 import moment from 'moment';
 
+type ResultsRow = BowlerResultsRecord & { countsForAverage: boolean };
+
 @Component({
   selector: 'app-bowler-results',
   templateUrl: './bowler-results.component.html',
@@ -19,7 +21,7 @@ export class BowlerResultsComponent implements OnChanges {
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['TournamentLocation', 'Date', 'Division', 'TournamentNumber', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Scratch', 'BowlerAverage', 'POA'];
-  dataSource = new MatTableDataSource([]);
+  dataSource = new MatTableDataSource<ResultsRow>([]);
   
   constructor(
     public auth: AuthService,
@@ -29,9 +31,18 @@ export class BowlerResultsComponent implements OnChanges {
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.api.bowlerResults$(this.bowler).subscribe((results) => {
+      const sorted = [...results].sort((a, b) => b.date().valueOf() - a.date().valueOf());
+      const seasonOrder = Array.from(new Set(sorted.map(r => r.SeasonCode))).sort((a, b) => b - a);
+      const allowedSeasons = new Set(seasonOrder.slice(0, 5));
 
-      this.dataSource.data = results
-        .sort((a, b) => b.date().valueOf() - a.date().valueOf())
+      // Determine which tournaments contribute to the masters average (latest 10 eligible tournaments)
+      const eligible = sorted.filter(r => allowedSeasons.has(r.SeasonCode) && !r.IgnoreForAverage);
+      const includedTournamentIds = new Set<number>(eligible.slice(0, 10).map(r => r.TournamentId));
+
+      this.dataSource.data = sorted.map(r => {
+        const countsForAverage = includedTournamentIds.has(r.TournamentId) && allowedSeasons.has(r.SeasonCode) && !r.IgnoreForAverage;
+        return Object.assign(new BowlerResultsRecord(), r, { countsForAverage });
+      });
     });
   }
 

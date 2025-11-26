@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/azure-functions/node:4-node20
 
-ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot/dist \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
 
 WORKDIR /home/site/wwwroot
@@ -21,6 +21,8 @@ RUN npm install --only=production && npm install -g azure-functions-core-tools@4
 
 COPY api/. .
 
+RUN npm run build
+
 EXPOSE 80
 
-CMD ["func", "start", "--javascript", "--port", "80"]
+CMD ["func", "start", "--javascript", "--port", "80", "--script-root", "/home/site/wwwroot/dist"]

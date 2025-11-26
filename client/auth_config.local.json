@@ -4,7 +4,7 @@
   "authorizationParams": {
     "audience": "https://manitobamastersfunc.azurewebsites.net/"
   },
-  "apiUri": "https://manitobamastersfunc.azurewebsites.net/api/",
+  "apiUri": "http://localhost:7071/api/",
   "appUri": "http://localhost:4200",
   "errorPath": "/error"
 }

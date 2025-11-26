@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { ApiService } from '@services/api.service';
-import moment from 'moment';
 
 @Component({
   selector: 'app-bowler-stats',
@@ -43,14 +42,32 @@ export class BowlerStatsComponent implements OnInit {
       this.stats.totalPinfall = this.sumGames(results);
       this.stats.careerAverage = Math.trunc(this.stats.totalPinfall / this.stats.games);
 
-      //TODO: CHAD: Masters Average
-      const lastTwelveTournaments = results.slice(0, 12);
-      const lastTwelveGames = this.countGames(lastTwelveTournaments);
-      const lastTwelvePinfall = this.sumGames(lastTwelveTournaments);
-      this.stats.playingAverage = Math.trunc(lastTwelvePinfall / lastTwelveGames);
+      // Masters Average: last 10 tournaments, current season + previous 4 seasons, ignoring flagged tournaments
+      const filtered = this.limitSeasons(results, 5).filter(r => !r.IgnoreForAverage);
+      const { tournamentsCount, gamesCount, pinfall } = this.takeLatestTournaments(filtered, 10);
+      this.stats.playingAverage = tournamentsCount === 10 ? Math.trunc(pinfall / gamesCount) : null;
 
       //TODO: CHAD: Wins
     });
+  }
+
+  // TODO: CHAD: This needs to be shared, but also, use actual seasons, not just this bowlers
+  private limitSeasons = (results: BowlerResultsRecord[], seasonsToKeep: number) => {
+    const seasonOrder = Array.from(new Set(results.map(r => r.SeasonCode))).sort((a, b) => b - a);
+    const allowed = new Set(seasonOrder.slice(0, seasonsToKeep));
+    return results.filter(r => allowed.has(r.SeasonCode));
+  }
+
+  private takeLatestTournaments = (results: BowlerResultsRecord[], tournamentsNeeded: number) => {
+    const slice = results.slice(0, tournamentsNeeded);
+    const pinfall = slice.reduce((sum, res) =>
+      sum + [res.Game1, res.Game2, res.Game3, res.Game4, res.Game5, res.Game6, res.Game7, res.Game8]
+        .filter(g => g && g > 0)
+        .reduce((a, b) => a + b, 0), 0);
+    const gamesCount = slice.reduce((sum, res) =>
+      sum + [res.Game1, res.Game2, res.Game3, res.Game4, res.Game5, res.Game6, res.Game7, res.Game8]
+        .filter(g => g && g > 0).length, 0);
+    return { tournamentsCount: slice.length, gamesCount, pinfall };
   }
 
   countGames = (results: any[]): number => {

@@ -18,7 +18,8 @@ const sqlInput = input.generic({
                 r.Game6,
                 r.Game7,
                 r.Game8,
-                r.BowlerAverage
+                r.BowlerAverage,
+                ISNULL(r.IgnoreForAverage, 0) as IgnoreForAverage
             from TournamentTable as t
             join TournamentResults as r
                 on t.id = r.TournamentId

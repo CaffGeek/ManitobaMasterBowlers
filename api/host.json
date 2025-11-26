@@ -11,7 +11,28 @@
   "extensions": {
     "http": {
       "customHeaders": {
-        "Access-Control-Expose-Headers": "*"
+        "Access-Control-Expose-Headers": "*",
+        "Access-Control-Allow-Origin": "http://localhost:4200",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "*"
+      },
+      "cors": {
+        "allowedOrigins": [
+          "http://localhost:4200",
+          "http://localhost:4200/"
+        ],
+        "allowedHeaders": [
+          "*"
+        ],
+        "allowedMethods": [
+          "GET",
+          "POST",
+          "PUT",
+          "PATCH",
+          "DELETE",
+          "OPTIONS"
+        ],
+        "supportCredentials": false
       }
     }
   },

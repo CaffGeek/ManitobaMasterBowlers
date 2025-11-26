@@ -14,3 +14,10 @@ th, td {
 .mdc-data-table__row {
     height: 40px;
 }
+
+.ignored-avg {
+    color: #c0392b;
+    font-size: 0.8em;
+    margin-left: 6px;
+    font-weight: 600;
+}
