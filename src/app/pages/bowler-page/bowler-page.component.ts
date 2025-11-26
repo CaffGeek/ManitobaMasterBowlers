@@ -5,7 +5,8 @@ import { ApiService } from '@services/api.service';
 @Component({
   selector: 'app-bowler-page',
   templateUrl: './bowler-page.component.html',
-  styleUrls: ['./bowler-page.component.css']
+  styleUrls: ['./bowler-page.component.css'],
+  standalone: false,
 })
 export class BowlerPageComponent implements OnInit {
   @Input() bowler: number;

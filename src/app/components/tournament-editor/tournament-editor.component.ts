@@ -8,7 +8,8 @@ import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 @Component({
   selector: 'app-tournament-editor',
   templateUrl: './tournament-editor.component.html',
-  styleUrls: ['./tournament-editor.component.css']
+  styleUrls: ['./tournament-editor.component.css'],
+  standalone: false,
 })
 export class TournamentEditorComponent implements OnChanges {
   @Input() tournament: number;

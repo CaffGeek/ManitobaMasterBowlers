@@ -4,7 +4,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-home-content',
   templateUrl: './home-content.component.html',
-  styleUrls: ['./home-content.component.css']
+  styleUrls: ['./home-content.component.css'],
+  standalone: false,
 })
 export class HomeContentComponent implements OnInit {
   constructor(

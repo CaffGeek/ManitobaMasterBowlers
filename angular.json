@@ -5,6 +5,7 @@
   "projects": {
     "mbam": {
       "projectType": "application",
+      "standalone": false,
       "schematics": {},
       "root": "",
       "sourceRoot": "src",
@@ -66,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mbam:build"
+            "buildTarget": "mbam:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "mbam:build:production"
+              "buildTarget": "mbam:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mbam:build"
+            "buildTarget": "mbam:build"
           }
         },
         "test": {

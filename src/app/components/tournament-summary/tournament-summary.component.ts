@@ -11,7 +11,8 @@ import { exportToCsv } from '../../utils/export-to-csv';
 @Component({
   selector: 'app-tournament-summary',
   templateUrl: './tournament-summary.component.html',
-  styleUrls: ['./tournament-summary.component.css']
+  styleUrls: ['./tournament-summary.component.css'],
+  standalone: false,
 })
 export class TournamentSummaryComponent implements OnChanges {
   @Input() division: Division;

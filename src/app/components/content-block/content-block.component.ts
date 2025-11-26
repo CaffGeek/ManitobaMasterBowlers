@@ -4,7 +4,8 @@ import { ApiService } from '@services/api.service';
 @Component({
   selector: 'app-content-block',
   templateUrl: './content-block.component.html',
-  styleUrls: ['./content-block.component.css']
+  styleUrls: ['./content-block.component.css'],
+  standalone: false,
 })
 export class ContentBlockComponent implements OnInit {
   @Input() key: string;

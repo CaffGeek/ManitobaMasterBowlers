@@ -5,6 +5,7 @@ import { AuthService } from '@auth0/auth0-angular';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
+  standalone: false,
 })
 export class ProfileComponent implements OnInit {
   profileJson: string = null;

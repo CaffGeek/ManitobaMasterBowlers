@@ -10,7 +10,8 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-tournament-page',
   templateUrl: './tournament-page.component.html',
-  styleUrls: ['./tournament-page.component.css']
+  styleUrls: ['./tournament-page.component.css'],
+  standalone: false,
 })
 export class TournamentPageComponent implements OnInit, OnDestroy {
   @Input() division;

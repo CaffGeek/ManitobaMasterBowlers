@@ -5,7 +5,8 @@ import Quill from 'quill';
 @Component({
   selector: 'app-content-block-editor',
   templateUrl: './content-block-editor.component.html',
-  styleUrls: ['./content-block-editor.component.css']
+  styleUrls: ['./content-block-editor.component.css'],
+  standalone: false,
 })
 export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   @Input() key: string;

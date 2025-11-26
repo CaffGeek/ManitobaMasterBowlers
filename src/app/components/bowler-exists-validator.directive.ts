@@ -25,7 +25,8 @@ export class BowlerExistsValidator implements AsyncValidator {
 
 @Directive({
   selector: '[appBowlerExists]',
-  providers: [{provide: NG_ASYNC_VALIDATORS, useExisting: forwardRef(() => BowlerExistsValidatorDirective), multi: true}]
+  providers: [{provide: NG_ASYNC_VALIDATORS, useExisting: forwardRef(() => BowlerExistsValidatorDirective), multi: true}],
+  standalone: false,
 })
 export class BowlerExistsValidatorDirective implements Validator {
   constructor(private validator: BowlerExistsValidator) { }

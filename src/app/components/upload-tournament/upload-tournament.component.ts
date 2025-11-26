@@ -5,7 +5,8 @@ import { TournamentService } from '@services/tournament.service';
 @Component({
   selector: 'app-upload-tournament',
   templateUrl: './upload-tournament.component.html',
-  styleUrls: ['./upload-tournament.component.css']
+  styleUrls: ['./upload-tournament.component.css'],
+  standalone: false,
 })
 export class UploadTournamentComponent {
   @Output() tournamentUploadedEvent = new EventEmitter<TournamentUploadRecord[]>();

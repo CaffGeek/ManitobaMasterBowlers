@@ -10,7 +10,8 @@ import moment from 'moment';
 @Component({
   selector: 'app-bowler-results',
   templateUrl: './bowler-results.component.html',
-  styleUrls: ['./bowler-results.component.css']
+  styleUrls: ['./bowler-results.component.css'],
+  standalone: false,
 })
 export class BowlerResultsComponent implements OnChanges {
   @Input() bowler: number;

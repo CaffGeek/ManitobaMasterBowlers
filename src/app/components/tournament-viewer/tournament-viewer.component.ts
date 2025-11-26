@@ -9,7 +9,8 @@ import { exportToCsv } from '../../utils/export-to-csv';
 @Component({
   selector: 'app-tournament-viewer',
   templateUrl: './tournament-viewer.component.html',
-  styleUrls: ['./tournament-viewer.component.css']
+  styleUrls: ['./tournament-viewer.component.css'],
+  standalone: false,
 })
 export class TournamentViewerComponent implements OnChanges, OnInit {
   @Input() division: Division;

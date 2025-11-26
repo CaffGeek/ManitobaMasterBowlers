@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'appendValues'
+  name: 'appendValues',
+  standalone: false,
 })
 export class AppendValuesPipe implements PipeTransform {
   transform(...args: any[]): unknown {

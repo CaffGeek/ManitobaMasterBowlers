@@ -4,7 +4,8 @@ import { ApiService } from '@services/api.service';
 @Component({
   selector: 'app-content-block-list',
   templateUrl: './content-block-list.component.html',
-  styleUrls: ['./content-block-list.component.css']
+  styleUrls: ['./content-block-list.component.css'],
+  standalone: false,
 })
 export class ContentBlockListComponent implements OnInit {
   keys: string[] = [];

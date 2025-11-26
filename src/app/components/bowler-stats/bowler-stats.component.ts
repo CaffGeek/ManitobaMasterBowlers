@@ -6,7 +6,8 @@ import moment from 'moment';
 @Component({
   selector: 'app-bowler-stats',
   templateUrl: './bowler-stats.component.html',
-  styleUrls: ['./bowler-stats.component.css']
+  styleUrls: ['./bowler-stats.component.css'],
+  standalone: false,
 })
 export class BowlerStatsComponent implements OnInit {
   @Input() bowler: number;

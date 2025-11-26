@@ -7,6 +7,7 @@ import { DOCUMENT } from '@angular/common';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
+  standalone: false,
 })
 export class NavBarComponent implements OnInit {
   isCollapsed = true;

@@ -8,7 +8,8 @@ import { TournamentRecord } from '@models/TournamentRecord';
 @Component({
   selector: 'app-schedule-list',
   templateUrl: './schedule-list.component.html',
-  styleUrls: ['./schedule-list.component.css']
+  styleUrls: ['./schedule-list.component.css'],
+  standalone: false,
 })
 export class ScheduleListComponent {
   @ViewChild(MatSort) sort: MatSort;
