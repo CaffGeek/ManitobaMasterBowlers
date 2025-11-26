@@ -5,11 +5,22 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 WORKDIR /home/site/wwwroot
 
+# Install .NET SDK (needed by the Functions host/extension bundle)
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb \
+    && apt-get update \
+    && apt-get install -y dotnet-sdk-8.0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY api/package*.json ./
-RUN npm install --only=production
+RUN npm install --only=production && npm install -g azure-functions-core-tools@4 --unsafe-perm true
 
 COPY api/. .
 
 EXPOSE 80
 
-CMD ["func", "start", "--csharp", "--port", "80"]
+CMD ["func", "start", "--javascript", "--port", "80"]

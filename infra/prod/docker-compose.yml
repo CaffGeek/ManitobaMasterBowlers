@@ -13,5 +13,6 @@ services:
     environment:
       - AzureWebJobsStorage=UseDevelopmentStorage=true
       - FUNCTIONS_WORKER_RUNTIME=node
+      - FUNCTIONS_INPROC_NET8_ENABLED=1
     ports:
       - "7071:80"
