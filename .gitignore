@@ -5,6 +5,7 @@
 /client/tmp
 /client/out-tsc
 /client/.angular
+/client/src/assets/tinymce
 # Only exists if Bazel was run
 /bazel-out
 

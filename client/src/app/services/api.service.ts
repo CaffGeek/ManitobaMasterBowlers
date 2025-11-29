@@ -67,6 +67,11 @@ export class ApiService {
       .subscribe(() => this.clearCache(`tournamentresults/${tournamentId}`));
   }
 
+  saveContentBlock(key: string, contentHtml: string) {
+    return this.http.post(`${environment.apiUri}contentblocks/save`, { contentBlock: key, contentHTML: contentHtml })
+      .subscribe(() => this.clearCache(`contentblocks/${key}`));
+  }
+
   whoami() {
     return this.http.get(`${environment.apiUri}whoami`);
   }

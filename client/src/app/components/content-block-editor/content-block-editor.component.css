@@ -1,0 +1,14 @@
+#editorContainer {
+    width: 100%;
+    min-height: 600px;
+}
+
+.editor-container {
+    width: 100%;
+    min-height: 600px;
+}
+
+.actions {
+    margin-top: 12px;
+    text-align: right;
+}

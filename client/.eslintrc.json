@@ -11,7 +11,7 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "parserOptions": {
-        "project": "tsconfig.app.json",
+        "project": "tsconfig.json",
         "createDefaultProgram": true
       },
       "rules": {}

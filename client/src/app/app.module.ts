@@ -40,6 +40,7 @@ import { ContentBlockComponent } from './components/content-block/content-block.
 import { ContentBlockListComponent } from './components/content-block-list/content-block-list.component';
 import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-blocks-page.component';
 import { ContentBlockEditorComponent } from './components/content-block-editor/content-block-editor.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { ContentBlockEditorComponent } from './components/content-block-editor/c
     MatSortModule,
     MatSelectModule,
     MatTableModule,
+    EditorModule,
   ],
   providers: [
     {
