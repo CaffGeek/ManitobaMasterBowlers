@@ -36,7 +36,7 @@ jobs:
           fi
 
       - name: Build Angular app
-        run: npm run build -- --base-href /ManitobaMasterBowlers/
+        run: npm run build -- --configuration production --base-href /ManitobaMasterBowlers/
 
       - name: Add SPA fallback (404 -> index)
         run: cp dist/beta/index.html dist/beta/404.html
