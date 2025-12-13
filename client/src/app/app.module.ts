@@ -84,6 +84,9 @@ import { EditorModule } from '@tinymce/tinymce-angular';
       httpInterceptor: {
         ...env.httpInterceptor,
       },
+      cacheLocation: 'localstorage',
+      useRefreshTokens: true,
+      useRefreshTokensFallback: true,
     }),
     BrowserAnimationsModule,
     MatFormFieldModule,

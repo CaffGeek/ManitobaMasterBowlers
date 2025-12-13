@@ -1,6 +1,6 @@
 {
-  "domain": "manitobamasterbowlers.us.auth0.com",
-  "clientId": "X62gUUDb8PcXtcoltVkOItrnefL6DLtC",
+  "domain": "dev-0hxorzwur4xjnvt1.us.auth0.com",
+  "clientId": "vMsJvwN4NkvQwpfgKUSsC8l8GNdROV9c",
   "authorizationParams": {
     "audience": "https://manitobamastersfunc.azurewebsites.net/"
   },

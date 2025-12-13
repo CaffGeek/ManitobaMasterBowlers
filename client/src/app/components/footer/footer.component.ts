@@ -18,7 +18,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     //TODO: CHAD: can probably move to auth route guard somehow with the permissions???
-    this.permissions.checkPermission(PERMISSION.READ_SITEMAP)
+    this.permissions.checkPermission(PERMISSION.EDIT_SITEMAP)
       .subscribe((canEdit) => { this.canViewContentBlocks = canEdit });
   }
 

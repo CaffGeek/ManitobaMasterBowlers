@@ -5,7 +5,7 @@ import { Observable, map } from 'rxjs';
 
 export enum PERMISSION {
   EDIT_TOURNAMENT = "edit:tournament",
-  READ_SITEMAP = "read:sitemap",
+  EDIT_SITEMAP = "edit:sitemap",
 }
 
 @Injectable({
