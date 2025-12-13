@@ -10,7 +10,7 @@
 
 ## Deploying to production
 - CI/CD is handled by `.github/workflows/main.yml` on pushes to `master`.
-- Frontend: builds `client` with `--base-href /ManitobaMasterBowlers/` and deploys `client/dist/manitoba-master-bowlers` to the `gh-pages` branch.
+- Frontend: builds `client` with `--base-href /ManitobaMasterBowlers/` and deploys `client/dist/beta` to the `gh-pages` branch (404.html is copied from index.html for SPA routing).
 - Backend: builds `api` (TypeScript -> `dist`) and deploys the Azure Functions app via publish profile.
 - Required GitHub secrets:
   - `TINYMCE_API_KEY` (optional for the WYSIWYG editor; injected at build time)
