@@ -7,8 +7,13 @@ const sqlOutput = output.generic({
 });
 
 export async function SaveContentBlock(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    const body = await request.json();
-    const { contentBlock, contentHTML } = body || {};
+    let body: { contentBlock?: string; contentHTML?: string } = {};
+    try {
+        body = (await request.json()) as { contentBlock?: string; contentHTML?: string };
+    } catch {
+        body = {};
+    }
+    const { contentBlock, contentHTML } = body;
 
     if (!contentBlock || !contentHTML) {
         return { status: 400, body: 'contentBlock and contentHTML are required' };
