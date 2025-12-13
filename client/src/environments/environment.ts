@@ -13,6 +13,16 @@ const { domain, clientId, authorizationParams: { audience }, apiUri, errorPath }
   errorPath: string;
 };
 
+// Optional local secret file for keys (gitignored)
+let tinymceApiKey = '';
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const secret = require('./tinymce.secret.json') as { tinymceApiKey?: string; apiKey?: string };
+  tinymceApiKey = secret.tinymceApiKey || secret.apiKey || '';
+} catch {
+  tinymceApiKey = '';
+}
+
 export const environment = {
   production: false,
   apiUri: auth_config.apiUri,
@@ -32,6 +42,7 @@ export const environment = {
       allowAnonymous: true,
     }]
   },
+  tinymceApiKey
 };
 
 /*

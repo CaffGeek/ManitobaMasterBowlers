@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ApiService } from '@services/api.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-content-block-editor',
@@ -10,6 +11,7 @@ import { ApiService } from '@services/api.service';
 export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   @Input() key: string;
   contentHtml = '';
+  editorApiKey = environment.tinymceApiKey;
   
   constructor(
     private api: ApiService,

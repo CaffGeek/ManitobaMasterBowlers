@@ -12,6 +12,7 @@
 # dependencies
 /node_modules
 /client/node_modules
+/client/src/environments/tinymce.secret.json
 /api/dist
 /api/node_modules
 /api/local.settings.json
