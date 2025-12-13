@@ -29,9 +29,7 @@ jobs:
           TINYMCE_API_KEY: ${{ secrets.TINYMCE_API_KEY }}
         run: |
           if [ -n "${TINYMCE_API_KEY}" ]; then
-            cat > src/environments/tinymce.secret.json <<EOF
-            { "apiKey": "${TINYMCE_API_KEY}" }
-            EOF
+            echo "{ \"apiKey\": \"${TINYMCE_API_KEY}\" }" > src/environments/tinymce.secret.json
           fi
 
       - name: Build Angular app
