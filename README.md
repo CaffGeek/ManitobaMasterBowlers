@@ -6,7 +6,7 @@
 - `infra/` – Dockerfiles/compose for local (`infra/local`) and prod (`infra/prod`).
 
 ## Getting started - Run w/ Docker (dev)
-- `./start.sh` runs `infra/local/docker-compose.yml` to start frontend (4200) and backend (7071) with live reload via volume mounts.
+- `./start.sh` runs `infra/local/docker-compose.yml` to start frontend (http://localhost:4200) and backend (7071) with live reload via volume mounts.
 
 ## Deploying to production
 - CI/CD is handled by `.github/workflows/main.yml` on pushes to `master`.
@@ -14,7 +14,7 @@
 - Backend: builds `api` (TypeScript -> `dist`) and deploys the Azure Functions app via publish profile.
 - Required GitHub secrets:
   - `TINYMCE_API_KEY` (optional for the WYSIWYG editor; injected at build time)
-  - `AZURE_FUNCTIONAPP_NAME`
-  - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`
+  - `AZURE_FUNCTIONAPP_NAME` (your Function App resource name, e.g. `manitobamastersfunc`)
+  - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` (full publish profile XML for that app)
   - `GITHUB_TOKEN` is provided by GitHub Actions automatically.
 - To trigger a deploy: push to `master` (or merge PRs into `master`).
