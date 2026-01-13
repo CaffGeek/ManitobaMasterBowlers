@@ -13,6 +13,9 @@ const { domain, clientId, authorizationParams: { audience }, apiUri, errorPath }
   errorPath: string;
 };
 
+// Base path for the SPA (blank for local dev served at root)
+const appBasePath = '/ManitobaMasterBowlers';
+
 // Optional local secret file for keys (gitignored)
 let tinymceApiKey = '';
 try {
@@ -31,7 +34,7 @@ export const environment = {
     clientId,
     authorizationParams: {
       ...(audience && audience !== 'YOUR_API_IDENTIFIER' ? { audience } : null),
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}${appBasePath}`,
     },
     errorPath,
   },
