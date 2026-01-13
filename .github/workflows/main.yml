@@ -71,6 +71,9 @@ jobs:
       - name: Build Functions (TypeScript -> dist)
         run: npm run build
 
+      - name: Prune dev dependencies for deploy
+        run: npm prune --production
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
