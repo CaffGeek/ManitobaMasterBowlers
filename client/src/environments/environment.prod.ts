@@ -8,9 +8,6 @@ const { domain, clientId, audience, apiUri, errorPath } = config as {
   errorPath: string;
 };
 
-// Base path for the SPA on GitHub Pages
-const appBasePath = '/ManitobaMasterBowlers';
-
 let tinymceApiKey = '';
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -27,7 +24,7 @@ export const environment = {
     domain,
     clientId,
     ...(audience && audience !== "YOUR_API_IDENTIFIER" ? { audience } : null),
-    redirectUri: `${window.location.origin}${appBasePath}`,
+    redirectUri: window.location.origin,
     errorPath,
   },
   httpInterceptor: {
