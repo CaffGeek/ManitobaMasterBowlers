@@ -25,7 +25,8 @@ export class NavBarComponent implements OnInit {
   }
 
   loginWithRedirect() {
-    this.auth.loginWithRedirect();
+    const redirectUri = `${this.doc.location.origin}${env.appBasePath || ''}`;
+    this.auth.loginWithRedirect({ authorizationParams: { redirect_uri: redirectUri } });
   }
 
   logout() {

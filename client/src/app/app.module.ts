@@ -81,16 +81,10 @@ import { environment as env } from '../environments/environment';
     FontAwesomeModule,
     AuthModule.forRoot({
       ...env.auth,
-      httpInterceptor: {
-        ...env.httpInterceptor,
-      },
+      httpInterceptor: env.httpInterceptor,
       cacheLocation: 'localstorage',
       useRefreshTokens: true,
       useRefreshTokensFallback: true,
-      authorizationParams: {
-        ...env.auth.authorizationParams,
-        redirect_uri: `${window.location.origin}${env.appBasePath || ''}`,
-      },
     }),
     BrowserAnimationsModule,
     MatFormFieldModule,
