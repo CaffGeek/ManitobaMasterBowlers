@@ -24,8 +24,10 @@ export const environment = {
   auth: {
     domain,
     clientId,
-    ...(audience && audience !== "YOUR_API_IDENTIFIER" ? { audience } : null),
-    redirectUri: window.location.origin,
+    authorizationParams: {
+      ...(audience && audience !== "YOUR_API_IDENTIFIER" ? { audience } : null),
+      redirect_uri: `${window.location.origin}/ManitobaMasterBowlers`,
+    },
     errorPath,
   },
   httpInterceptor: {
