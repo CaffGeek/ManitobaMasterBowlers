@@ -41,6 +41,7 @@ import { ContentBlockListComponent } from './components/content-block-list/conte
 import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-blocks-page.component';
 import { ContentBlockEditorComponent } from './components/content-block-editor/content-block-editor.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { environment as env } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,10 @@ import { EditorModule } from '@tinymce/tinymce-angular';
       cacheLocation: 'localstorage',
       useRefreshTokens: true,
       useRefreshTokensFallback: true,
+      authorizationParams: {
+        ...env.auth.authorizationParams,
+        redirect_uri: `${window.location.origin}${env.appBasePath || ''}`,
+      },
     }),
     BrowserAnimationsModule,
     MatFormFieldModule,

@@ -25,6 +25,7 @@ try {
 
 export const environment = {
   production: false,
+  appBasePath: '',
   apiUri: auth_config.apiUri,
   auth: {
     domain,

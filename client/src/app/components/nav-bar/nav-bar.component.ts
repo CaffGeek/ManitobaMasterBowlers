@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
+import { environment as env } from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -28,6 +29,7 @@ export class NavBarComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout({ logoutParams: { returnTo: this.doc.location.origin } });
+    const returnTo = `${this.doc.location.origin}${env.appBasePath || ''}`;
+    this.auth.logout({ logoutParams: { returnTo } });
   }
 }
