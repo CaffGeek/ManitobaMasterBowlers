@@ -16,7 +16,6 @@ import { HomeContentComponent } from './components/home-content/home-content.com
 import { LoadingComponent } from './components/loading/loading.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
-import { environment as env } from '../environments/environment';
 import { UploadTournamentComponent } from './components/upload-tournament/upload-tournament.component';
 import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.component';
 import { TournamentEditorComponent } from './components/tournament-editor/tournament-editor.component';
