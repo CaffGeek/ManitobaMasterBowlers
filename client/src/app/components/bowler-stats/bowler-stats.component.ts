@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { ApiService } from '@services/api.service';
 
@@ -11,6 +12,8 @@ import { ApiService } from '@services/api.service';
 export class BowlerStatsComponent implements OnInit {
   @Input() bowler: number;
 
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
   stats = {
     playingAverage: 0,
     careerAverage: 0,

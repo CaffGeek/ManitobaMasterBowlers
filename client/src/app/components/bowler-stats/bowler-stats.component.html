@@ -1,26 +1,51 @@
-<table>
-    <tr>
-        <td>Masters Average</td>            <td style="text-align: right;">{{stats.playingAverage}}</td>
-        <td>Career Average</td>             <td style="text-align: right;">{{stats.careerAverage}}</td>
-    </tr>
-    <tr>
-        <td>Wins/Stars</td>                 <td style="text-align: right;">? <!-- {{stats.wins}} --></td>
-        <td>Career Total</td>               <td style="text-align: right;">{{stats.totalPinfall}}</td>
-    </tr>
-    <tr>
-        <td>High Game</td>                  <td style="text-align: right;">{{stats.highGame}}</td>
-        <td>Career Tournaments</td>         <td style="text-align: right;">{{stats.tournaments}}</td>
-    </tr>
-    <tr>
-        <td>High Set</td>                   <td style="text-align: right;">{{stats.highSet}}</td>
-        <td>Career Games</td>               <td style="text-align: right;">{{stats.games}}</td>
-    </tr>
-</table>
+<div class="stats-grid">
+    <div class="stat-row">
+        <div class="stat-block">
+            <div class="stat-label">Masters Average</div>
+            <div class="stat-value">
+                <button class="calc-toggle inline" (click)="showCalc = !showCalc" title="See average calculation">
+                    <fa-icon [icon]="showCalc ? faEyeSlash : faEye"></fa-icon>
+                </button>
+                {{stats.playingAverage}}
+            </div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-label">Career Average</div>
+            <div class="stat-value">{{stats.careerAverage}}</div>
+        </div>
+    </div>
+    <div class="stat-row">
+        <div class="stat-block">
+            <div class="stat-label">Wins/Stars</div>
+            <div class="stat-value">? <!-- {{stats.wins}} --></div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-label">Career Total</div>
+            <div class="stat-value">{{stats.totalPinfall}}</div>
+        </div>
+    </div>
+    <div class="stat-row">
+        <div class="stat-block">
+            <div class="stat-label">High Game</div>
+            <div class="stat-value">{{stats.highGame}}</div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-label">Career Tournaments</div>
+            <div class="stat-value">{{stats.tournaments}}</div>
+        </div>
+    </div>
+    <div class="stat-row">
+        <div class="stat-block">
+            <div class="stat-label">High Set</div>
+            <div class="stat-value">{{stats.highSet}}</div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-label">Career Games</div>
+            <div class="stat-value">{{stats.games}}</div>
+        </div>
+    </div>
+</div>
 <div class="note">* since 2015</div>
-
-<button class="calc-toggle" (click)="showCalc = !showCalc">
-    {{showCalc ? 'Hide average calculation' : 'See average calculation'}}
-</button>
 
 <div class="calc-panel" *ngIf="showCalc">
     <div class="calc-row">
