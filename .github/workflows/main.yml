@@ -55,6 +55,11 @@ jobs:
       - name: Build Angular app
         run: npm run build -- --configuration production --base-href /ManitobaMasterBowlers/
 
+      - name: Copy TinyMCE assets into build
+        run: |
+          mkdir -p dist/beta/assets/tinymce
+          cp -R node_modules/tinymce/* dist/beta/assets/tinymce/
+
       - name: Verify TinyMCE assets in build
         run: |
           if [ -d dist/beta/assets/tinymce ]; then
