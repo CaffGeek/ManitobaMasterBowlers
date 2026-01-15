@@ -3,13 +3,20 @@ name: Build and Deploy
 on:
   push:
     branches: [master]
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   client-gh-pages:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     defaults:
       run:
         working-directory: client
@@ -51,6 +58,8 @@ jobs:
   api-azure-functions:
     needs: client-gh-pages
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: api
