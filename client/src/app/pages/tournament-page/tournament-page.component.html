@@ -1,15 +1,19 @@
-<mat-form-field>
-  <mat-select matNativeControl (selectionChange)="changeSeason($event.value)" [(value)]="this.season">
-    <mat-option *ngFor="let s of seasons" [value]="s.SeasonCode">{{s.SeasonDesc}}</mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="filter-bar">
+  <mat-form-field appearance="fill" class="filter-field">
+    <mat-label>Season</mat-label>
+    <mat-select (selectionChange)="changeSeason($event.value)" [(value)]="season">
+      <mat-option *ngFor="let s of seasons" [value]="s.SeasonCode">{{s.SeasonDesc}}</mat-option>
+    </mat-select>
+  </mat-form-field>
 
-<mat-form-field>
-  <mat-select (selectionChange)="changeTournament($event.value * 1)">
+  <mat-form-field appearance="fill" class="filter-field">
+    <mat-label>Tournament</mat-label>
+    <mat-select (selectionChange)="changeTournament($event.value * 1)">
       <mat-option value="0" selected>Summary</mat-option>
       <mat-option *ngFor="let t of tournaments" [value]="t.Id">{{t.TournamentNumber}} - {{t.TournamentLocation}}</mat-option>
-  </mat-select>
-</mat-form-field>
+    </mat-select>
+  </mat-form-field>
+</div>
 
 <div class="container flex-grow-1 flex-shrink-1">
   <router-outlet></router-outlet>

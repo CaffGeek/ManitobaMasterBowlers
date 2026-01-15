@@ -1,0 +1,10 @@
+.filter-field {
+    min-width: 220px;
+    flex: 0 0 auto;
+}
+
+#exports {
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+}
