@@ -42,6 +42,16 @@ jobs:
             echo "{ \"apiKey\": \"${TINYMCE_API_KEY}\" }" > src/environments/tinymce.secret.json
           fi
 
+      - name: Verify TinyMCE key injected
+        run: |
+          if [ -f src/environments/tinymce.secret.json ]; then
+            echo "tinymce.secret.json exists"
+            wc -c src/environments/tinymce.secret.json
+          else
+            echo "tinymce.secret.json missing"
+            exit 1
+          fi
+
       - name: Build Angular app
         run: npm run build -- --configuration production --base-href /ManitobaMasterBowlers/
 
