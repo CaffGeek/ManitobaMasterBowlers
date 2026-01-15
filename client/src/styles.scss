@@ -1,0 +1,121 @@
+@use '@angular/material' as mat;
+@import '~quill/dist/quill.snow.css';
+
+$mb-yellow: mat.m2-define-palette(mat.$m2-yellow-palette, 600, 300, 900);
+$mb-black: mat.m2-define-palette(mat.$m2-grey-palette, 900);
+$mb-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$mb-theme: mat.m2-define-light-theme((
+    color: (
+        primary: $mb-yellow,
+        accent: $mb-black,
+        warn: $mb-warn,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+));
+
+@include mat.core();
+@include mat.all-component-themes($mb-theme);
+
+:root {
+    --mb-yellow: #ffd54a;
+    --mb-yellow-dark: #d4a300;
+    --mb-black: #121212;
+    --mb-ink: #1d1d1d;
+    --mb-cream: #fff7d6;
+    --mb-shadow: rgba(0, 0, 0, 0.18);
+}
+
+html, body { height: 100%; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: #1a1a1a;
+    background: linear-gradient(180deg, #fff9e5 0%, #ffffff 55%, #f2f2f2 100%);
+}
+
+a {
+    color: #b38700;
+}
+
+a:hover {
+    color: #8b6800;
+}
+
+.navbar,
+.navbar.bg-light,
+.navbar-light.bg-light {
+    background-color: var(--mb-yellow) !important;
+    box-shadow: 0 6px 16px var(--mb-shadow);
+}
+
+.navbar .nav-link,
+.navbar .dropdown-toggle {
+    color: var(--mb-black) !important;
+    display: flex;
+    align-items: center;
+    line-height: 1.1;
+    padding: 0.5rem 0.9rem;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: #000000 !important;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 999px;
+}
+
+.navbar .navbar-toggler {
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.navbar .navbar-toggler-icon {
+    filter: brightness(0.2);
+}
+
+.btn-primary {
+    background-color: var(--mb-yellow);
+    border-color: var(--mb-yellow);
+    color: var(--mb-black);
+    font-weight: 600;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--mb-yellow-dark);
+    border-color: var(--mb-yellow-dark);
+    color: var(--mb-black);
+}
+
+.dropdown-menu {
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+.ng-invalid:not(form)  {
+    border: 1pt solid #a94442 !important;
+    background: #f79f9e !important;
+}
+
+.justify {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Quill overrides */
+.ql-table > .ql-picker-label {
+    width: 6em;
+}
+.ql-table > .ql-picker-label::before {
+    content: "Table";
+}
+
+.ql-picker-item[data-value="insert"]::before { content: "Insert"; }
+.ql-picker-item[data-value="delete"]::before { content: "Delete"; }
+.ql-picker-item[data-value="insert-row-above"]::before { content: "Insert Row Above"; }
+.ql-picker-item[data-value="insert-row-below"]::before { content: "Insert Row Below"; }
+.ql-picker-item[data-value="insert-column-left"]::before { content: "Insert Column Left"; }
+.ql-picker-item[data-value="insert-column-right"]::before { content: "Insert Column Right"; }
+.ql-picker-item[data-value="delete-row"]::before { content: "Delete Row"; }
+.ql-picker-item[data-value="delete-column"]::before { content: "Delete Column"; }

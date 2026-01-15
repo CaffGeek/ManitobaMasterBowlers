@@ -1,6 +1,11 @@
 .logo {
     background-image: url('~src/assets/MBAM.svg');
     background-size: contain;
+    background-repeat: no-repeat;
     height: 64px;
     width: 64px;
+}
+
+.nav-user-profile {
+    border: 2px solid #f6c400;
 }
