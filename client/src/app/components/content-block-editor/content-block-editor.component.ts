@@ -12,6 +12,13 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   @Input() key: string;
   contentHtml = '';
   editorApiKey = environment.tinymceApiKey;
+  editorInit = {
+    base_url: `${environment.appBasePath || ''}/assets/tinymce`,
+    plugins: 'table paste lists link code',
+    menubar: 'file edit view insert format table tools',
+    toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link | paste | code',
+    paste_data_images: false,
+  };
   
   constructor(
     private api: ApiService,

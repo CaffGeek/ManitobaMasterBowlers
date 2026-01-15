@@ -1,13 +1,7 @@
 <div class="editor-container">
   <editor
     [apiKey]="editorApiKey"
-    [init]="{
-      base_url: '/assets/tinymce',
-      plugins: 'table paste lists link code',
-      menubar: 'file edit view insert format table tools',
-      toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link | paste | code',
-      paste_data_images: false
-    }"
+    [init]="editorInit"
     [(ngModel)]="contentHtml"
   ></editor>
   <div class="actions">
