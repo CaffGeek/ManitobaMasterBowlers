@@ -25,6 +25,18 @@ export class BowlerStatsComponent implements OnInit {
     careerAverageSeniors: 0,
   };
 
+  showCalc = false;
+  leagueAverageInput: number | null = null;
+  masterCalc = {
+    tournamentsCount: 0,
+    gamesCount: 0,
+    pinfall: 0,
+    missingEvents: 0,
+    paddedPinfall: 0,
+    combinedGames: 0,
+    combinedAverage: null as number | null,
+  };
+
   constructor(
     private api: ApiService,
   ) {
@@ -45,7 +57,10 @@ export class BowlerStatsComponent implements OnInit {
       // Masters Average: last 10 tournaments, current season + previous 4 seasons, ignoring flagged tournaments
       const filtered = this.limitSeasons(results, 5).filter(r => !r.IgnoreForAverage);
       const { tournamentsCount, gamesCount, pinfall } = this.takeLatestTournaments(filtered, 10);
-      this.stats.playingAverage = tournamentsCount === 10 ? Math.trunc(pinfall / gamesCount) : null;
+      this.masterCalc.tournamentsCount = tournamentsCount;
+      this.masterCalc.gamesCount = gamesCount;
+      this.masterCalc.pinfall = pinfall;
+      this.updateMasterAverage();
 
       //TODO: CHAD: Wins
     });
@@ -68,6 +83,35 @@ export class BowlerStatsComponent implements OnInit {
       sum + [res.Game1, res.Game2, res.Game3, res.Game4, res.Game5, res.Game6, res.Game7, res.Game8]
         .filter(g => g && g > 0).length, 0);
     return { tournamentsCount: slice.length, gamesCount, pinfall };
+  }
+
+  onLeagueAverageChange() {
+    this.updateMasterAverage();
+  }
+
+  private updateMasterAverage() {
+    const missingEvents = Math.max(0, 10 - this.masterCalc.tournamentsCount);
+    this.masterCalc.missingEvents = missingEvents;
+    this.masterCalc.paddedPinfall = this.leagueAverageInput && missingEvents
+      ? this.leagueAverageInput * 8 * missingEvents
+      : 0;
+    this.masterCalc.combinedGames = this.masterCalc.gamesCount + (missingEvents * 8);
+
+    if (missingEvents === 0) {
+      this.masterCalc.combinedAverage = Math.trunc(this.masterCalc.pinfall / this.masterCalc.gamesCount);
+      this.stats.playingAverage = this.masterCalc.combinedAverage;
+      return;
+    }
+
+    if (this.leagueAverageInput && this.leagueAverageInput > 0 && this.masterCalc.combinedGames > 0) {
+      this.masterCalc.combinedAverage = Math.trunc(
+        (this.masterCalc.pinfall + this.masterCalc.paddedPinfall) / this.masterCalc.combinedGames
+      );
+      this.stats.playingAverage = this.masterCalc.combinedAverage;
+    } else {
+      this.masterCalc.combinedAverage = null;
+      this.stats.playingAverage = null;
+    }
   }
 
   countGames = (results: any[]): number => {

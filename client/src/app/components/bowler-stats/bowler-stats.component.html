@@ -17,3 +17,53 @@
     </tr>
 </table>
 <div class="note">* since 2015</div>
+
+<button class="calc-toggle" (click)="showCalc = !showCalc">
+    {{showCalc ? 'Hide average calculation' : 'See average calculation'}}
+</button>
+
+<div class="calc-panel" *ngIf="showCalc">
+    <div class="calc-row">
+        <div class="calc-label">Events used</div>
+        <div class="calc-value">{{masterCalc.tournamentsCount}} / 10</div>
+    </div>
+    <div class="calc-row">
+        <div class="calc-label">Games used</div>
+        <div class="calc-value">{{masterCalc.gamesCount}}</div>
+    </div>
+    <div class="calc-row">
+        <div class="calc-label">Pinfall sum</div>
+        <div class="calc-value">{{masterCalc.pinfall}}</div>
+    </div>
+
+    <div class="calc-row" *ngIf="masterCalc.missingEvents > 0">
+        <div class="calc-label">Missing events</div>
+        <div class="calc-value">{{masterCalc.missingEvents}}</div>
+    </div>
+    <div class="calc-row" *ngIf="masterCalc.missingEvents > 0">
+        <div class="calc-label">League average</div>
+        <div class="calc-value">
+            <input
+                type="number"
+                min="0"
+                step="1"
+                [(ngModel)]="leagueAverageInput"
+                (ngModelChange)="onLeagueAverageChange()"
+                placeholder="Enter avg"
+            />
+            <span class="calc-hint">pads {{masterCalc.missingEvents * 8}} games</span>
+        </div>
+    </div>
+    <div class="calc-row" *ngIf="masterCalc.missingEvents > 0">
+        <div class="calc-label">Padded pinfall</div>
+        <div class="calc-value">{{masterCalc.paddedPinfall}}</div>
+    </div>
+    <div class="calc-row" *ngIf="masterCalc.missingEvents > 0">
+        <div class="calc-label">Combined games</div>
+        <div class="calc-value">{{masterCalc.combinedGames}}</div>
+    </div>
+    <div class="calc-row">
+        <div class="calc-label">Calculated average</div>
+        <div class="calc-value">{{masterCalc.combinedAverage ?? '—'}}</div>
+    </div>
+</div>

@@ -14,3 +14,50 @@ td {
     text-align: right;
     padding-right: 3em;
 }
+
+.calc-toggle {
+    margin: 10px 0 6px 0;
+    background: transparent;
+    border: none;
+    color: #8b6800;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.calc-panel {
+    border: 1px solid #e6dcb0;
+    background: #fff9e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.calc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    gap: 12px;
+}
+
+.calc-label {
+    color: #3d3d3d;
+    font-weight: 600;
+}
+
+.calc-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calc-value input {
+    width: 120px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #d6c98d;
+}
+
+.calc-hint {
+    font-size: 0.85em;
+    color: #6b5a00;
+}
