@@ -18,6 +18,8 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
     menubar: 'file edit view insert format table tools',
     toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link | paste | code',
     paste_data_images: false,
+    height: 640,
+    resize: 'both',
   };
   
   constructor(
