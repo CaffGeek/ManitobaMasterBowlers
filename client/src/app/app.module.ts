@@ -85,6 +85,9 @@ import { environment as env } from '../environments/environment';
       cacheLocation: 'localstorage',
       useRefreshTokens: true,
       useRefreshTokensFallback: true,
+      authorizationParams: {
+        ...(env.auth as any).authorizationParams,
+      },
     }),
     BrowserAnimationsModule,
     MatFormFieldModule,
