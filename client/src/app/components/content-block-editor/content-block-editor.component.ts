@@ -13,7 +13,7 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   contentHtml = '';
   editorApiKey = environment.tinymceApiKey;
   editorInit = {
-    base_url: `${environment.appBasePath || ''}/assets/tinymce`,
+    base_url: this.getBasePath(),
     plugins: 'table paste lists link code',
     menubar: 'file edit view insert format table tools',
     toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link | paste | code',
@@ -42,5 +42,12 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
     this.api.contentBlocks$(this.key).subscribe((blocks) => {
       this.contentHtml = blocks.slice(-1)?.[0]?.ContentHTML || '';
     });
+  }
+
+  private getBasePath() {
+    const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+    const trimmed = baseHref.endsWith('/') && baseHref.length > 1 ? baseHref.slice(0, -1) : baseHref;
+    const prefix = trimmed === '/' ? '' : trimmed;
+    return `${prefix}/assets/tinymce`;
   }
 }
