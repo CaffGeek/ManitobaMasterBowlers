@@ -59,6 +59,19 @@
               <a routerLink="/content/greycup" class="dropdown-item">GreyCup</a>
             </div>
           </li>
+          <li class="nav-item dropdown" ngbDropdown *ngIf="canEditSitemap$ | async">
+            <a
+              ngbDropdownToggle
+              class="nav-link dropdown-toggle"
+              id="adminDropdown"
+              data-toggle="dropdown"
+            >
+              Admin
+            </a>
+            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu *ngIf="canEditSitemap$ | async">
+              <a routerLink="/contentblocks" class="dropdown-item">SiteMap</a>
+            </div>
+          </li>
         </ul>
 
         <ul class="navbar-nav d-none d-md-block">
@@ -156,6 +169,10 @@
           <li>
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/profile">Profile</a>
+          </li>
+          <li *ngIf="canEditSitemap$ | async">
+            <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
+            <a routerLink="/contentblocks">Admin</a>
           </li>
 
           <li>
