@@ -17,6 +17,8 @@ import { ContentBlocksPageComponent } from '@pages/content-blocks-page/content-b
 import { ContentBlockListComponent } from '@components/content-block-list/content-block-list.component';
 import { ContentBlockEditorComponent } from '@components/content-block-editor/content-block-editor.component';
 import { ContentPageComponent } from '@pages/content-page/content-page.component';
+import { PermissionGuard } from './guards/permission.guard';
+import { PERMISSION } from '@services/permission.service';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -68,6 +70,8 @@ const routes: Routes = [
   {
     path: 'contentblocks',
     component: ContentBlocksPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
     children: [
       { path: '', component: ContentBlockListComponent, outlet: "list" },
     ]
@@ -75,6 +79,8 @@ const routes: Routes = [
   {
     path: 'contentblocks/:key',
     component: ContentBlocksPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
     children: [
       { path: '', component: ContentBlockListComponent, outlet: "list" },
       { path: '', component: ContentBlockEditorComponent, outlet: "editor" },
