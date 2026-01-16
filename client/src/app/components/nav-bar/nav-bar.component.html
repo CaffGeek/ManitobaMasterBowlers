@@ -54,7 +54,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
               <a routerLink="/content/board" class="dropdown-item">Board</a>
-              <a routerLink="/content/rulesregs" class="dropdown-item">Rules & Regulations</a>
+              <a routerLink="/content/regs" class="dropdown-item">Rules & Regulations</a>
               <a routerLink="/content/links" class="dropdown-item">Links</a>
               <a routerLink="/content/greycup" class="dropdown-item">GreyCup</a>
             </div>
@@ -68,8 +68,9 @@
             >
               Admin
             </a>
-            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu *ngIf="canEditSitemap$ | async">
-              <a routerLink="/contentblocks" class="dropdown-item">SiteMap</a>
+            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
+              <a routerLink="/contentblocks" class="dropdown-item" *ngIf="canEditSitemap$ | async">SiteMap</a>
+              <a routerLink="/help" class="dropdown-item" *ngIf="canEditSitemap$ | async">Help</a>
             </div>
           </li>
         </ul>
