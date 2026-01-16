@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { environment } from '../../../environments/environment';
 
@@ -10,6 +10,8 @@ import { environment } from '../../../environments/environment';
 })
 export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   @Input() key: string;
+  @Input() showClose = false;
+  @Output() close = new EventEmitter<void>();
   contentHtml = '';
   editorApiKey = environment.tinymceApiKey;
   editorInit = {
@@ -37,6 +39,10 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   saveContent() {
     if (!this.key) return;
     this.api.saveContentBlock(this.key, this.contentHtml);
+  }
+
+  closeEditor() {
+    this.close.emit();
   }
 
   private loadContent() {

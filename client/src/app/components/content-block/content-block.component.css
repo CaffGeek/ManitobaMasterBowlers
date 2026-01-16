@@ -1,0 +1,9 @@
+.content-block__actions {
+  margin-top: 12px;
+  text-align: right;
+}
+
+.content-block__edit {
+  padding: 0;
+  font-weight: 600;
+}

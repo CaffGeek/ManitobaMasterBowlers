@@ -1,1 +1,11 @@
-<div [innerHTML]="content"></div>
+<div class="content-block">
+  <div class="content-block__body" *ngIf="!showEditor" [innerHTML]="content"></div>
+  <div class="content-block__editor" *ngIf="showEditor">
+    <app-content-block-editor [key]="key" [showClose]="true" (close)="toggleEditor()"></app-content-block-editor>
+  </div>
+  <div class="content-block__actions" *ngIf="(canEdit$ | async) && !showEditor">
+    <button class="btn btn-link content-block__edit" (click)="toggleEditor()">
+      Edit
+    </button>
+  </div>
+</div>

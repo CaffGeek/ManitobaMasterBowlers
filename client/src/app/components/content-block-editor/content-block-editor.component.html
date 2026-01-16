@@ -5,6 +5,7 @@
     [(ngModel)]="contentHtml"
   ></editor>
   <div class="actions">
+    <button class="btn btn-outline-secondary mr-2" *ngIf="showClose" (click)="closeEditor()">Close</button>
     <button class="btn btn-primary" (click)="saveContent()">Save</button>
   </div>
 </div>
