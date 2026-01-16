@@ -1,0 +1,8 @@
+<div class="content-page" *ngIf="blockKey">
+  <aside class="content-page__sidebar">
+    <app-content-block [key]="sidebarKey"></app-content-block>
+  </aside>
+  <main class="content-page__body">
+    <app-content-block [key]="blockKey"></app-content-block>
+  </main>
+</div>

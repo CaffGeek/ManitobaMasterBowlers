@@ -27,14 +27,34 @@
           <li class="nav-item">
             <a routerLink="/schedule" class="nav-link">Schedule</a>
           </li>
-          <li class="nav-item">
-            <a routerLink="/results/tournament" class="nav-link">Tournament</a>
+          <li class="nav-item dropdown" ngbDropdown>
+            <a
+              ngbDropdownToggle
+              class="nav-link dropdown-toggle"
+              id="resultsDropdown"
+              data-toggle="dropdown"
+            >
+              Results
+            </a>
+            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
+              <a routerLink="/results/tournament" class="dropdown-item">Tournament</a>
+              <a routerLink="/results/teaching" class="dropdown-item">Teaching</a>
+              <a routerLink="/results/senior" class="dropdown-item">Senior</a>
+              <a routerLink="/content/youthcb" class="dropdown-item">Youth</a>
+            </div>
           </li>
-          <li class="nav-item">
-            <a routerLink="/results/teaching" class="nav-link">Teaching</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/results/senior" class="nav-link">Senior</a>
+          <li class="nav-item dropdown" ngbDropdown>
+            <a
+              ngbDropdownToggle
+              class="nav-link dropdown-toggle"
+              id="resultsDropdown"
+              data-toggle="dropdown"
+            >
+              About
+            </a>
+            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
+              <a routerLink="/content/board" class="dropdown-item">Board</a>
+            </div>
           </li>
         </ul>
 

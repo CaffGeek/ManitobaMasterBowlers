@@ -9,3 +9,12 @@
 .nav-user-profile {
     border: 2px solid #f6c400;
 }
+
+.nav-link {
+    margin-right: 0px;
+}
+
+.nav-item {
+    margin-left: 10px;
+    margin-right: 10px;
+}

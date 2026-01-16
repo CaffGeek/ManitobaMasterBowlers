@@ -1,0 +1,23 @@
+.content-page {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  padding: 16px 0;
+}
+
+.content-page__sidebar {
+  position: sticky;
+  top: 88px;
+}
+
+@media (max-width: 900px) {
+  .content-page {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .content-page__sidebar {
+    position: static;
+  }
+}

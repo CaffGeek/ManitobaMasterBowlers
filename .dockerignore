@@ -1,12 +1,18 @@
 
 dist/
 node_modules/
+**/dist/
+**/node_modules/
 exec.*
 npm-debug.log*
 yarn-error.log
 README.md
-.angular/
+**/.angular/
 /client/.angular/
+/client/dist/
+/api/dist/
+/client/node_modules/
+/api/node_modules/
 .vscode/
 .idea/
 .git/

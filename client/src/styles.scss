@@ -93,6 +93,28 @@ a:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
 }
 
+@media (max-width: 768px) {
+    .navbar .nav-results-menu {
+        margin-top: 8px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+        padding: 6px 0;
+        width: 100%;
+    }
+
+    .navbar .nav-results-menu .dropdown-item {
+        padding: 10px 14px;
+        font-weight: 600;
+        color: var(--mb-ink);
+    }
+
+    .navbar .nav-results-menu .dropdown-item:hover,
+    .navbar .nav-results-menu .dropdown-item:focus {
+        background-color: rgba(0, 0, 0, 0.06);
+    }
+}
+
 .ng-invalid:not(form)  {
     border: 1pt solid #a94442 !important;
     background: #f79f9e !important;

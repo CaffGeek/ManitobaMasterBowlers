@@ -16,6 +16,7 @@ import { SchedulePageComponent } from '@pages/schedule-page/schedule-page.compon
 import { ContentBlocksPageComponent } from '@pages/content-blocks-page/content-blocks-page.component';
 import { ContentBlockListComponent } from '@components/content-block-list/content-block-list.component';
 import { ContentBlockEditorComponent } from '@components/content-block-editor/content-block-editor.component';
+import { ContentPageComponent } from '@pages/content-page/content-page.component';
 
 // https://stackblitz.com/run?file=src/app/app-routing.module.ts
 const routes: Routes = [
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: SchedulePageComponent,
+  },
+  {
+    path: 'content/:blockKey',
+    component: ContentPageComponent,
   },
   {
     path: 'contentblocks',

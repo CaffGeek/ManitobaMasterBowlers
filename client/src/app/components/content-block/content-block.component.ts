@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { ApiService } from '@services/api.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-content-block',
@@ -7,17 +8,35 @@ import { ApiService } from '@services/api.service';
   styleUrls: ['./content-block.component.css'],
   standalone: false,
 })
-export class ContentBlockComponent implements OnInit {
+export class ContentBlockComponent implements OnChanges, OnDestroy {
   @Input() key: string;
   content;
+  private contentSub?: Subscription;
 
   constructor(
     private api: ApiService,
   ) { }
 
-  ngOnInit(): void {
-    this.api.contentBlocks$(this.key).subscribe((blocks) => {
-        this.content = blocks.slice(-1)[0].ContentHTML;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.key) {
+      this.loadContent();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.contentSub?.unsubscribe();
+  }
+
+  private loadContent(): void {
+    this.contentSub?.unsubscribe();
+    this.content = '';
+    if (!this.key) {
+      return;
+    }
+
+    this.contentSub = this.api.contentBlocks$(this.key).subscribe((blocks) => {
+      const latest = blocks.slice(-1)[0];
+      this.content = latest ? latest.ContentHTML : '';
     });
   }
 
