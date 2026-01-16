@@ -19,6 +19,7 @@ import { ContentBlockEditorComponent } from '@components/content-block-editor/co
 import { ContentPageComponent } from '@pages/content-page/content-page.component';
 import { PermissionGuard } from './guards/permission.guard';
 import { PERMISSION } from '@services/permission.service';
+import { SitemapPageComponent } from '@pages/sitemap-page/sitemap-page.component';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -58,6 +59,12 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: SchedulePageComponent,
+  },
+  {
+    path: 'sitemap',
+    component: SitemapPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
   },
   {
     matcher: aspxMatcher,

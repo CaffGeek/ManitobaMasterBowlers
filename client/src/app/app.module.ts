@@ -40,6 +40,7 @@ import { ContentBlockListComponent } from './components/content-block-list/conte
 import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-blocks-page.component';
 import { ContentBlockEditorComponent } from './components/content-block-editor/content-block-editor.component';
 import { ContentPageComponent } from './pages/content-page/content-page.component';
+import { SitemapPageComponent } from './pages/sitemap-page/sitemap-page.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
 
@@ -71,7 +72,8 @@ import { environment as env } from '../environments/environment';
     ContentBlockListComponent,
     ContentBlocksPageComponent,
     ContentBlockEditorComponent,
-    ContentPageComponent
+    ContentPageComponent,
+    SitemapPageComponent
   ],
   imports: [
     BrowserModule,
