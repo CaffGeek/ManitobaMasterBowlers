@@ -1,6 +1,6 @@
 import { AuthGuard } from '@auth0/auth0-angular';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, UrlMatchResult, UrlSegment } from '@angular/router';
 import { HomeComponent } from '@pages/home/home.component';
 import { ProfileComponent } from '@pages/profile/profile.component';
 import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.component';
@@ -17,6 +17,25 @@ import { ContentBlocksPageComponent } from '@pages/content-blocks-page/content-b
 import { ContentBlockListComponent } from '@components/content-block-list/content-block-list.component';
 import { ContentBlockEditorComponent } from '@components/content-block-editor/content-block-editor.component';
 import { ContentPageComponent } from '@pages/content-page/content-page.component';
+
+const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
+  if (segments.length !== 1) {
+    return null;
+  }
+
+  const segment = segments[0].path;
+  if (!segment.toLowerCase().endsWith('.aspx')) {
+    return null;
+  }
+
+  const blockKey = segment.slice(0, -5);
+  return {
+    consumed: segments,
+    posParams: {
+      blockKey: new UrlSegment(blockKey, {}),
+    },
+  };
+};
 
 // https://stackblitz.com/run?file=src/app/app-routing.module.ts
 const routes: Routes = [
@@ -37,6 +56,10 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: SchedulePageComponent,
+  },
+  {
+    matcher: aspxMatcher,
+    component: ContentPageComponent,
   },
   {
     path: 'content/:blockKey',
