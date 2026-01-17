@@ -35,6 +35,7 @@
                   <a
                     *ngIf="child.type === 'route'"
                     [routerLink]="child.routePath"
+                    (click)="collapseMenu()"
                     class="dropdown-item"
                   >
                     {{ child.title }}
@@ -45,6 +46,7 @@
                     class="dropdown-item"
                     target="_blank"
                     rel="noopener"
+                    (click)="collapseMenu()"
                   >
                     {{ child.title }}
                   </a>
@@ -54,6 +56,7 @@
                   <a
                     *ngIf="!child.type || child.type === 'content'"
                     [routerLink]="['/content', child.slug]"
+                    (click)="collapseMenu()"
                     class="dropdown-item"
                   >
                     {{ child.title }}
@@ -63,16 +66,16 @@
             </li>
             <li class="nav-item" *ngIf="node.children.length === 0">
               <ng-container [ngSwitch]="node.page.type || 'content'">
-                <a *ngSwitchCase="'route'" [routerLink]="node.page.routePath" class="nav-link">
+                <a *ngSwitchCase="'route'" [routerLink]="node.page.routePath" class="nav-link" (click)="collapseMenu()">
                   {{ node.page.title }}
                 </a>
-                <a *ngSwitchCase="'external'" [href]="node.page.externalUrl" class="nav-link" target="_blank" rel="noopener">
+                <a *ngSwitchCase="'external'" [href]="node.page.externalUrl" class="nav-link" target="_blank" rel="noopener" (click)="collapseMenu()">
                   {{ node.page.title }}
                 </a>
                 <span *ngSwitchCase="'menu-only'" class="nav-link">
                   {{ node.page.title }}
                 </span>
-                <a *ngSwitchDefault [routerLink]="['/content', node.page.slug]" class="nav-link">
+                <a *ngSwitchDefault [routerLink]="['/content', node.page.slug]" class="nav-link" (click)="collapseMenu()">
                   {{ node.page.title }}
                 </a>
               </ng-container>

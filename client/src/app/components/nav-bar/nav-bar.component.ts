@@ -67,6 +67,10 @@ export class NavBarComponent implements OnInit {
     this.auth.logout({ logoutParams: { returnTo } });
   }
 
+  collapseMenu() {
+    this.isCollapsed = true;
+  }
+
   private buildMenu(pages: SitemapPageRecord[]): MenuNode[] {
     const visiblePages = pages.filter((page) => {
       if (!page.menuVisible) {
