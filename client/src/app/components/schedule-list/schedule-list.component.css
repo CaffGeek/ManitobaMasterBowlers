@@ -4,3 +4,24 @@
 .futureTournament { 
     background-color: rgb(255, 255, 191) !important;
 }
+
+@media (max-width: 700px) {
+    :host ::ng-deep .mat-table {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    :host ::ng-deep .mat-header-cell,
+    :host ::ng-deep .mat-cell {
+        padding: 6px 8px;
+    }
+
+    :host ::ng-deep .mat-column-TournamentNumber {
+        width: 32px;
+        padding-right: 4px;
+    }
+
+    :host ::ng-deep .mat-column-TournamentLocation {
+        padding-left: 4px;
+    }
+}
