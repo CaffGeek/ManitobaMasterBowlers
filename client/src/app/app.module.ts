@@ -41,6 +41,7 @@ import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-
 import { ContentBlockEditorComponent } from './components/content-block-editor/content-block-editor.component';
 import { ContentPageComponent } from './pages/content-page/content-page.component';
 import { SitemapPageComponent } from './pages/sitemap-page/sitemap-page.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
 
@@ -99,6 +100,7 @@ import { environment as env } from '../environments/environment';
     MatSortModule,
     MatSelectModule,
     MatTableModule,
+    DragDropModule,
     EditorModule,
   ],
   providers: [

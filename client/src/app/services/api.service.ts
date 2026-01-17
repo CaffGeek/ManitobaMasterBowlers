@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, of, shareReplay } from 'rxjs';
+import { Observable, map, of, shareReplay, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 import { BowlerRecord } from '@models/BowlerRecord';
@@ -67,9 +67,9 @@ export class ApiService {
       .subscribe(() => this.clearCache(`tournamentresults/${tournamentId}`));
   }
 
-  saveContentBlock(key: string, contentHtml: string) {
+  saveContentBlock(key: string, contentHtml: string): Observable<unknown> {
     return this.http.post(`${environment.apiUri}contentblocks/save`, { contentBlock: key, contentHTML: contentHtml })
-      .subscribe(() => this.clearCache(`contentblocks/${key}`));
+      .pipe(tap(() => this.clearCache(`contentblocks/${key}`)));
   }
 
   whoami() {

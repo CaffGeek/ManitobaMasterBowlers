@@ -1,8 +1,13 @@
-<div class="content-page" *ngIf="blockKey">
-  <aside class="content-page__sidebar">
+<div
+  class="content-page"
+  *ngIf="contentKey"
+  [class.content-page--full]="layout === 'full'"
+  [class.content-page--sidebar-right]="layout === 'sidebar-right'"
+>
+  <aside class="content-page__sidebar" *ngIf="layout !== 'full'">
     <app-content-block [key]="sidebarKey"></app-content-block>
   </aside>
   <main class="content-page__body">
-    <app-content-block [key]="blockKey"></app-content-block>
+    <app-content-block [key]="contentKey"></app-content-block>
   </main>
 </div>

@@ -21,44 +21,63 @@
         [ngbCollapse]="isCollapsed"
       >
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a routerLink="/" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/schedule" class="nav-link">Schedule</a>
-          </li>
-          <li class="nav-item dropdown" ngbDropdown>
-            <a
-              ngbDropdownToggle
-              class="nav-link dropdown-toggle"
-              id="resultsDropdown"
-              data-toggle="dropdown"
-            >
-              Results
-            </a>
-            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
-              <a routerLink="/results/tournament" class="dropdown-item">Tournament</a>
-              <a routerLink="/results/teaching" class="dropdown-item">Teaching</a>
-              <a routerLink="/results/senior" class="dropdown-item">Senior</a>
-              <a routerLink="/content/youthcb" class="dropdown-item">Youth</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown" ngbDropdown>
-            <a
-              ngbDropdownToggle
-              class="nav-link dropdown-toggle"
-              id="resultsDropdown"
-              data-toggle="dropdown"
-            >
-              About
-            </a>
-            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
-              <a routerLink="/content/board" class="dropdown-item">Board</a>
-              <a routerLink="/content/regs" class="dropdown-item">Rules & Regulations</a>
-              <a routerLink="/content/links" class="dropdown-item">Links</a>
-              <a routerLink="/content/greycup" class="dropdown-item">GreyCup</a>
-            </div>
-          </li>
+          <ng-container *ngFor="let node of menuNodes">
+            <li class="nav-item dropdown" ngbDropdown *ngIf="node.children.length > 0">
+              <a
+                ngbDropdownToggle
+                class="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                {{ node.page.title }}
+              </a>
+              <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
+                <ng-container *ngFor="let child of node.children">
+                  <a
+                    *ngIf="child.type === 'route'"
+                    [routerLink]="child.routePath"
+                    class="dropdown-item"
+                  >
+                    {{ child.title }}
+                  </a>
+                  <a
+                    *ngIf="child.type === 'external'"
+                    [href]="child.externalUrl"
+                    class="dropdown-item"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {{ child.title }}
+                  </a>
+                  <span *ngIf="child.type === 'menu-only'" class="dropdown-item text-muted">
+                    {{ child.title }}
+                  </span>
+                  <a
+                    *ngIf="!child.type || child.type === 'content'"
+                    [routerLink]="['/content', child.slug]"
+                    class="dropdown-item"
+                  >
+                    {{ child.title }}
+                  </a>
+                </ng-container>
+              </div>
+            </li>
+            <li class="nav-item" *ngIf="node.children.length === 0">
+              <ng-container [ngSwitch]="node.page.type || 'content'">
+                <a *ngSwitchCase="'route'" [routerLink]="node.page.routePath" class="nav-link">
+                  {{ node.page.title }}
+                </a>
+                <a *ngSwitchCase="'external'" [href]="node.page.externalUrl" class="nav-link" target="_blank" rel="noopener">
+                  {{ node.page.title }}
+                </a>
+                <span *ngSwitchCase="'menu-only'" class="nav-link">
+                  {{ node.page.title }}
+                </span>
+                <a *ngSwitchDefault [routerLink]="['/content', node.page.slug]" class="nav-link">
+                  {{ node.page.title }}
+                </a>
+              </ng-container>
+            </li>
+          </ng-container>
           <li class="nav-item dropdown" ngbDropdown *ngIf="canEditSitemap$ | async">
             <a
               ngbDropdownToggle

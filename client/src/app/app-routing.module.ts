@@ -67,6 +67,12 @@ const routes: Routes = [
     data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
   },
   {
+    path: 'sitemap/:slug',
+    component: SitemapPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
+  },
+  {
     matcher: aspxMatcher,
     component: ContentPageComponent,
   },

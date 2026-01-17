@@ -38,7 +38,11 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
 
   saveContent() {
     if (!this.key) return;
-    this.api.saveContentBlock(this.key, this.contentHtml);
+    this.api.saveContentBlock(this.key, this.contentHtml).subscribe(() => {
+      if (this.showClose) {
+        this.close.emit();
+      }
+    });
   }
 
   closeEditor() {

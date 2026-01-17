@@ -5,6 +5,13 @@ import { DOCUMENT } from '@angular/common';
 import { environment as env } from '../../../environments/environment';
 import { PermissionService, PERMISSION } from '@services/permission.service';
 import { Observable, of, switchMap } from 'rxjs';
+import { SitemapService } from '@services/sitemap.service';
+import { SitemapPageRecord } from '@models/SitemapPageRecord';
+
+interface MenuNode {
+  page: SitemapPageRecord;
+  children: SitemapPageRecord[];
+}
 
 @Component({
   selector: 'app-nav-bar',
@@ -18,11 +25,13 @@ export class NavBarComponent implements OnInit {
   faPowerOff = faPowerOff;
   canAnyAdmin$: Observable<boolean>;
   canEditSitemap$: Observable<boolean>;
+  menuNodes: MenuNode[] = [];
 
   constructor(
     public auth: AuthService,
     @Inject(DOCUMENT) private doc: Document,
-    private permissions: PermissionService
+    private permissions: PermissionService,
+    private sitemap: SitemapService
   ) {
     this.canEditSitemap$ = this.auth.isAuthenticated$.pipe(
       switchMap((isAuthenticated) => {
@@ -38,6 +47,9 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sitemap.loadSitemap$().subscribe((data) => {
+      this.menuNodes = this.buildMenu(data.pages || []);
+    });
   }
 
   loginWithRedirect() {
@@ -53,5 +65,38 @@ export class NavBarComponent implements OnInit {
   logout() {
     const returnTo = `${this.doc.location.origin}${env.appBasePath || ''}`;
     this.auth.logout({ logoutParams: { returnTo } });
+  }
+
+  private buildMenu(pages: SitemapPageRecord[]): MenuNode[] {
+    const visiblePages = pages.filter((page) => {
+      if (!page.menuVisible) {
+        return false;
+      }
+
+      const type = page.type || 'content';
+      return type === 'content' ? !!page.slug : true;
+    });
+    const pageMap = new Map(visiblePages.map((page) => [page.id, page]));
+    const childrenMap = new Map<string, SitemapPageRecord[]>();
+    const topLevel: SitemapPageRecord[] = [];
+
+    visiblePages.forEach((page) => {
+      if (page.parentId && pageMap.has(page.parentId)) {
+        const children = childrenMap.get(page.parentId) || [];
+        children.push(page);
+        childrenMap.set(page.parentId, children);
+      } else {
+        topLevel.push(page);
+      }
+    });
+
+    const sortByOrder = (list: SitemapPageRecord[]) =>
+      list.sort((a, b) => (a.menuOrder || 0) - (b.menuOrder || 0));
+
+    sortByOrder(topLevel);
+    return topLevel.map((page) => ({
+      page,
+      children: sortByOrder(childrenMap.get(page.id) || []),
+    }));
   }
 }

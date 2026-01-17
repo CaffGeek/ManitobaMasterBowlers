@@ -1,4 +1,148 @@
 <div class="sitemap-page">
-  <h1>SiteMap</h1>
-  <p>Placeholder for the future sitemap editor.</p>
+  <div class="sitemap-header">
+    <div>
+      <h1>SiteMap</h1>
+    </div>
+    <div class="sitemap-actions">
+      <button class="btn btn-outline-secondary" (click)="addPage()">Add Page</button>
+      <button class="btn btn-primary" (click)="save()">Save</button>
+    </div>
+  </div>
+
+  <div class="sitemap-layout">
+    <div class="sitemap-tree" cdkDropListGroup>
+      <div class="sitemap-tree-header">Menu</div>
+      <ng-template #nodeList let-nodes let-parentId="parentId">
+        <div
+          class="sitemap-tree-list"
+          cdkDropList
+          [cdkDropListData]="{ parentId: parentId, nodes: nodes }"
+          [cdkDropListConnectedTo]="dropListIds"
+          [id]="getDropListId(parentId)"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          <div class="sitemap-tree-drop" *ngIf="nodes.length === 0 && parentId">
+            Drop here
+          </div>
+          <div
+            class="sitemap-tree-item"
+            *ngFor="let node of nodes"
+            cdkDrag
+            [class.is-selected]="node.page.id === selectedPageId"
+          >
+            <div class="sitemap-tree-row" (click)="selectPage(node.page.id)">
+              <span class="sitemap-tree-title">{{ node.page.title }}</span>
+              <span class="sitemap-tree-type">{{ node.page.type || 'content' }}</span>
+            </div>
+            <ng-container
+              [ngTemplateOutlet]="nodeList"
+              [ngTemplateOutletContext]="{ $implicit: node.children, parentId: node.page.id }"
+            ></ng-container>
+          </div>
+        </div>
+      </ng-template>
+      <ng-container
+        *ngIf="tree.length > 0"
+        [ngTemplateOutlet]="nodeList"
+        [ngTemplateOutletContext]="{ $implicit: tree, parentId: undefined }"
+      ></ng-container>
+      <div class="sitemap-empty" *ngIf="tree.length === 0">
+        No pages yet. Click “Add Page” to get started.
+      </div>
+    </div>
+
+    <div class="sitemap-detail">
+      <div class="sitemap-editor" *ngIf="selectedPage as page; else sitemapEmptySelection">
+        <div class="sitemap-editor-header">
+          <h2>{{ page.title || 'Page details' }}</h2>
+          <button class="btn btn-outline-danger" (click)="removePage(pages.indexOf(page))">Delete</button>
+        </div>
+        <div class="sitemap-form">
+          <div class="sitemap-field">
+            <label class="sitemap-label">Title</label>
+            <input class="form-control" [(ngModel)]="page.title" (blur)="updateSlug(page)" />
+          </div>
+
+          <div class="sitemap-field sitemap-field--inline">
+            <label class="sitemap-checkbox">
+              <input type="checkbox" [(ngModel)]="page.menuVisible" />
+              Show in menu
+            </label>
+          </div>
+
+          <div class="sitemap-field">
+            <label class="sitemap-label">Type</label>
+            <select class="form-control" [(ngModel)]="page.type" (ngModelChange)="onTypeChange(page)">
+              <option *ngFor="let type of pageTypes" [ngValue]="type.value">{{ type.label }}</option>
+            </select>
+          </div>
+
+          <ng-container *ngIf="page.type === 'content'">
+            <div class="sitemap-field">
+              <label class="sitemap-label">Layout</label>
+              <select class="form-control" [(ngModel)]="page.layout">
+                <option *ngFor="let layout of layouts" [ngValue]="layout.value">{{ layout.label }}</option>
+              </select>
+            </div>
+
+            <div class="sitemap-field">
+              <label class="sitemap-label">Content Block</label>
+              <select class="form-control" [(ngModel)]="page.contentKey">
+                <option [ngValue]="''">Select content block</option>
+                <option *ngFor="let key of contentKeys" [ngValue]="key">{{ key }}</option>
+              </select>
+            </div>
+
+            <div class="sitemap-field" *ngIf="page.layout !== 'full'">
+              <label class="sitemap-label">Sidebar Block</label>
+              <select class="form-control" [(ngModel)]="page.sidebarKey">
+                <option [ngValue]="''">Select sidebar block</option>
+                <option *ngFor="let key of contentKeys" [ngValue]="key">{{ key }}</option>
+              </select>
+            </div>
+          </ng-container>
+
+          <div class="sitemap-field" *ngIf="page.type === 'route'">
+            <label class="sitemap-label">Route</label>
+            <input class="form-control" [(ngModel)]="page.routePath" placeholder="/path" />
+          </div>
+          <div class="sitemap-field" *ngIf="page.type === 'external'">
+            <label class="sitemap-label">URL</label>
+            <input class="form-control" [(ngModel)]="page.externalUrl" placeholder="https://example.com" />
+          </div>
+
+          <div class="sitemap-footer">
+            <button class="btn btn-primary" (click)="save()">Save</button>
+          </div>
+        </div>
+      </div>
+      <div class="sitemap-preview" *ngIf="selectedPage as page">
+        <h3>Preview</h3>
+        <div class="sitemap-preview__content" *ngIf="page.type === 'content'">
+          <ng-container *ngIf="page.layout === 'full'; else previewWithSidebar">
+            <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
+          </ng-container>
+          <ng-template #previewWithSidebar>
+            <div class="sitemap-preview__layout" [class.sitemap-preview__layout--right]="page.layout === 'sidebar-right'">
+              <aside class="sitemap-preview__sidebar">
+                <app-content-block [key]="page.sidebarKey || (page.slug + '_sidebar')"></app-content-block>
+              </aside>
+              <main class="sitemap-preview__main">
+                <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
+              </main>
+            </div>
+          </ng-template>
+        </div>
+        <div class="sitemap-preview__placeholder" *ngIf="page.type !== 'content'">
+          Preview is only available for content pages.
+        </div>
+      </div>
+      <ng-template #sitemapEmptySelection>
+        <div class="sitemap-editor">
+          <h2>Select a page</h2>
+          <p class="sitemap-subtitle">Choose a page from the left to edit its settings.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
 </div>

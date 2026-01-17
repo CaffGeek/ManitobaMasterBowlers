@@ -11,6 +11,18 @@
   top: 88px;
 }
 
+.content-page--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.content-page--sidebar-right {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+}
+
+.content-page--sidebar-right .content-page__sidebar {
+  order: 2;
+}
+
 @media (max-width: 900px) {
   .content-page {
     grid-template-columns: 1fr;
