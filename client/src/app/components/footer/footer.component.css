@@ -7,4 +7,83 @@ footer {
     background: #121212;
     color: #fff7d6;
     border-top: 2px solid #f6c400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.footer-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    background: #1877f2;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.footer-social svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.footer-social:hover {
+    background: #2b88ff;
+    color: #fff;
+}
+
+.footer-link {
+    color: #fff7d6;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-link:hover {
+    color: #f6c400;
+}
+
+.footer-link--icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #1f1f1f;
+}
+
+.footer-link--icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.footer-link[aria-label="Google Drive"] {
+    background: #fff;
+    color: #0f9d58;
+    border: 2px solid #0f9d58;
+}
+
+.footer-link[aria-label="Google Drive"]:hover {
+    background: #e8f5ec;
+    border-color: #17b566;
+}
+
+.footer-icon-img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.footer-link[aria-label="YouTube"] {
+    background: #ff0000;
+    color: #fff;
+}
+
+.footer-link[aria-label="YouTube"]:hover {
+    background: #ff3333;
 }
