@@ -38,16 +38,29 @@
 }
 
 .sitemap-tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .sitemap-add-root {
-  margin-bottom: 6px;
-  align-self: start;
-  justify-self: start;
-  font-size: 12px;
-  padding: 1px 8px;
+  margin: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  background: #2e9b45;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.sitemap-add-root:hover {
+  color: #fff;
+  background: #25853a;
 }
 
 .sitemap-tree-list {
@@ -99,21 +112,50 @@
 .sitemap-tree-meta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+}
+
+.sitemap-move {
+  padding: 0 2px;
+  font-size: 11px;
+  line-height: 1;
+  color: #8a7b3a;
+  text-decoration: none;
+}
+
+.sitemap-move:hover {
+  color: #5d5230;
+  text-decoration: none;
+}
+
+.sitemap-move:disabled {
+  color: #c4bfa6;
+  cursor: not-allowed;
 }
 
 .sitemap-add-inline {
-  padding: 0 4px;
+  padding: 0;
+  width: 18px;
+  height: 18px;
   font-size: 13px;
   line-height: 1;
-  color: #8a7b3a;
+  color: #fff;
+  background: #2e9b45;
+  border-radius: 4px;
   text-decoration: none;
   margin: 0;
 }
 
 .sitemap-add-inline:hover {
-  color: #5d5230;
+  color: #fff;
+  background: #25853a;
   text-decoration: none;
+}
+
+.sitemap-add-placeholder {
+  display: inline-block;
+  width: 16px;
+  height: 1px;
 }
 
 .sitemap-editor {

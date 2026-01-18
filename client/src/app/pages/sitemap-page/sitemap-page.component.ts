@@ -96,6 +96,21 @@ export class SitemapPageComponent implements OnInit {
     }
   }
 
+  moveNode(nodes: SitemapNode[], fromIndex: number, toIndex: number): void {
+    if (toIndex < 0 || toIndex >= nodes.length || fromIndex === toIndex) {
+      return;
+    }
+
+    const updated = [...nodes];
+    const [moved] = updated.splice(fromIndex, 1);
+    updated.splice(toIndex, 0, moved);
+    nodes.splice(0, nodes.length, ...updated);
+
+    this.syncFromTree();
+    this.sitemap.saveSitemap(this.pages);
+    this.rebuildTree();
+  }
+
   save(): void {
     this.syncFromTree();
     const normalized = this.pages.map((page, index) => ({

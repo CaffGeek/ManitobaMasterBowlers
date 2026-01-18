@@ -1,10 +1,12 @@
 <div class="sitemap-page">
   <div class="sitemap-layout">
     <div class="sitemap-tree">
-      <div class="sitemap-tree-header">Menu</div>
-      <button class="btn btn-sm btn-outline-secondary sitemap-add-root" (click)="addPage()">
-        Add page
-      </button>
+      <div class="sitemap-tree-header">
+        <span>Menu</span>
+        <button class="btn btn-link sitemap-add-root" (click)="addPage()" title="Add page">
+          +
+        </button>
+      </div>
       <ng-template #nodeList let-nodes let-parentId="parentId">
         <div
           class="sitemap-tree-list"
@@ -12,7 +14,7 @@
         >
           <div
             class="sitemap-tree-item"
-            *ngFor="let node of nodes"
+            *ngFor="let node of nodes; let index = index; let last = last"
             [class.is-selected]="node.page.id === selectedPageId"
           >
             <div
@@ -22,14 +24,33 @@
               <span class="sitemap-tree-title">{{ node.page.title }}</span>
               <span class="sitemap-tree-meta">
                 <button
+                  class="btn btn-link sitemap-move"
+                  (click)="moveNode(nodes, index, index - 1); $event.stopPropagation()"
+                  [disabled]="index === 0"
+                  title="Move up"
+                >
+                  ▲
+                </button>
+                <button
+                  class="btn btn-link sitemap-move"
+                  (click)="moveNode(nodes, index, index + 1); $event.stopPropagation()"
+                  [disabled]="last"
+                  title="Move down"
+                >
+                  ▼
+                </button>
+                <button
                   class="btn btn-link sitemap-add-inline"
                   (click)="addPage(node.page.id); $event.stopPropagation()"
                   title="Add child page"
-                    *ngIf="!isSectionPage(node.page)"
-                  >
-                    +
-                  </button>
-                </span>
+                  *ngIf="!isSectionPage(node.page); else addPlaceholder"
+                >
+                  +
+                </button>
+                <ng-template #addPlaceholder>
+                  <span class="sitemap-add-placeholder" aria-hidden="true"></span>
+                </ng-template>
+              </span>
             </div>
             <ng-container
               [ngTemplateOutlet]="nodeList"
