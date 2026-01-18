@@ -11,6 +11,24 @@
   top: 88px;
 }
 
+.content-page__menu {
+  display: grid;
+  gap: 10px;
+}
+
+.content-page__menu a {
+  text-decoration: none;
+  color: #9a6b00;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.content-page__menu a.is-active {
+  background: #f6c400;
+  color: #1a1a1a;
+}
+
 .content-page--full {
   grid-template-columns: minmax(0, 1fr);
 }

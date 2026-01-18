@@ -42,30 +42,38 @@
   margin-bottom: 10px;
 }
 
+.sitemap-add-root {
+  margin-bottom: 8px;
+  align-self: start;
+  justify-self: start;
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
 .sitemap-tree-list {
   display: grid;
-  gap: 8px;
+  gap: 4px;
   padding-left: 8px;
 }
 
 .sitemap-tree-drop {
   border: 1px dashed #d0c7a0;
   color: #8a7b3a;
-  padding: 8px 10px;
+  padding: 4px 8px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .sitemap-tree-item {
   display: grid;
-  gap: 8px;
+  gap: 4px;
 }
 
 .sitemap-tree-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 10px;
+  padding: 6px 10px;
   border-radius: 6px;
   background: #f7f4ea;
   border: 1px solid transparent;
@@ -81,12 +89,30 @@
   font-weight: 600;
 }
 
+.sitemap-tree-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .sitemap-tree-type {
   font-size: 12px;
   color: #666;
   text-transform: uppercase;
 }
 
+.sitemap-add-inline {
+  padding: 0 6px;
+  font-size: 14px;
+  line-height: 1;
+  color: #8a7b3a;
+  text-decoration: none;
+}
+
+.sitemap-add-inline:hover {
+  color: #5d5230;
+  text-decoration: none;
+}
 .sitemap-editor {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -181,6 +207,21 @@
 
 .sitemap-preview__layout--right .sitemap-preview__sidebar {
   order: 2;
+}
+
+.sitemap-preview__menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.sitemap-preview__menu li {
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: #f7f4ea;
+  font-weight: 600;
 }
 
 .sitemap-empty {

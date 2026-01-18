@@ -58,13 +58,13 @@ export class SitemapPageComponent implements OnInit {
     });
   }
 
-  addPage(): void {
+  addPage(parentId?: string): void {
     const id = this.generateId();
     this.pages.push({
       id,
       title: 'New Page',
       slug: `new-page-${this.pages.length + 1}`,
-      parentId: undefined,
+      parentId,
       menuVisible: true,
       menuOrder: this.pages.length + 1,
       layout: 'sidebar-left',
@@ -251,6 +251,21 @@ export class SitemapPageComponent implements OnInit {
   private getRouteSlug(page: SitemapPageRecord): string {
     const slug = page.title ? this.slugify(page.title) : '';
     return slug || page.id;
+  }
+
+  getSectionsFor(page: SitemapPageRecord): SitemapPageRecord[] {
+    return this.pages
+      .filter((entry) => entry.parentId === page.id && page.type === 'content')
+      .sort((a, b) => (a.menuOrder || 0) - (b.menuOrder || 0));
+  }
+
+  isSectionPage(page: SitemapPageRecord): boolean {
+    if (!page.parentId) {
+      return false;
+    }
+
+    const parent = this.pages.find((entry) => entry.id === page.parentId);
+    return (parent?.type || 'content') === 'content';
   }
 
   private applyRouteSelection(): void {

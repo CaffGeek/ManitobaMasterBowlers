@@ -80,11 +80,24 @@ export class NavBarComponent implements OnInit {
       const type = page.type || 'content';
       return type === 'content' ? !!page.slug : true;
     });
-    const pageMap = new Map(visiblePages.map((page) => [page.id, page]));
+    const allPagesMap = new Map(pages.map((page) => [page.id, page]));
+    const menuPages = visiblePages.filter((page) => {
+      if (!page.parentId) {
+        return true;
+      }
+
+      const parent = allPagesMap.get(page.parentId);
+      if (!parent) {
+        return true;
+      }
+
+      return (parent.type || 'content') !== 'content';
+    });
+    const pageMap = new Map(menuPages.map((page) => [page.id, page]));
     const childrenMap = new Map<string, SitemapPageRecord[]>();
     const topLevel: SitemapPageRecord[] = [];
 
-    visiblePages.forEach((page) => {
+    menuPages.forEach((page) => {
       if (page.parentId && pageMap.has(page.parentId)) {
         const children = childrenMap.get(page.parentId) || [];
         children.push(page);

@@ -5,7 +5,20 @@
   [class.content-page--sidebar-right]="layout === 'sidebar-right'"
 >
   <aside class="content-page__sidebar" *ngIf="layout !== 'full'">
-    <app-content-block [key]="sidebarKey"></app-content-block>
+    <ng-container *ngIf="sections.length > 0; else sidebarContentBlock">
+      <nav class="content-page__menu">
+        <a
+          *ngFor="let section of sections"
+          [routerLink]="['/content', parentPage?.slug, section.slug]"
+          [class.is-active]="section.slug === sectionKey"
+        >
+          {{ section.title }}
+        </a>
+      </nav>
+    </ng-container>
+    <ng-template #sidebarContentBlock>
+      <app-content-block [key]="sidebarKey"></app-content-block>
+    </ng-template>
   </aside>
   <main class="content-page__body">
     <app-content-block [key]="contentKey"></app-content-block>

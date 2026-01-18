@@ -81,6 +81,10 @@ const routes: Routes = [
     component: ContentPageComponent,
   },
   {
+    path: 'content/:blockKey/:sectionKey',
+    component: ContentPageComponent,
+  },
+  {
     path: 'contentblocks',
     component: ContentBlocksPageComponent,
     canActivate: [AuthGuard, PermissionGuard],

@@ -1,17 +1,10 @@
 <div class="sitemap-page">
-  <div class="sitemap-header">
-    <div>
-      <h1>SiteMap</h1>
-    </div>
-    <div class="sitemap-actions">
-      <button class="btn btn-outline-secondary" (click)="addPage()">Add Page</button>
-      <button class="btn btn-primary" (click)="save()">Save</button>
-    </div>
-  </div>
-
   <div class="sitemap-layout">
     <div class="sitemap-tree" cdkDropListGroup>
       <div class="sitemap-tree-header">Menu</div>
+      <button class="btn btn-sm btn-outline-secondary sitemap-add-root" (click)="addPage()">
+        Add page at top level
+      </button>
       <ng-template #nodeList let-nodes let-parentId="parentId">
         <div
           class="sitemap-tree-list"
@@ -32,7 +25,17 @@
           >
             <div class="sitemap-tree-row" (click)="selectPage(node.page.id)">
               <span class="sitemap-tree-title">{{ node.page.title }}</span>
-              <span class="sitemap-tree-type">{{ node.page.type || 'content' }}</span>
+                <span class="sitemap-tree-meta">
+                  <span class="sitemap-tree-type">{{ node.page.type || 'content' }}</span>
+                  <button
+                    class="btn btn-link sitemap-add-inline"
+                    (click)="addPage(node.page.id); $event.stopPropagation()"
+                    title="Add child page"
+                    *ngIf="!isSectionPage(node.page)"
+                  >
+                    +
+                  </button>
+                </span>
             </div>
             <ng-container
               [ngTemplateOutlet]="nodeList"
@@ -70,20 +73,20 @@
             </label>
           </div>
 
+        <div class="sitemap-field">
+          <label class="sitemap-label">Type</label>
+          <select class="form-control" [(ngModel)]="page.type" (ngModelChange)="onTypeChange(page)">
+            <option *ngFor="let type of pageTypes" [ngValue]="type.value">{{ type.label }}</option>
+          </select>
+        </div>
+
+        <ng-container *ngIf="page.type === 'content'">
           <div class="sitemap-field">
-            <label class="sitemap-label">Type</label>
-            <select class="form-control" [(ngModel)]="page.type" (ngModelChange)="onTypeChange(page)">
-              <option *ngFor="let type of pageTypes" [ngValue]="type.value">{{ type.label }}</option>
+            <label class="sitemap-label">Layout</label>
+            <select class="form-control" [(ngModel)]="page.layout">
+              <option *ngFor="let layout of layouts" [ngValue]="layout.value">{{ layout.label }}</option>
             </select>
           </div>
-
-          <ng-container *ngIf="page.type === 'content'">
-            <div class="sitemap-field">
-              <label class="sitemap-label">Layout</label>
-              <select class="form-control" [(ngModel)]="page.layout">
-                <option *ngFor="let layout of layouts" [ngValue]="layout.value">{{ layout.label }}</option>
-              </select>
-            </div>
 
             <div class="sitemap-field">
               <label class="sitemap-label">Content Block</label>
@@ -116,23 +119,30 @@
           </div>
         </div>
       </div>
-      <div class="sitemap-preview" *ngIf="selectedPage as page">
-        <h3>Preview</h3>
-        <div class="sitemap-preview__content" *ngIf="page.type === 'content'">
-          <ng-container *ngIf="page.layout === 'full'; else previewWithSidebar">
-            <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
-          </ng-container>
-          <ng-template #previewWithSidebar>
-            <div class="sitemap-preview__layout" [class.sitemap-preview__layout--right]="page.layout === 'sidebar-right'">
-              <aside class="sitemap-preview__sidebar">
+    <div class="sitemap-preview" *ngIf="selectedPage as page">
+      <h3>Preview</h3>
+      <div class="sitemap-preview__content" *ngIf="page.type === 'content'">
+        <ng-container *ngIf="page.layout === 'full'; else previewWithSidebar">
+          <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
+        </ng-container>
+        <ng-template #previewWithSidebar>
+          <div class="sitemap-preview__layout" [class.sitemap-preview__layout--right]="page.layout === 'sidebar-right'">
+            <aside class="sitemap-preview__sidebar">
+              <ng-container *ngIf="getSectionsFor(page).length > 0; else previewSidebarBlock">
+                <ul class="sitemap-preview__menu">
+                  <li *ngFor="let section of getSectionsFor(page)">{{ section.title }}</li>
+                </ul>
+              </ng-container>
+              <ng-template #previewSidebarBlock>
                 <app-content-block [key]="page.sidebarKey || (page.slug + '_sidebar')"></app-content-block>
-              </aside>
-              <main class="sitemap-preview__main">
-                <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
-              </main>
-            </div>
-          </ng-template>
-        </div>
+              </ng-template>
+            </aside>
+            <main class="sitemap-preview__main">
+              <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
+            </main>
+          </div>
+        </ng-template>
+      </div>
         <div class="sitemap-preview__placeholder" *ngIf="page.type !== 'content'">
           Preview is only available for content pages.
         </div>

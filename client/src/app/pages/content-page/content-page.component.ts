@@ -12,9 +12,12 @@ import { SitemapLayout, SitemapPageRecord } from '@models/SitemapPageRecord';
 })
 export class ContentPageComponent implements OnInit, OnDestroy {
   blockKey = '';
+  sectionKey = '';
   contentKey = '';
   sidebarKey = '';
   layout: SitemapLayout = 'sidebar-left';
+  sections: SitemapPageRecord[] = [];
+  parentPage?: SitemapPageRecord;
   private routeSub?: Subscription;
   private sitemapSub?: Subscription;
   private sitemapPages: SitemapPageRecord[] = [];
@@ -32,6 +35,7 @@ export class ContentPageComponent implements OnInit, OnDestroy {
 
     this.routeSub = this.route.paramMap.subscribe((params) => {
       this.blockKey = params.get('blockKey') ?? '';
+      this.sectionKey = params.get('sectionKey') ?? '';
       this.applyPageConfig();
     });
   }
@@ -46,6 +50,8 @@ export class ContentPageComponent implements OnInit, OnDestroy {
       this.contentKey = '';
       this.sidebarKey = '';
       this.layout = 'sidebar-left';
+      this.sections = [];
+      this.parentPage = undefined;
       return;
     }
 
@@ -54,13 +60,27 @@ export class ContentPageComponent implements OnInit, OnDestroy {
       this.contentKey = this.blockKey;
       this.sidebarKey = `${this.blockKey}_sidebar`;
       this.layout = 'sidebar-left';
+      this.sections = [];
+      this.parentPage = undefined;
       return;
     }
 
+    this.parentPage = page;
     this.layout = page.layout || 'sidebar-left';
+    this.sections = this.sitemapPages
+      .filter((entry) => entry.parentId === page.id)
+      .sort((a, b) => (a.menuOrder || 0) - (b.menuOrder || 0));
+
     if (page.type && page.type !== 'content') {
       this.contentKey = '';
       this.sidebarKey = '';
+      return;
+    }
+
+    if (this.sections.length > 0) {
+      const selected = this.sections.find((section) => section.slug === this.sectionKey) || this.sections[0];
+      this.contentKey = selected?.contentKey || selected?.slug || page.slug;
+      this.sidebarKey = page.sidebarKey || `${page.slug}_sidebar`;
       return;
     }
 
