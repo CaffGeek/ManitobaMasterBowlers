@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { SitemapService } from '@services/sitemap.service';
 import { SitemapLayout, SitemapPageRecord, SitemapPageType } from '@models/SitemapPageRecord';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -16,7 +15,6 @@ export class SitemapPageComponent implements OnInit {
   pages: SitemapPageRecord[] = [];
   contentKeys: string[] = [];
   tree: SitemapNode[] = [];
-  dropListIds: string[] = [];
   selectedPageId?: string;
   private routeSlug?: string;
   private routeSub?: Subscription;
@@ -158,36 +156,12 @@ export class SitemapPageComponent implements OnInit {
     this.rebuildTree();
   }
 
-  onDrop(event: CdkDragDrop<DropListData>): void {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data.nodes, event.previousIndex, event.currentIndex);
-    } else {
-      const moved = event.previousContainer.data.nodes[event.previousIndex];
-      transferArrayItem(
-        event.previousContainer.data.nodes,
-        event.container.data.nodes,
-        event.previousIndex,
-        event.currentIndex
-      );
-      moved.page.parentId = event.container.data.parentId;
-    }
-
-    this.syncFromTree();
-    this.sitemap.saveSitemap(this.pages);
-    this.rebuildTree();
-  }
-
-  getDropListId(parentId?: string): string {
-    return parentId ? `sitemap-${parentId}` : 'sitemap-root';
-  }
-
   get selectedPage(): SitemapPageRecord | undefined {
     return this.pages.find((page) => page.id === this.selectedPageId);
   }
 
   private rebuildTree(): void {
     this.tree = this.buildTree(this.pages);
-    this.dropListIds = this.collectDropListIds(this.tree);
     if (!this.selectedPageId && this.pages.length > 0 && !this.routeSlug) {
       this.selectedPageId = this.pages[0].id;
     }
@@ -232,14 +206,6 @@ export class SitemapPageComponent implements OnInit {
 
     walk(this.tree);
     this.pages = flattened;
-  }
-
-  private collectDropListIds(nodes: SitemapNode[], ids: string[] = [], parentId?: string): string[] {
-    ids.push(this.getDropListId(parentId));
-    nodes.forEach((node) => {
-      this.collectDropListIds(node.children, ids, node.page.id);
-    });
-    return ids;
   }
 
   private slugify(value: string): string {
@@ -288,9 +254,4 @@ export class SitemapPageComponent implements OnInit {
 interface SitemapNode {
   page: SitemapPageRecord;
   children: SitemapNode[];
-}
-
-interface DropListData {
-  parentId?: string;
-  nodes: SitemapNode[];
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SitemapService } from '@services/sitemap.service';
 import { SitemapLayout, SitemapPageRecord } from '@models/SitemapPageRecord';
+import { environment as env } from '../../../environments/environment';
 
 @Component({
   selector: 'app-content-page',
@@ -86,5 +87,25 @@ export class ContentPageComponent implements OnInit, OnDestroy {
 
     this.contentKey = page.contentKey || page.slug;
     this.sidebarKey = page.sidebarKey || `${page.slug}_sidebar`;
+  }
+
+  isExternalSection(section: SitemapPageRecord): boolean {
+    return (section.type || 'content') === 'external';
+  }
+
+  isRouteSection(section: SitemapPageRecord): boolean {
+    return (section.type || 'content') === 'route';
+  }
+
+  getSectionRoute(section: SitemapPageRecord): string {
+    return section.routePath || '/';
+  }
+
+  getSectionExternalUrl(section: SitemapPageRecord): string {
+    const url = section.externalUrl || '';
+    if (url.startsWith('/docs/')) {
+      return `${env.appBasePath || ''}/assets${url}`;
+    }
+    return url;
   }
 }

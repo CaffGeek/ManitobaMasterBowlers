@@ -1,36 +1,30 @@
 <div class="sitemap-page">
   <div class="sitemap-layout">
-    <div class="sitemap-tree" cdkDropListGroup>
+    <div class="sitemap-tree">
       <div class="sitemap-tree-header">Menu</div>
       <button class="btn btn-sm btn-outline-secondary sitemap-add-root" (click)="addPage()">
-        Add page at top level
+        Add page
       </button>
       <ng-template #nodeList let-nodes let-parentId="parentId">
         <div
           class="sitemap-tree-list"
-          cdkDropList
-          [cdkDropListData]="{ parentId: parentId, nodes: nodes }"
-          [cdkDropListConnectedTo]="dropListIds"
-          [id]="getDropListId(parentId)"
-          (cdkDropListDropped)="onDrop($event)"
+          *ngIf="nodes.length > 0"
         >
-          <div class="sitemap-tree-drop" *ngIf="nodes.length === 0 && parentId">
-            Drop here
-          </div>
           <div
             class="sitemap-tree-item"
             *ngFor="let node of nodes"
-            cdkDrag
             [class.is-selected]="node.page.id === selectedPageId"
           >
-            <div class="sitemap-tree-row" (click)="selectPage(node.page.id)">
+            <div
+              class="sitemap-tree-row"
+              (click)="selectPage(node.page.id)"
+            >
               <span class="sitemap-tree-title">{{ node.page.title }}</span>
-                <span class="sitemap-tree-meta">
-                  <span class="sitemap-tree-type">{{ node.page.type || 'content' }}</span>
-                  <button
-                    class="btn btn-link sitemap-add-inline"
-                    (click)="addPage(node.page.id); $event.stopPropagation()"
-                    title="Add child page"
+              <span class="sitemap-tree-meta">
+                <button
+                  class="btn btn-link sitemap-add-inline"
+                  (click)="addPage(node.page.id); $event.stopPropagation()"
+                  title="Add child page"
                     *ngIf="!isSectionPage(node.page)"
                   >
                     +

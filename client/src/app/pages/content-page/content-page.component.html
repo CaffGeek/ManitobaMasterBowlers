@@ -7,13 +7,29 @@
   <aside class="content-page__sidebar" *ngIf="layout !== 'full'">
     <ng-container *ngIf="sections.length > 0; else sidebarContentBlock">
       <nav class="content-page__menu">
-        <a
-          *ngFor="let section of sections"
-          [routerLink]="['/content', parentPage?.slug, section.slug]"
-          [class.is-active]="section.slug === sectionKey"
-        >
-          {{ section.title }}
-        </a>
+        <ng-container *ngFor="let section of sections">
+          <a
+            *ngIf="isExternalSection(section)"
+            [href]="getSectionExternalUrl(section)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ section.title }}
+          </a>
+          <a
+            *ngIf="!isExternalSection(section) && isRouteSection(section)"
+            [routerLink]="getSectionRoute(section)"
+          >
+            {{ section.title }}
+          </a>
+          <a
+            *ngIf="!isExternalSection(section) && !isRouteSection(section)"
+            [routerLink]="['/content', parentPage?.slug, section.slug]"
+            [class.is-active]="section.slug === sectionKey"
+          >
+            {{ section.title }}
+          </a>
+        </ng-container>
       </nav>
     </ng-container>
     <ng-template #sidebarContentBlock>
