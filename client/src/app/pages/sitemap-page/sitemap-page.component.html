@@ -73,7 +73,7 @@
       <div class="sitemap-editor" *ngIf="selectedPage as page; else sitemapEmptySelection">
         <div class="sitemap-editor-header">
           <h2>{{ page.title || 'Page details' }}</h2>
-          <button class="btn btn-outline-danger" (click)="removePage(pages.indexOf(page))">Delete</button>
+          <button class="btn btn-outline-danger" (click)="removePage(page.id)">Delete</button>
         </div>
         <div class="sitemap-form">
           <div class="sitemap-field">
@@ -81,11 +81,17 @@
             <input class="form-control" [(ngModel)]="page.title" (blur)="updateSlug(page)" />
           </div>
 
-          <div class="sitemap-field sitemap-field--inline">
-            <label class="sitemap-checkbox">
-              <input type="checkbox" [(ngModel)]="page.menuVisible" />
-              Show in menu
-            </label>
+          <div class="sitemap-field">
+            <label class="sitemap-label">Parent</label>
+            <select
+              class="form-control"
+              [(ngModel)]="page.parentId"
+              (ngModelChange)="onParentChange(page)"
+            >
+              <option *ngFor="let option of getParentOptions(page)" [ngValue]="option.id">
+                {{ option.label }}
+              </option>
+            </select>
           </div>
 
         <div class="sitemap-field">
@@ -97,28 +103,13 @@
 
         <ng-container *ngIf="page.type === 'content'">
           <div class="sitemap-field">
-            <label class="sitemap-label">Layout</label>
-            <select class="form-control" [(ngModel)]="page.layout">
-              <option *ngFor="let layout of layouts" [ngValue]="layout.value">{{ layout.label }}</option>
+            <label class="sitemap-label">Content Block</label>
+            <select class="form-control" [(ngModel)]="page.contentKey">
+              <option [ngValue]="''">Select content block</option>
+              <option *ngFor="let key of contentKeys" [ngValue]="key">{{ key }}</option>
             </select>
           </div>
-
-            <div class="sitemap-field">
-              <label class="sitemap-label">Content Block</label>
-              <select class="form-control" [(ngModel)]="page.contentKey">
-                <option [ngValue]="''">Select content block</option>
-                <option *ngFor="let key of contentKeys" [ngValue]="key">{{ key }}</option>
-              </select>
-            </div>
-
-            <div class="sitemap-field" *ngIf="page.layout !== 'full'">
-              <label class="sitemap-label">Sidebar Block</label>
-              <select class="form-control" [(ngModel)]="page.sidebarKey">
-                <option [ngValue]="''">Select sidebar block</option>
-                <option *ngFor="let key of contentKeys" [ngValue]="key">{{ key }}</option>
-              </select>
-            </div>
-          </ng-container>
+        </ng-container>
 
           <div class="sitemap-field" *ngIf="page.type === 'route'">
             <label class="sitemap-label">Route</label>
@@ -137,20 +128,15 @@
     <div class="sitemap-preview" *ngIf="selectedPage as page">
       <h3>Preview</h3>
       <div class="sitemap-preview__content" *ngIf="page.type === 'content'">
-        <ng-container *ngIf="page.layout === 'full'; else previewWithSidebar">
+        <ng-container *ngIf="getSectionsFor(page).length === 0; else previewWithSidebar">
           <app-content-block [key]="page.contentKey || page.slug"></app-content-block>
         </ng-container>
         <ng-template #previewWithSidebar>
-          <div class="sitemap-preview__layout" [class.sitemap-preview__layout--right]="page.layout === 'sidebar-right'">
+          <div class="sitemap-preview__layout">
             <aside class="sitemap-preview__sidebar">
-              <ng-container *ngIf="getSectionsFor(page).length > 0; else previewSidebarBlock">
-                <ul class="sitemap-preview__menu">
-                  <li *ngFor="let section of getSectionsFor(page)">{{ section.title }}</li>
-                </ul>
-              </ng-container>
-              <ng-template #previewSidebarBlock>
-                <app-content-block [key]="page.sidebarKey || (page.slug + '_sidebar')"></app-content-block>
-              </ng-template>
+              <ul class="sitemap-preview__menu">
+                <li *ngFor="let section of getSectionsFor(page)">{{ section.title }}</li>
+              </ul>
             </aside>
             <main class="sitemap-preview__main">
               <app-content-block [key]="page.contentKey || page.slug"></app-content-block>

@@ -73,10 +73,6 @@ export class NavBarComponent implements OnInit {
 
   private buildMenu(pages: SitemapPageRecord[]): MenuNode[] {
     const visiblePages = pages.filter((page) => {
-      if (!page.menuVisible) {
-        return false;
-      }
-
       const type = page.type || 'content';
       return type === 'content' ? !!page.slug : true;
     });

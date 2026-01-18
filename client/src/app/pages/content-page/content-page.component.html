@@ -1,40 +1,34 @@
 <div
   class="content-page"
   *ngIf="contentKey"
-  [class.content-page--full]="layout === 'full'"
-  [class.content-page--sidebar-right]="layout === 'sidebar-right'"
+  [class.content-page--full]="sections.length === 0"
 >
-  <aside class="content-page__sidebar" *ngIf="layout !== 'full'">
-    <ng-container *ngIf="sections.length > 0; else sidebarContentBlock">
-      <nav class="content-page__menu">
-        <ng-container *ngFor="let section of sections">
-          <a
-            *ngIf="isExternalSection(section)"
-            [href]="getSectionExternalUrl(section)"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ section.title }}
-          </a>
-          <a
-            *ngIf="!isExternalSection(section) && isRouteSection(section)"
-            [routerLink]="getSectionRoute(section)"
-          >
-            {{ section.title }}
-          </a>
-          <a
-            *ngIf="!isExternalSection(section) && !isRouteSection(section)"
-            [routerLink]="['/content', parentPage?.slug, section.slug]"
-            [class.is-active]="section.slug === sectionKey"
-          >
-            {{ section.title }}
-          </a>
-        </ng-container>
-      </nav>
-    </ng-container>
-    <ng-template #sidebarContentBlock>
-      <app-content-block [key]="sidebarKey"></app-content-block>
-    </ng-template>
+  <aside class="content-page__sidebar" *ngIf="sections.length > 0">
+    <nav class="content-page__menu">
+      <ng-container *ngFor="let section of sections">
+        <a
+          *ngIf="isExternalSection(section)"
+          [href]="getSectionExternalUrl(section)"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ section.title }}
+        </a>
+        <a
+          *ngIf="!isExternalSection(section) && isRouteSection(section)"
+          [routerLink]="getSectionRoute(section)"
+        >
+          {{ section.title }}
+        </a>
+        <a
+          *ngIf="!isExternalSection(section) && !isRouteSection(section)"
+          [routerLink]="['/content', parentPage?.slug, section.slug]"
+          [class.is-active]="section.slug === sectionKey"
+        >
+          {{ section.title }}
+        </a>
+      </ng-container>
+    </nav>
   </aside>
   <main class="content-page__body">
     <app-content-block [key]="contentKey"></app-content-block>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { SitemapService } from '@services/sitemap.service';
-import { SitemapLayout, SitemapPageRecord, SitemapPageType } from '@models/SitemapPageRecord';
+import { SitemapPageRecord, SitemapPageType } from '@models/SitemapPageRecord';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -18,12 +18,6 @@ export class SitemapPageComponent implements OnInit {
   selectedPageId?: string;
   private routeSlug?: string;
   private routeSub?: Subscription;
-  layouts: { value: SitemapLayout; label: string }[] = [
-    { value: 'full', label: 'Full page' },
-    { value: 'sidebar-left', label: 'Sidebar left' },
-    { value: 'sidebar-right', label: 'Sidebar right' },
-    { value: 'menu-only', label: 'Menu only' },
-  ];
   pageTypes: { value: SitemapPageType; label: string }[] = [
     { value: 'content', label: 'Content page' },
     { value: 'route', label: 'Route' },
@@ -46,6 +40,7 @@ export class SitemapPageComponent implements OnInit {
 
     this.api.contentBlocks$().subscribe((blocks) => {
       this.contentKeys = [...new Set(blocks.map((block) => block.ContentBlock))]
+        .filter((key) => !key.startsWith('_'))
         .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
     });
 
@@ -58,30 +53,40 @@ export class SitemapPageComponent implements OnInit {
 
   addPage(parentId?: string): void {
     const id = this.generateId();
+    const normalizedParentId = parentId || undefined;
+    const siblings = this.pages.filter((entry) => entry.parentId === normalizedParentId);
+    const maxOrder = siblings.reduce((max, entry) => Math.max(max, entry.menuOrder || 0), 0);
     this.pages.push({
       id,
       title: 'New Page',
       slug: `new-page-${this.pages.length + 1}`,
-      parentId,
+      parentId: normalizedParentId,
       menuVisible: true,
-      menuOrder: this.pages.length + 1,
-      layout: 'sidebar-left',
+      menuOrder: maxOrder + 1,
       contentKey: '',
-      sidebarKey: '',
       type: 'content',
       routePath: '',
       externalUrl: '',
     });
+    this.pages = [...this.pages];
     this.rebuildTree();
     this.selectedPageId = id;
   }
 
-  removePage(index: number): void {
+  removePage(pageId: string): void {
     if (!confirm('Delete this page?')) {
       return;
     }
 
-    this.pages.splice(index, 1);
+    const idsToRemove = new Set([pageId, ...this.getDescendantIds(pageId)]);
+    this.pages = this.pages.filter((page) => !idsToRemove.has(page.id));
+    if (this.selectedPageId && idsToRemove.has(this.selectedPageId)) {
+      this.selectedPageId = undefined;
+      this.router.navigate(['/sitemap']);
+    }
+    this.tree = this.buildTree(this.pages);
+    this.syncFromTree();
+    this.sitemap.saveSitemap(this.pages);
     this.rebuildTree();
   }
 
@@ -94,6 +99,35 @@ export class SitemapPageComponent implements OnInit {
     } else {
       this.router.navigate(['/sitemap']);
     }
+  }
+
+  onParentChange(page: SitemapPageRecord): void {
+    const siblings = this.pages.filter((entry) => entry.parentId === page.parentId && entry.id !== page.id);
+    const maxOrder = siblings.reduce((max, entry) => Math.max(max, entry.menuOrder || 0), 0);
+    page.menuOrder = maxOrder + 1;
+    this.rebuildTree();
+  }
+
+  getParentOptions(page: SitemapPageRecord): ParentOption[] {
+    const excluded = new Set([page.id, ...this.getDescendantIds(page.id)]);
+    const options: ParentOption[] = [{ id: '', label: 'Top level' }];
+
+    const walk = (nodes: SitemapNode[], depth: number) => {
+      nodes.forEach((node) => {
+        if (!excluded.has(node.page.id) && !this.isSectionPage(node.page)) {
+          options.push({
+            id: node.page.id,
+            label: `${'-- '.repeat(depth)}${node.page.title || 'Untitled'}`,
+          });
+        }
+        if (node.children.length > 0) {
+          walk(node.children, depth + 1);
+        }
+      });
+    };
+
+    walk(this.tree, 0);
+    return options;
   }
 
   moveNode(nodes: SitemapNode[], fromIndex: number, toIndex: number): void {
@@ -122,8 +156,7 @@ export class SitemapPageComponent implements OnInit {
         : (page.slug || ''),
       menuOrder: index + 1,
       contentKey: page.contentKey?.trim() || '',
-      sidebarKey: page.sidebarKey?.trim() || '',
-      type: page.type || (page.layout === 'menu-only' ? 'menu-only' : 'content'),
+      type: page.type || 'content',
       routePath: page.routePath?.trim() || '',
       externalUrl: page.externalUrl?.trim() || '',
     }));
@@ -147,26 +180,17 @@ export class SitemapPageComponent implements OnInit {
 
   onTypeChange(page: SitemapPageRecord): void {
     if (page.type === 'menu-only') {
-      page.layout = 'menu-only';
       page.contentKey = '';
-      page.sidebarKey = '';
       page.routePath = '';
       page.externalUrl = '';
     }
     if (page.type === 'route') {
-      page.layout = 'menu-only';
       page.contentKey = '';
-      page.sidebarKey = '';
       page.externalUrl = '';
     }
     if (page.type === 'external') {
-      page.layout = 'menu-only';
       page.contentKey = '';
-      page.sidebarKey = '';
       page.routePath = '';
-    }
-    if (page.type === 'content' && page.layout === 'menu-only') {
-      page.layout = 'sidebar-left';
     }
     this.rebuildTree();
   }
@@ -264,9 +288,24 @@ export class SitemapPageComponent implements OnInit {
   private generateId(): string {
     return `page_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
   }
+
+  private getDescendantIds(parentId: string): string[] {
+    const children = this.pages.filter((entry) => entry.parentId === parentId);
+    const ids: string[] = [];
+    children.forEach((child) => {
+      ids.push(child.id);
+      ids.push(...this.getDescendantIds(child.id));
+    });
+    return ids;
+  }
 }
 
 interface SitemapNode {
   page: SitemapPageRecord;
   children: SitemapNode[];
+}
+
+interface ParentOption {
+  id: string;
+  label: string;
 }

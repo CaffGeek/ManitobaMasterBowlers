@@ -7,7 +7,7 @@ interface SitemapPayload {
   pages: SitemapPageRecord[];
 }
 
-const SITEMAP_KEY = 'sitemap';
+const SITEMAP_KEY = '_sitemap';
 
 @Injectable({
   providedIn: 'root',
@@ -51,14 +51,13 @@ export class SitemapService {
   }
 
   private normalizePage(page: SitemapPageRecord): SitemapPageRecord {
-    const type = page.type || (page.layout === 'menu-only' ? 'menu-only' : 'content');
+    const type = page.type || 'content';
     return {
       ...page,
       type,
       routePath: page.routePath || '',
       externalUrl: page.externalUrl || '',
       contentKey: page.contentKey || '',
-      sidebarKey: page.sidebarKey || '',
     };
   }
 }
