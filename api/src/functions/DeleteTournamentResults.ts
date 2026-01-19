@@ -1,8 +1,12 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
 
+type DeleteRequestBody = {
+  ids?: number[];
+};
+
 export async function DeleteTournamentResults(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-  const body = await request.json();
+  const body = (await request.json()) as DeleteRequestBody | undefined;
   const ids = Array.isArray(body?.ids) ? body.ids : [];
 
   if (ids.length === 0) {
