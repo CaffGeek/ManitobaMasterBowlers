@@ -1,0 +1,136 @@
+<mat-card class="bowler-list-card">
+  <mat-card-header>
+    <h1>Bowler List</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="bowler-list-toolbar">
+      <label for="seasonSelect">Season</label>
+      <select id="seasonSelect" [(ngModel)]="selectedSeason" (change)="onSeasonChange()">
+        <option value="">Select season</option>
+        <option *ngFor="let season of seasons" [value]="season.SeasonCode">
+          {{ season.SeasonDesc || season.SeasonCode }}
+        </option>
+      </select>
+    </div>
+
+    <div class="add-bowler" *ngIf="selectedSeason">
+      <div class="add-bowler-row">
+        <input
+          type="text"
+          list="bowlerNameList"
+          [(ngModel)]="addName"
+          placeholder="Find or add bowler name"
+          aria-label="Bowler name"
+        />
+        <div class="gender-toggle" role="radiogroup" aria-label="Gender">
+          <label>
+            <input type="radio" name="addGender" value="M" [(ngModel)]="addGender" />
+            Mens (M)
+          </label>
+          <label>
+            <input type="radio" name="addGender" value="L" [(ngModel)]="addGender" />
+            Ladies (L)
+          </label>
+        </div>
+        <button class="btn btn-success" type="button" (click)="addBowlerToSeason()">
+          Add to season
+        </button>
+      </div>
+      <div class="add-bowler-flags">
+        <label><input type="checkbox" [(ngModel)]="addTournament" /> Tournament</label>
+        <label><input type="checkbox" [(ngModel)]="addTeaching" /> Teaching</label>
+        <label><input type="checkbox" [(ngModel)]="addSenior" /> Senior</label>
+      </div>
+      <datalist id="bowlerNameList">
+        <option *ngFor="let bowler of allBowlers" [value]="bowler.Name"></option>
+      </datalist>
+    </div>
+
+    <div class="bowler-list-empty" *ngIf="!selectedSeason">
+      Pick a season to view bowlers.
+    </div>
+
+    <table class="bowler-list-table" *ngIf="selectedSeason">
+      <thead>
+        <tr>
+          <th (click)="setSort('Name')" class="sortable col-name">
+            <span class="sort-label">
+              Name
+              <span class="sort-arrow" *ngIf="sortKey === 'Name'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="flag-col sortable" (click)="setSort('Gender')">
+            <span class="sort-label">
+              Gender
+              <span class="sort-arrow" *ngIf="sortKey === 'Gender'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="flag-col sortable" (click)="setSort('TournamentFlag')">
+            <span class="sort-label">
+              Tournament
+              <span class="sort-arrow" *ngIf="sortKey === 'TournamentFlag'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="flag-col sortable" (click)="setSort('TeachingFlag')">
+            <span class="sort-label">
+              Teaching
+              <span class="sort-arrow" *ngIf="sortKey === 'TeachingFlag'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="flag-col sortable" (click)="setSort('SeniorFlag')">
+            <span class="sort-label">
+              Senior
+              <span class="sort-arrow" *ngIf="sortKey === 'SeniorFlag'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="flag-col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of sortedSeasonBowlers()">
+          <td>
+            <a [routerLink]="['/bowlers', row.BowlerId]">{{ row.Name }}</a>
+          </td>
+          <td class="flag-col">
+            <div class="gender-toggle compact" role="radiogroup" aria-label="Gender">
+              <label>
+                <input type="radio" [name]="'gender-' + row.BowlerId" value="M" [(ngModel)]="row.Gender" (change)="onGenderChange(row)" />
+                M
+              </label>
+              <label>
+                <input type="radio" [name]="'gender-' + row.BowlerId" value="L" [(ngModel)]="row.Gender" (change)="onGenderChange(row)" />
+                L
+              </label>
+            </div>
+          </td>
+          <td class="flag-col">
+            <input
+              type="checkbox"
+              [(ngModel)]="row.TournamentFlag"
+              (change)="onFlagChange(row)"
+            />
+          </td>
+          <td class="flag-col">
+            <input
+              type="checkbox"
+              [(ngModel)]="row.TeachingFlag"
+              (change)="onFlagChange(row)"
+            />
+          </td>
+          <td class="flag-col">
+            <input
+              type="checkbox"
+              [(ngModel)]="row.SeniorFlag"
+              (change)="onFlagChange(row)"
+            />
+          </td>
+          <td class="flag-col">
+            <button type="button" class="btn btn-icon btn-delete" (click)="removeBowlerFromSeason(row)" aria-label="Remove bowler from season">
+              <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>

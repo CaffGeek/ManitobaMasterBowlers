@@ -12,6 +12,7 @@ import { BowlerResultsComponent } from '@components/bowler-results/bowler-result
 import { TournamentSummaryComponent } from '@components/tournament-summary/tournament-summary.component';
 import { TournamentViewerComponent } from '@components/tournament-viewer/tournament-viewer.component';
 import { BowlerStatsComponent } from '@components/bowler-stats/bowler-stats.component';
+import { BowlerListPageComponent } from '@pages/bowler-list-page/bowler-list-page.component';
 import { SchedulePageComponent } from '@pages/schedule-page/schedule-page.component';
 import { ContentBlocksPageComponent } from '@pages/content-blocks-page/content-blocks-page.component';
 import { ContentBlockListComponent } from '@components/content-block-list/content-block-list.component';
@@ -116,6 +117,12 @@ const routes: Routes = [
       { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
       { path: ':tournament/edit', component: TournamentEditPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
     ]
+  },
+  {
+    path: 'bowlers',
+    component: BowlerListPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_BOWLER },
   },
   {
     path: 'bowlers/:bowler',

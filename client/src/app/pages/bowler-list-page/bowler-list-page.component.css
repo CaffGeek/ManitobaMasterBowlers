@@ -1,0 +1,129 @@
+.bowler-list-card {
+  margin: 1em;
+}
+
+.bowler-list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1em;
+}
+
+.bowler-list-toolbar label {
+  font-weight: 600;
+}
+
+.bowler-list-toolbar select {
+  min-width: 200px;
+}
+
+.add-bowler {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  background: #fffef7;
+}
+
+.add-bowler-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.add-bowler-row input[type="text"] {
+  min-width: 240px;
+  flex: 1;
+}
+
+.gender-toggle {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.gender-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.gender-toggle.compact {
+  gap: 6px;
+  padding: 2px 6px;
+  font-weight: 600;
+}
+
+.add-bowler-flags {
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+}
+
+.bowler-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.bowler-list-table th,
+.bowler-list-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.bowler-list-table thead th {
+  text-align: left;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+.flag-col {
+  text-align: center;
+  width: 110px;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sort-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.sort-arrow {
+  font-size: 0.8em;
+}
+
+.col-name {
+  width: 40%;
+}
+
+.bowler-list-empty {
+  color: #666;
+  font-style: italic;
+  padding: 8px 0 16px;
+}
+
+.btn-icon.btn-delete {
+  border: 1px solid #c0392b;
+  color: #c0392b;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1;
+}

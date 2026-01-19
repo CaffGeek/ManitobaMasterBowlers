@@ -25,6 +25,7 @@ export class NavBarComponent implements OnInit {
   faPowerOff = faPowerOff;
   canAnyAdmin$: Observable<boolean>;
   canEditSitemap$: Observable<boolean>;
+  canEditBowler$: Observable<boolean>;
   menuNodes: MenuNode[] = [];
 
   constructor(
@@ -43,7 +44,25 @@ export class NavBarComponent implements OnInit {
       })
     );
 
-    this.canAnyAdmin$ = this.canEditSitemap$;
+    this.canEditBowler$ = this.auth.isAuthenticated$.pipe(
+      switchMap((isAuthenticated) => {
+        if (!isAuthenticated) {
+          return of(false);
+        }
+
+        return this.permissions.checkPermission(PERMISSION.EDIT_BOWLER);
+      })
+    );
+
+    this.canAnyAdmin$ = this.canEditSitemap$.pipe(
+      switchMap((canEditSitemap) => {
+        if (canEditSitemap) {
+          return of(true);
+        }
+
+        return this.canEditBowler$;
+      })
+    );
   }
 
   ngOnInit() {

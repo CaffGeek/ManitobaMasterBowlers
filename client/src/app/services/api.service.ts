@@ -43,9 +43,33 @@ export class ApiService {
       .pipe(map(z => z.map(x => Object.assign(new BowlerRecord(), x))));
   }
 
+  bowlerSeason$(season: string): Observable<any[]> {
+    return this.fromCache<any[]>(`bowlerseasons/${season}`);
+  }
+
+  addBowlerToSeason(season: string, payload: any): Observable<unknown> {
+    return this.http.post(`${environment.apiUri}bowlerseasons/${season}`, payload)
+      .pipe(tap(() => this.clearCache(`bowlerseasons/${season}`)));
+  }
+
+  updateBowlerSeasonFlags(season: string, bowlerId: number, payload: any): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}bowlerseasons/${season}/${bowlerId}`, payload)
+      .pipe(tap(() => this.clearCache(`bowlerseasons/${season}`)));
+  }
+
   updateBowlerName(id: number, name: string): Observable<unknown> {
     return this.http.put(`${environment.apiUri}bowlers/${id}`, { name })
       .pipe(tap(() => this.clearCache('bowlers')));
+  }
+
+  updateBowlerGender(id: number, gender: string): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}bowlers/${id}`, { gender })
+      .pipe(tap(() => this.clearCache('bowlers')));
+  }
+
+  deleteBowlerSeason(season: string, bowlerId: number): Observable<unknown> {
+    return this.http.delete(`${environment.apiUri}bowlerseasons/${season}/${bowlerId}`)
+      .pipe(tap(() => this.clearCache(`bowlerseasons/${season}`)));
   }
 
   bowlerResults$(bowlerId: number): Observable<BowlerResultsRecord[]> {

@@ -32,6 +32,7 @@ import { BowlerPageComponent } from './pages/bowler-page/bowler-page.component';
 import { TournamentSummaryComponent } from './components/tournament-summary/tournament-summary.component';
 import { BowlerResultsComponent } from './components/bowler-results/bowler-results.component';
 import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.component';
+import { BowlerListPageComponent } from './pages/bowler-list-page/bowler-list-page.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
 import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
@@ -69,6 +70,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     BowlerExistsValidatorDirective,
     BowlerResultsComponent,
     BowlerStatsComponent,
+    BowlerListPageComponent,
     SchedulePageComponent,
     ScheduleListComponent,
     TournamentEditPageComponent,
