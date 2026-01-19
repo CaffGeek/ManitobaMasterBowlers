@@ -198,6 +198,11 @@
   gap: 6px;
 }
 
+.sitemap-hint {
+  font-size: 0.85em;
+  color: #666;
+}
+
 .sitemap-field--inline {
   grid-template-columns: auto 1fr;
   align-items: center;

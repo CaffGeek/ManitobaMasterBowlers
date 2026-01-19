@@ -105,7 +105,7 @@
           <div class="sitemap-field">
             <label class="sitemap-label">Content Block</label>
             <select class="form-control" [(ngModel)]="page.contentKey">
-              <option [ngValue]="''">Select content block</option>
+              <option [ngValue]="''">[New Content]</option>
               <option *ngFor="let key of contentKeys" [ngValue]="key">{{ key }}</option>
             </select>
           </div>
