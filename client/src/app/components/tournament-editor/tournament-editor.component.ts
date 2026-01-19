@@ -31,12 +31,13 @@ export class TournamentEditorComponent implements OnChanges {
         .map((x,i) => {
           x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler)?.ID || (-i);
           x.IgnoreForAverage = !!x.IgnoreForAverage;
+          x.WonStars = !!x.WonStars;
           return x;
         });
     });
   }
 
-  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Average', 'Scratch', 'POA', 'IgnoreForAverage', 'Actions'];
+  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Average', 'Scratch', 'POA', 'IgnoreForAverage', 'WonStars', 'Actions'];
   dataSource = new MatTableDataSource(this.results);
 
   @ViewChild(MatSort) sort: MatSort;
@@ -86,6 +87,7 @@ export class TournamentEditorComponent implements OnChanges {
     record.Game8 = 0;
     record.Average = 0;
     record.IgnoreForAverage = false;
+    record.WonStars = false;
     record.ensureTypes();
 
     this.results = [...this.results, record];
@@ -124,6 +126,7 @@ export class TournamentEditorComponent implements OnChanges {
           Game8: c.Game8,
           BowlerAverage: c.Average,
           IgnoreForAverage: !!c.IgnoreForAverage,
+          WonStars: !!c.WonStars,
         };
 
         //If there's an Id, tack it on, so it's an update, not an insert of a new record

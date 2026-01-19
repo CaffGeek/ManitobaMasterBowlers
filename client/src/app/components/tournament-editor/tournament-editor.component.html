@@ -112,6 +112,17 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="WonStars">
+      <th mat-header-cell *matHeaderCellDef width="5em"> Won Stars </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <input
+          [name]="'WonStars' | appendValues:element.BowlerId"
+          type="checkbox"
+          [(ngModel)]="element.WonStars"
+        />
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="Actions">
       <th mat-header-cell *matHeaderCellDef width="4em"></th>
       <td mat-cell *matCellDef="let element; let i = index;">

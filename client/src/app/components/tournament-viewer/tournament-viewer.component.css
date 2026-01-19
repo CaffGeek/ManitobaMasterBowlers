@@ -21,3 +21,9 @@ th, td {
     margin-left: 6px;
     font-weight: 600;
 }
+
+.won-stars {
+    color: #d4a017;
+    margin-right: 6px;
+    font-size: 0.95em;
+}

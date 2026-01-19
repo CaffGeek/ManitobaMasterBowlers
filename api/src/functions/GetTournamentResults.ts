@@ -17,7 +17,8 @@ const sqlInput = input.generic({
             t.Game7,
             t.Game8,
             t.BowlerAverage as Average,
-            ISNULL(t.IgnoreForAverage, 0) as IgnoreForAverage
+            ISNULL(t.IgnoreForAverage, 0) as IgnoreForAverage,
+            ISNULL(t.WonStars, 0) as WonStars
         from TournamentResults t
         join MasterList as b
             on t.BowlerId = b.ID
