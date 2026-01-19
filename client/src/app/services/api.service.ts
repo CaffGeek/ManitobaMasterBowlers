@@ -84,6 +84,26 @@ export class ApiService {
       .pipe(map(z => z.map(x => Object.assign(new TournamentRecord(), x))));
   }
 
+  createSeason(seasonCode: string, seasonDesc: string): Observable<unknown> {
+    return this.http.post(`${environment.apiUri}seasons`, { SeasonCode: seasonCode, SeasonDesc: seasonDesc })
+      .pipe(tap(() => this.clearCache('seasons')));
+  }
+
+  createTournament(payload: Partial<TournamentRecord>): Observable<any> {
+    return this.http.post(`${environment.apiUri}tournaments`, payload)
+      .pipe(tap(() => this.clearCache('tournaments')));
+  }
+
+  updateTournament(id: number, payload: Partial<TournamentRecord>): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}tournaments/${id}`, payload)
+      .pipe(tap(() => this.clearCache('tournaments')));
+  }
+
+  deleteTournament(id: number): Observable<unknown> {
+    return this.http.delete(`${environment.apiUri}tournaments/${id}`)
+      .pipe(tap(() => this.clearCache('tournaments')));
+  }
+
   tournamentResults$(tournamentId: number): Observable<TournamentResultsRecord[]> {
     if (!tournamentId) return of([]);
     

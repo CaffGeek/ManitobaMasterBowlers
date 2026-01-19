@@ -1,0 +1,101 @@
+<mat-card class="schedule-edit-card">
+  <mat-card-header>
+    <h1>Schedule Admin</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="schedule-toolbar">
+      <label for="seasonSelect">Season</label>
+      <select id="seasonSelect" [(ngModel)]="selectedSeason" (change)="onSeasonChange()">
+        <option *ngFor="let season of seasons" [value]="season.SeasonCode">
+          {{ season.SeasonDesc || season.SeasonCode }}
+        </option>
+      </select>
+      <div class="schedule-toolbar-actions" *ngIf="canCreateSeason$ | async">
+        <button type="button" class="btn btn-success" (click)="createNextSeason()">
+          Create New Season
+        </button>
+      </div>
+    </div>
+
+    <div class="schedule-actions" *ngIf="selectedSeason">
+      <button type="button" class="btn btn-outline-secondary" (click)="addTournamentRow()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Add tournament
+      </button>
+    </div>
+
+    <div class="schedule-empty" *ngIf="!selectedSeason">
+      Pick a season to edit tournaments.
+    </div>
+
+    <table class="schedule-table" *ngIf="selectedSeason">
+      <datalist id="locationList">
+        <option *ngFor="let location of locationOptions" [value]="location"></option>
+      </datalist>
+      <thead>
+        <tr>
+          <th class="sortable col-id" (click)="setSort('Id')">
+            <span class="sort-label">
+              ID
+              <span class="sort-arrow" *ngIf="sortKey === 'Id'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="sortable col-number" (click)="setSort('TournamentNumber')">
+            <span class="sort-label">
+              #
+              <span class="sort-arrow" *ngIf="sortKey === 'TournamentNumber'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="sortable col-division" (click)="setSort('Division')">
+            <span class="sort-label">
+              Division
+              <span class="sort-arrow" *ngIf="sortKey === 'Division'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="sortable col-location" (click)="setSort('TournamentLocation')">
+            <span class="sort-label">
+              Location
+              <span class="sort-arrow" *ngIf="sortKey === 'TournamentLocation'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="sortable col-date" (click)="setSort('TournamentDetails')">
+            <span class="sort-label">
+              Date
+              <span class="sort-arrow" *ngIf="sortKey === 'TournamentDetails'">{{ sortDir === 'asc' ? '▲' : '▼' }}</span>
+            </span>
+          </th>
+          <th class="actions-col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of sortedTournaments()">
+          <td class="col-id">
+            <a *ngIf="row.Id" [routerLink]="['/results', row.Division, row.SeasonCode, row.Id]">
+              {{ row.Id }}
+            </a>
+            <span *ngIf="!row.Id">New</span>
+          </td>
+          <td class="col-number">
+            <input type="number" [(ngModel)]="row.TournamentNumber" />
+          </td>
+          <td class="col-division">
+            <select [(ngModel)]="row.Division">
+              <option *ngFor="let div of divisions" [value]="div">{{ div }}</option>
+            </select>
+          </td>
+          <td class="col-location">
+            <input type="text" [(ngModel)]="row.TournamentLocation" list="locationList" />
+          </td>
+          <td class="col-date">
+            <input type="text" [(ngModel)]="row.TournamentDetails" />
+          </td>
+          <td class="actions-col">
+            <button type="button" class="btn btn-icon btn-save" (click)="saveTournament(row)" aria-label="Save tournament">
+              <fa-icon [icon]="faSave"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>

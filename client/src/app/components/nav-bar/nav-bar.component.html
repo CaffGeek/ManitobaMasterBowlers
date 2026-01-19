@@ -92,6 +92,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
               <a routerLink="/bowlers" class="dropdown-item" *ngIf="canEditBowler$ | async">Bowlers</a>
+              <a routerLink="/schedule/edit" class="dropdown-item" *ngIf="canEditSitemap$ | async">Schedule</a>
               <a routerLink="/sitemap" class="dropdown-item" *ngIf="canEditSitemap$ | async">SiteMap</a>
               <a routerLink="/contentblocks" class="dropdown-item" *ngIf="canEditSitemap$ | async">Content</a>
               <a routerLink="/content/help" class="dropdown-item" *ngIf="canEditSitemap$ | async">Help</a>
