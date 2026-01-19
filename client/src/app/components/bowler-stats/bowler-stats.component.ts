@@ -53,6 +53,7 @@ export class BowlerStatsComponent implements OnInit {
       this.stats.tournaments = results.length;
       this.stats.highSet = results.map(x => x.Game1 + x.Game2 + x.Game3 + x.Game4 + x.Game5 + x.Game6 + x.Game7 + x.Game8).reduce((a, b) => Math.max(a, b), 0);
       this.stats.highGame = results.map(x => Math.max(x.Game1, x.Game2, x.Game3, x.Game4, x.Game5, x.Game6, x.Game7, x.Game8)).reduce((a, b) => Math.max(a, b), 0);
+      this.stats.wins = results.filter((x) => !!x.WonStars).length;
       this.stats.games = this.countGames(results);
       this.stats.totalPinfall = this.sumGames(results);
       this.stats.careerAverage = Math.trunc(this.stats.totalPinfall / this.stats.games);
@@ -65,7 +66,6 @@ export class BowlerStatsComponent implements OnInit {
       this.masterCalc.pinfall = pinfall;
       this.updateMasterAverage();
 
-      //TODO: CHAD: Wins
     });
   }
 

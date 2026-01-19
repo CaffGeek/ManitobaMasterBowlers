@@ -19,6 +19,7 @@ export class BowlerResultsRecord {
     TournamentLocation: string;
     TournamentNumber: number;
     IgnoreForAverage: boolean;
+    WonStars: boolean;
     
     ensureTypes() {
         const orZero = (x) => 1 * (Number.isNaN(Number.parseInt(`${x}`)) ? 0 : x);
@@ -32,6 +33,7 @@ export class BowlerResultsRecord {
         this.Game8 = orZero(this.Game8);
         this.BowlerAverage = orZero(this.BowlerAverage);
         this.IgnoreForAverage = !!this.IgnoreForAverage;
+        this.WonStars = !!this.WonStars;
         return this;
     }
 
