@@ -26,6 +26,7 @@ export class NavBarComponent implements OnInit {
   canAnyAdmin$: Observable<boolean>;
   canEditSitemap$: Observable<boolean>;
   canEditBowler$: Observable<boolean>;
+  canEditContentBlocks$: Observable<boolean>;
   menuNodes: MenuNode[] = [];
 
   constructor(
@@ -54,13 +55,31 @@ export class NavBarComponent implements OnInit {
       })
     );
 
+    this.canEditContentBlocks$ = this.auth.isAuthenticated$.pipe(
+      switchMap((isAuthenticated) => {
+        if (!isAuthenticated) {
+          return of(false);
+        }
+
+        return this.permissions.checkPermission(PERMISSION.EDIT_CONTENTBLOCKS);
+      })
+    );
+
     this.canAnyAdmin$ = this.canEditSitemap$.pipe(
       switchMap((canEditSitemap) => {
         if (canEditSitemap) {
           return of(true);
         }
 
-        return this.canEditBowler$;
+        return this.canEditBowler$.pipe(
+          switchMap((canEditBowler) => {
+            if (canEditBowler) {
+              return of(true);
+            }
+
+            return this.canEditContentBlocks$;
+          })
+        );
       })
     );
   }

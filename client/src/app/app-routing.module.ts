@@ -102,7 +102,7 @@ const routes: Routes = [
     path: 'contentblocks',
     component: ContentBlocksPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENTBLOCKS },
     children: [
       { path: '', component: ContentBlockListComponent, outlet: "list" },
     ]
@@ -111,7 +111,7 @@ const routes: Routes = [
     path: 'contentblocks/:key',
     component: ContentBlocksPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENTBLOCKS },
     children: [
       { path: '', component: ContentBlockListComponent, outlet: "list" },
       { path: '', component: ContentBlockEditorComponent, outlet: "editor" },

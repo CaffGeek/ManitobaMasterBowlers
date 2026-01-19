@@ -8,6 +8,7 @@ export enum PERMISSION {
   EDIT_SITEMAP = "edit:sitemap",
   EDIT_BOWLER = "edit:bowler",
   CREATE_SEASON = "create:season",
+  EDIT_CONTENTBLOCKS = "edit:contentblocks",
 }
 
 @Injectable({
