@@ -1,5 +1,49 @@
 <mat-card id="card">
-    <mat-card-header><h1>{{ data?.Name }}</h1></mat-card-header>
+    <mat-card-header>
+        <div class="bowler-title">
+            <h1 *ngIf="!isEditingName">{{ data?.Name }}</h1>
+            <div *ngIf="isEditingName" class="bowler-title-edit">
+                <input
+                    type="text"
+                    [(ngModel)]="editName"
+                    class="bowler-name-input"
+                    aria-label="Edit bowler name"
+                />
+            </div>
+            <div class="bowler-title-actions" *ngIf="canEditBowler$ | async">
+                <button
+                    *ngIf="!isEditingName"
+                    type="button"
+                    class="btn btn-icon btn-edit"
+                    (click)="startEditName()"
+                    aria-label="Edit bowler name"
+                    title="Edit name"
+                >
+                    <fa-icon [icon]="faPen"></fa-icon>
+                </button>
+                <button
+                    *ngIf="isEditingName"
+                    type="button"
+                    class="btn btn-icon btn-save"
+                    (click)="saveName()"
+                    aria-label="Save bowler name"
+                    title="Save"
+                >
+                    <fa-icon [icon]="faCheck"></fa-icon>
+                </button>
+                <button
+                    *ngIf="isEditingName"
+                    type="button"
+                    class="btn btn-icon btn-cancel"
+                    (click)="cancelEditName()"
+                    aria-label="Cancel edit"
+                    title="Cancel"
+                >
+                    <fa-icon [icon]="faXmark"></fa-icon>
+                </button>
+            </div>
+        </div>
+    </mat-card-header>
     <mat-card-content>
         <router-outlet name="stats"></router-outlet>
     </mat-card-content>

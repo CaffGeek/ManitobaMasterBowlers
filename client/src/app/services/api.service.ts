@@ -43,6 +43,11 @@ export class ApiService {
       .pipe(map(z => z.map(x => Object.assign(new BowlerRecord(), x))));
   }
 
+  updateBowlerName(id: number, name: string): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}bowlers/${id}`, { name })
+      .pipe(tap(() => this.clearCache('bowlers')));
+  }
+
   bowlerResults$(bowlerId: number): Observable<BowlerResultsRecord[]> {
     if (!bowlerId) return of([]);
 

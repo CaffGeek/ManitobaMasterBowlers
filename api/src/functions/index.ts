@@ -10,4 +10,5 @@ import './GetTournaments';
 import './DeleteTournamentResults';
 import './PutTournamentResults';
 import './SaveContentBlock';
+import './UpdateBowler';
 import './WhoAmI';
