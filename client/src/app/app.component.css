@@ -8,3 +8,9 @@
     height: 100%;
     overflow: auto;
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0;
+    }
+}

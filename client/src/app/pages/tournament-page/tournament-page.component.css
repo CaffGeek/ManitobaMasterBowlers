@@ -10,7 +10,11 @@
     flex: 1 1 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .container {
+        padding: 0;
+    }
+    
     .filter-bar {
         flex-wrap: wrap;
     }

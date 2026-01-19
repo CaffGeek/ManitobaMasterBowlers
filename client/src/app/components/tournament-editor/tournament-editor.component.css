@@ -5,6 +5,7 @@ table {
 
 th, td {
     text-align: right;
+    padding: 0 3px;
 }
 
 .mat-column-Bowler {
@@ -25,6 +26,10 @@ input {
     padding: 2px 2px;
     box-sizing: border-box;
     background: #fff;
+}
+
+input[type="number"] {
+    text-align: right;
 }
 
 .mat-column-Actions {
@@ -52,4 +57,10 @@ input {
 .btn-delete fa-icon {
     font-size: 14px;
     display: block;
+}
+
+@media (max-width: 768px) {
+    input[type="number"] {
+        min-width: 35px;
+    }
 }
