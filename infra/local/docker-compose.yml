@@ -21,7 +21,7 @@ services:
     volumes:
       - ../../api:/home/site/wwwroot
       - /home/site/wwwroot/node_modules
-    command: bash -c "npm run watch & func start --javascript --port 7071"
+    command: bash -c "npm run build && npm run watch & func start --javascript --port 7071 --watch"
     environment:
       - AzureWebJobsStorage=UseDevelopmentStorage=true
       - FUNCTIONS_WORKER_RUNTIME=node

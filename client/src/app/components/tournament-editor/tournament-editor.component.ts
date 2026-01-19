@@ -16,6 +16,7 @@ export class TournamentEditorComponent implements OnChanges {
   @Input() results: TournamentResultsRecord[] = [];
   bowlers: BowlerRecord[];
   private tempBowlerId = -1;
+  filteredBowlerNames: string[] = [];
 
   constructor(
     private api: ApiService,
@@ -51,6 +52,24 @@ export class TournamentEditorComponent implements OnChanges {
     };
   }
 
+  onBowlerNameChange(row: TournamentResultsRecord) {
+    this.filteredBowlerNames = this.buildBowlerSuggestions(row?.Bowler || '');
+
+    if (!row?.Bowler || !this.bowlers?.length) {
+      return;
+    }
+
+    const match = this.bowlers.find((bowler) => bowler.Name === row.Bowler);
+    if (match) {
+      row.BowlerId = match.ID;
+      return;
+    }
+
+    if (!row.BowlerId || row.BowlerId > 0) {
+      row.BowlerId = this.getNextTempBowlerId();
+    }
+  }
+
   addRow() {
     const record = new TournamentResultsRecord();
     record.Id = undefined;
@@ -78,8 +97,13 @@ export class TournamentEditorComponent implements OnChanges {
       return;
     }
 
+    const row = this.results[index];
     this.results = this.results.filter((_row, rowIndex) => rowIndex !== index);
     this.dataSource.data = this.results;
+
+    if (row?.Id && row.Id > 0) {
+      this.api.deleteTournamentResults(this.tournament, [row.Id]).subscribe();
+    }
   }
 
   onSubmit() {
@@ -123,5 +147,48 @@ export class TournamentEditorComponent implements OnChanges {
       this.tempBowlerId = minId;
     }
     return this.tempBowlerId--;
+  }
+
+  private buildBowlerSuggestions(input: string): string[] {
+    if (!this.bowlers?.length) {
+      return [];
+    }
+
+    const term = input.trim().toLowerCase();
+    const blockedSuffixes = ['- g', '(g)'];
+    const isBlocked = (name: string) => {
+      const lower = name.toLowerCase();
+      return blockedSuffixes.some((suffix) => lower.endsWith(suffix)) || lower.includes('guest');
+    };
+
+    const matches = this.bowlers
+      .map((bowler) => bowler.Name)
+      .filter((name) => !isBlocked(name))
+      .filter((name) => {
+        if (!term) {
+          return true;
+        }
+
+        const lower = name.toLowerCase();
+        if (lower.startsWith(term)) {
+          return true;
+        }
+
+        return lower
+          .split(/\s+/)
+          .some((part) => part.startsWith(term));
+      })
+      .sort((a, b) => {
+        const aLower = a.toLowerCase();
+        const bLower = b.toLowerCase();
+        const aStarts = term ? aLower.startsWith(term) : false;
+        const bStarts = term ? bLower.startsWith(term) : false;
+        if (aStarts !== bStarts) {
+          return aStarts ? -1 : 1;
+        }
+        return a.localeCompare(b, 'en', { sensitivity: 'base' });
+      });
+
+    return matches.slice(0, 6);
   }
 }

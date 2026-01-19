@@ -7,6 +7,7 @@ import './GetSchedule';
 import './GetSeasons';
 import './GetTournamentResults';
 import './GetTournaments';
+import './DeleteTournamentResults';
 import './PutTournamentResults';
 import './SaveContentBlock';
 import './WhoAmI';

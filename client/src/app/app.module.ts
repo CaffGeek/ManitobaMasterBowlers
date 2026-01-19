@@ -42,9 +42,11 @@ import { ContentBlocksPageComponent } from './pages/content-blocks-page/content-
 import { ContentBlockEditorComponent } from './components/content-block-editor/content-block-editor.component';
 import { ContentPageComponent } from './pages/content-page/content-page.component';
 import { SitemapPageComponent } from './pages/sitemap-page/sitemap-page.component';
+import { ToastComponent } from './components/toast/toast.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
+import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,8 @@ import { environment as env } from '../environments/environment';
     ContentBlocksPageComponent,
     ContentBlockEditorComponent,
     ContentPageComponent,
-    SitemapPageComponent
+    SitemapPageComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -108,6 +111,11 @@ import { environment as env } from '../environments/environment';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorToastInterceptor,
       multi: true,
     },
     {

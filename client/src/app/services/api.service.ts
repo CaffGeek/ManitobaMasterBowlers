@@ -67,6 +67,15 @@ export class ApiService {
       .subscribe(() => this.clearCache(`tournamentresults/${tournamentId}`));
   }
 
+  deleteTournamentResults(tournamentId: number, ids: number[]) {
+    if (!ids?.length) {
+      return of(null);
+    }
+
+    return this.http.post(`${environment.apiUri}tournamentresults/${tournamentId}/delete`, { ids })
+      .pipe(tap(() => this.clearCache(`tournamentresults/${tournamentId}`)));
+  }
+
   saveContentBlock(key: string, contentHtml: string): Observable<unknown> {
     return this.http.post(`${environment.apiUri}contentblocks/save`, { contentBlock: key, contentHTML: contentHtml })
       .pipe(tap(() => this.clearCache(`contentblocks/${key}`)));

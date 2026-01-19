@@ -1,4 +1,7 @@
 <form (ngSubmit)="onSubmit()" #tournamentForm="ngForm" name="tournamentForm">
+  <datalist id="bowlerList">
+    <option *ngFor="let name of filteredBowlerNames" [value]="name"></option>
+  </datalist>
   <div class="justify">
     <a routerLink=".." class="nav-link">Cancel</a>
     <button type="submit" class="btn btn-success" [disabled]="!tournamentForm.form.valid">Save</button> 
@@ -12,7 +15,16 @@
     <ng-container matColumnDef="Bowler">
       <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let element; let i = index;">
-        <input [name]="'Bowler' | appendValues:element.BowlerId" type="text" matInput [(ngModel)]="element.Bowler" required appBowlerExists />
+        <input
+          [name]="'Bowler' | appendValues:element.BowlerId"
+          type="text"
+          matInput
+          [(ngModel)]="element.Bowler"
+          (ngModelChange)="onBowlerNameChange(element)"
+          list="bowlerList"
+          required
+          appBowlerExists
+        />
       </td>
     </ng-container>
     
@@ -33,7 +45,7 @@
     <ng-container matColumnDef="Game2">
       <th mat-header-cell mat-sort-header *matHeaderCellDef width="3em">2</th>
       <td mat-cell *matCellDef="let element; let i = index;">
-        <input [name]="'Game2' | appendValues:element.BowlerId" matInput [(ngModel)]="element.Game2" />
+        <input [name]="'Game2' | appendValues:element.BowlerId" type="number" matInput [(ngModel)]="element.Game2" />
       </td>
     </ng-container>
     
