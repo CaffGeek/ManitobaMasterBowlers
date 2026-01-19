@@ -15,6 +15,7 @@ export class TournamentEditorComponent implements OnChanges {
   @Input() tournament: number;
   @Input() results: TournamentResultsRecord[] = [];
   bowlers: BowlerRecord[];
+  private tempBowlerId = -1;
 
   constructor(
     private api: ApiService,
@@ -26,11 +27,15 @@ export class TournamentEditorComponent implements OnChanges {
       this.bowlers = bowlers;
 
       this.dataSource.data = changes.results.currentValue
-        .map((x,i) => { x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler)?.ID || (-i); return x; });
+        .map((x,i) => {
+          x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler)?.ID || (-i);
+          x.IgnoreForAverage = !!x.IgnoreForAverage;
+          return x;
+        });
     });
   }
 
-  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Average', 'Scratch', 'POA'];
+  displayedColumns: string[] = ['Bowler', 'Game1', 'Game2', 'Game3', 'Game4', 'Game5', 'Game6', 'Game7', 'Game8', 'Average', 'Scratch', 'POA', 'IgnoreForAverage', 'Actions'];
   dataSource = new MatTableDataSource(this.results);
 
   @ViewChild(MatSort) sort: MatSort;
@@ -44,6 +49,37 @@ export class TournamentEditorComponent implements OnChanges {
         default: return item[property];
       }
     };
+  }
+
+  addRow() {
+    const record = new TournamentResultsRecord();
+    record.Id = undefined;
+    record.TournamentId = this.tournament;
+    record.BowlerId = this.getNextTempBowlerId();
+    record.Bowler = '';
+    record.Game1 = 0;
+    record.Game2 = 0;
+    record.Game3 = 0;
+    record.Game4 = 0;
+    record.Game5 = 0;
+    record.Game6 = 0;
+    record.Game7 = 0;
+    record.Game8 = 0;
+    record.Average = 0;
+    record.IgnoreForAverage = false;
+    record.ensureTypes();
+
+    this.results = [...this.results, record];
+    this.dataSource.data = this.results;
+  }
+
+  removeRow(index: number) {
+    if (!window.confirm('Remove this bowler from the results?')) {
+      return;
+    }
+
+    this.results = this.results.filter((_row, rowIndex) => rowIndex !== index);
+    this.dataSource.data = this.results;
   }
 
   onSubmit() {
@@ -63,6 +99,7 @@ export class TournamentEditorComponent implements OnChanges {
           Game7: c.Game7,
           Game8: c.Game8,
           BowlerAverage: c.Average,
+          IgnoreForAverage: !!c.IgnoreForAverage,
         };
 
         //If there's an Id, tack it on, so it's an update, not an insert of a new record
@@ -77,5 +114,14 @@ export class TournamentEditorComponent implements OnChanges {
       const errors = form.controls[key].errors;
       return errors;
     }).filter(x => !!x);
+  }
+
+  private getNextTempBowlerId(): number {
+    const existing = this.results.map((row) => row.BowlerId || 0);
+    const minId = existing.length > 0 ? Math.min(...existing) : 0;
+    if (minId < this.tempBowlerId) {
+      this.tempBowlerId = minId;
+    }
+    return this.tempBowlerId--;
   }
 }
