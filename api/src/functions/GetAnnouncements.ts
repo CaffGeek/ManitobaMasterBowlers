@@ -8,11 +8,10 @@ const sqlInput = input.generic({
 })
 
 export async function GetAnnouncements(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    const announcements = JSON.stringify(context.extraInputs.get(sqlInput));
-
+    const announcements = context.extraInputs.get(sqlInput);
     return {
         status: 200,
-        body: announcements
+        jsonBody: announcements
     };
 };
 

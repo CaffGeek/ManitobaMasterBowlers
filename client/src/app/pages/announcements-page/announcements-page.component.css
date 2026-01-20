@@ -1,0 +1,130 @@
+.announcements-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.announcements-header h1 {
+  margin: 0;
+}
+
+.announcements-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(420px, 2fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.announcements-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.announcements-list-header h2 {
+  margin: 0;
+}
+
+.announcements-card {
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.announcements-form {
+  display: grid;
+  gap: 12px;
+}
+
+.announcements-form label,
+.announcement-edit label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.announcements-form textarea,
+.announcement-edit textarea,
+.announcements-form input,
+.announcement-edit input {
+  border: 1px solid #cfd4da;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 400;
+}
+
+.announcements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.announcement-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.announcement-text {
+  font-weight: 600;
+}
+
+.announcement-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #525252;
+}
+
+.announcement-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.announcements-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.announcement-empty {
+  color: #666;
+  margin: 8px 0 0;
+}
+
+.btn.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid #d5d5d5;
+  background: #fff;
+}
+
+.btn.btn-icon.btn-delete {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.btn.btn-icon.btn-delete:hover {
+  background: #ffeceb;
+}
+
+@media (max-width: 900px) {
+  .announcements-layout {
+    grid-template-columns: 1fr;
+  }
+}

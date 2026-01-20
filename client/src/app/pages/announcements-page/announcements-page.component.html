@@ -1,0 +1,81 @@
+<div class="announcements-page">
+  <div class="announcements-header">
+    <h1>Announcements</h1>
+  </div>
+
+  <div class="announcements-layout">
+    <aside class="announcements-list">
+      <div class="announcements-list-header">
+        <h2>Active & Upcoming</h2>
+        <button class="btn btn-success btn-sm" (click)="startNew()">New</button>
+      </div>
+      <div class="announcement-row" *ngFor="let item of announcements; else emptyState">
+        <div class="announcement-text" [innerHTML]="item.Announcement"></div>
+        <div class="announcement-dates">
+          <span>Start: {{ item.StartDate ? (item.StartDate | date:'MMM d, y h:mm a') : 'None' }}</span>
+          <span>End: {{ item.EndDate ? (item.EndDate | date:'MMM d, y h:mm a') : 'None' }}</span>
+        </div>
+        <div class="announcement-actions">
+          <button class="btn btn-icon" (click)="startEdit(item)" aria-label="Edit announcement">
+            <fa-icon [icon]="faPen"></fa-icon>
+          </button>
+          <button class="btn btn-icon btn-delete" (click)="confirmDelete(item)" aria-label="Delete announcement">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <ng-template #emptyState>
+        <p class="announcement-empty">No active or future announcements.</p>
+      </ng-template>
+    </aside>
+
+    <section class="announcements-editor">
+      <div class="announcements-card">
+        <h2>{{ editorMode === 'edit' ? 'Edit Announcement' : 'New Announcement' }}</h2>
+        <div class="announcements-form">
+          <label>
+            Message
+            <textarea
+              rows="3"
+              [(ngModel)]="editorModel.Announcement"
+              placeholder="Announcement text"
+            ></textarea>
+          </label>
+          <label>
+            Start Date
+            <input
+              type="datetime-local"
+              [(ngModel)]="editorModel.StartDate"
+            />
+          </label>
+          <label>
+            End Date
+            <input
+              type="datetime-local"
+              [(ngModel)]="editorModel.EndDate"
+            />
+          </label>
+          <div class="announcement-actions">
+            <button
+              class="btn btn-success"
+              *ngIf="editorMode === 'edit'"
+              (click)="saveEdit()"
+              [disabled]="isSaving"
+            >
+              Save
+            </button>
+            <button
+              class="btn btn-success"
+              *ngIf="editorMode === 'new'"
+              (click)="createAnnouncement()"
+              [disabled]="isSaving"
+            >
+              Create
+            </button>
+            <button class="btn btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

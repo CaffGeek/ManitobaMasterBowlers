@@ -1,0 +1,19 @@
+<div class="announcement-banner" *ngIf="activeAnnouncements.length > 0">
+  <button
+    class="announcement-banner__nav"
+    (click)="prev()"
+    aria-label="Previous announcement"
+    *ngIf="activeAnnouncements.length > 1"
+  >
+    ‹
+  </button>
+  <div class="announcement-banner__content" [innerHTML]="currentAnnouncement"></div>
+  <button
+    class="announcement-banner__nav"
+    (click)="next()"
+    aria-label="Next announcement"
+    *ngIf="activeAnnouncements.length > 1"
+  >
+    ›
+  </button>
+</div>

@@ -7,6 +7,7 @@ export enum PERMISSION {
   EDIT_TOURNAMENT = "edit:tournament",
   EDIT_CONTENT = "edit:content",
   EDIT_SECURECONTENT = "edit:securecontent",
+  EDIT_ANNOUNCEMENTS = "edit:announcements",
   EDIT_SCHEDULE = "edit:schedule",
   EDIT_BOWLER = "edit:bowler",
   CREATE_SEASON = "create:season",

@@ -9,6 +9,7 @@ import { SeasonRecord } from '@models/SeasonRecord';
 import { TournamentRecord } from '@models/TournamentRecord';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
+import { AnnouncementRecord } from '@models/AnnouncementRecord';
 
 @Injectable({
   providedIn: 'root',
@@ -144,6 +145,25 @@ export class ApiService {
 
   deleteMedia(name: string): Observable<unknown> {
     return this.http.delete(`${environment.apiUri}media/${encodeURIComponent(name)}`);
+  }
+
+  announcements$(): Observable<AnnouncementRecord[]> {
+    return this.fromCache<AnnouncementRecord[]>('announcements');
+  }
+
+  createAnnouncement(payload: Partial<AnnouncementRecord>): Observable<unknown> {
+    return this.http.post(`${environment.apiUri}announcements`, payload)
+      .pipe(tap(() => this.clearCache('announcements')));
+  }
+
+  updateAnnouncement(id: number, payload: Partial<AnnouncementRecord>): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}announcements/${id}`, payload)
+      .pipe(tap(() => this.clearCache('announcements')));
+  }
+
+  deleteAnnouncement(id: number): Observable<unknown> {
+    return this.http.delete(`${environment.apiUri}announcements/${id}`)
+      .pipe(tap(() => this.clearCache('announcements')));
   }
 
   whoami() {

@@ -1,5 +1,8 @@
 // Entry point to ensure all functions are registered with the Azure Functions runtime.
 import './GetAnnouncements';
+import './CreateAnnouncement';
+import './UpdateAnnouncement';
+import './DeleteAnnouncement';
 import './GetBowlerResults';
 import './GetBowlers';
 import './GetContentBlocks';

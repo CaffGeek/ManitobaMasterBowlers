@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from '@pages/home/home.component';
@@ -47,6 +47,8 @@ import { ToastComponent } from './components/toast/toast.component';
 import { ScheduleEditPageComponent } from './pages/schedule-edit-page/schedule-edit-page.component';
 import { WinnersPageComponent } from './pages/winners-page/winners-page.component';
 import { MediaPageComponent } from './pages/media-page/media-page.component';
+import { AnnouncementBannerComponent } from './components/announcement-banner/announcement-banner.component';
+import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
@@ -86,6 +88,8 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     ScheduleEditPageComponent,
     WinnersPageComponent,
     MediaPageComponent,
+    AnnouncementBannerComponent,
+    AnnouncementsPageComponent,
     ToastComponent
   ],
   imports: [
@@ -144,6 +148,6 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faTrash);
+    library.addIcons(faPen, faTrash);
   }
 }
