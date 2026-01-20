@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { Observable, Subscription, of, switchMap } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
@@ -67,6 +67,21 @@ export class ContentBlockComponent implements OnInit, OnChanges, OnDestroy {
     this.showEditor = !this.showEditor;
     if (!this.showEditor) {
       this.loadContent();
+    }
+  }
+
+  @HostListener('click', ['$event'])
+  handleContentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement | null;
+    const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
+    if (!anchor) {
+      return;
+    }
+
+    const href = anchor.getAttribute('href') || '';
+    if (href.startsWith('mailto:') || href.startsWith('tel:')) {
+      event.preventDefault();
+      window.location.href = href;
     }
   }
 

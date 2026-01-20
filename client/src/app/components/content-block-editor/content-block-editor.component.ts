@@ -16,9 +16,19 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
   editorApiKey = environment.tinymceApiKey;
   editorInit = {
     base_url: this.getBasePath(),
+    document_base_url: this.getDocumentBaseUrl(),
     plugins: 'table paste lists link code',
     menubar: 'file edit view insert format table tools',
     toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link | paste | code',
+    convert_urls: false,
+    relative_urls: false,
+    remove_script_host: false,
+    link_protocols: [
+      { name: 'http', protocol: 'http' },
+      { name: 'https', protocol: 'https' },
+      { name: 'mailto', protocol: 'mailto' },
+      { name: 'tel', protocol: 'tel' },
+    ],
     paste_data_images: true,
     automatic_uploads: true,
     height: 640,
@@ -80,5 +90,11 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
     const trimmed = baseHref.endsWith('/') && baseHref.length > 1 ? baseHref.slice(0, -1) : baseHref;
     const prefix = trimmed === '/' ? '' : trimmed;
     return `${prefix}/assets/tinymce`;
+  }
+
+  private getDocumentBaseUrl() {
+    const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+    const normalized = baseHref.endsWith('/') ? baseHref : `${baseHref}/`;
+    return `${window.location.origin}${normalized}`;
   }
 }
