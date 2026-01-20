@@ -6,6 +6,7 @@ type UploadMediaBody = {
   fileName?: string;
   contentType?: string;
   dataBase64?: string;
+  prefix?: string;
 };
 
 const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9._-]+/g, '-');
@@ -29,6 +30,7 @@ export async function UploadMedia(request: HttpRequest, _context: InvocationCont
   }
 
   const rawName = (body.fileName || 'upload.bin').trim();
+  const rawPrefix = (body.prefix || '').trim();
   const contentType = (body.contentType || 'application/octet-stream').trim();
   let data = (body.dataBase64 || '').trim();
 
@@ -50,7 +52,11 @@ export async function UploadMedia(request: HttpRequest, _context: InvocationCont
 
   const ext = path.extname(rawName);
   const base = sanitizeName(path.basename(rawName, ext)) || 'upload';
-  const blobName = `${base}-${Date.now()}${ext}`;
+  const time = new Date();
+  const pad = (value: number) => value.toString().padStart(2, '0');
+  const timestamp = `${time.getFullYear()}${pad(time.getMonth() + 1)}${pad(time.getDate())}${pad(time.getHours())}${pad(time.getMinutes())}${pad(time.getSeconds())}`;
+  const prefix = rawPrefix ? `${sanitizeName(rawPrefix)}-` : '';
+  const blobName = `${timestamp}-${prefix}${base}${ext}`;
 
   const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
   const containerClient = blobServiceClient.getContainerClient(containerName);

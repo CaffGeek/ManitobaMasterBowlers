@@ -27,8 +27,9 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
       const fileName = blobInfo.filename();
       const contentType = blobInfo.blob()?.type || 'application/octet-stream';
       const dataBase64 = blobInfo.base64();
+      const prefix = this.key ? this.key : 'content';
 
-      this.api.uploadMedia({ fileName, contentType, dataBase64 }).subscribe({
+      this.api.uploadMedia({ fileName, contentType, dataBase64, prefix }).subscribe({
         next: (response: any) => {
           const url = response?.url;
           if (!url) {

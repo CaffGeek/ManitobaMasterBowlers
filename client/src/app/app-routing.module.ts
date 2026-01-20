@@ -72,7 +72,7 @@ const routes: Routes = [
     path: 'media',
     component: MediaPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_CONTENTBLOCKS },
+    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
   },
   {
     path: 'schedule/edit',

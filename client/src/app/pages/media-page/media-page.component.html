@@ -1,28 +1,54 @@
 <div class="media-page">
   <h1>Media Upload</h1>
   <p class="media-help">
-    Upload an image and copy the URL into a content block.
+    Upload a file and copy the URL into a content block.
   </p>
 
-  <div class="media-form">
-    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-    <button class="btn btn-success" (click)="upload()" [disabled]="!selectedFile || isUploading">
-      {{ isUploading ? 'Uploading...' : 'Upload' }}
-    </button>
-  </div>
+  <div class="media-layout">
+    <aside class="media-sidebar">
+      <div class="media-search">
+        <input
+          type="text"
+          placeholder="Search files..."
+          [(ngModel)]="filterText"
+          (input)="applyFilter()"
+        />
+      </div>
 
-  <div class="media-preview" *ngIf="previewUrl">
-    <h3>Preview</h3>
-    <img [src]="previewUrl" alt="Selected media preview" />
-  </div>
+      <div class="media-list">
+        <div class="media-item" *ngFor="let item of filteredItems">
+          <a href="" (click)="$event.preventDefault(); selectItem(item)">
+            {{ item.name }}
+          </a>
+          <button class="btn btn-icon btn-delete" (click)="confirmDelete(item)" aria-label="Delete media">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </aside>
 
-  <div class="media-result" *ngIf="uploadedUrl">
-    <h3>Uploaded URL</h3>
-    <div class="media-url">
-      <input type="text" [value]="uploadedUrl" readonly />
-      <button class="btn btn-outline-secondary" (click)="copyUrl()">Copy</button>
-    </div>
-    <p class="media-note">Paste this URL into your content block.</p>
+    <section class="media-main">
+      <div class="media-form">
+        <input type="file" (change)="onFileSelected($event)" />
+        <button class="btn btn-success" (click)="upload()" [disabled]="!selectedFile || isUploading">
+          {{ isUploading ? 'Uploading...' : 'Upload' }}
+        </button>
+      </div>
+
+      <div class="media-preview" *ngIf="previewUrl || selectedItemUrl">
+        <h3>Preview</h3>
+        <img [src]="previewUrl || selectedItemUrl" alt="Selected media preview" />
+      </div>
+
+      <div class="media-result" *ngIf="uploadedUrl">
+        <h3>Uploaded URL</h3>
+        <div class="media-url">
+          <input type="text" [value]="uploadedUrl" readonly />
+          <button class="btn btn-outline-secondary" (click)="copyUrl()">Copy</button>
+        </div>
+        <p class="media-note">Paste this URL into your content block.</p>
+      </div>
+    </section>
   </div>
 
   <div class="media-error" *ngIf="errorMessage">

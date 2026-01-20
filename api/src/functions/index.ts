@@ -22,3 +22,5 @@ import './SaveContentBlock';
 import './UpdateBowler';
 import './WhoAmI';
 import './UploadMedia';
+import './ListMedia';
+import './DeleteMedia';

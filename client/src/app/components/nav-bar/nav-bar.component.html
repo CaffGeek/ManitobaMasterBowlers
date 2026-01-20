@@ -95,7 +95,7 @@
               <a routerLink="/schedule/edit" class="dropdown-item" *ngIf="canEditSitemap$ | async">Schedule</a>
               <a routerLink="/sitemap" class="dropdown-item" *ngIf="canEditSitemap$ | async">SiteMap</a>
               <a routerLink="/contentblocks" class="dropdown-item" *ngIf="canEditContentBlocks$ | async">Content</a>
-              <a routerLink="/media" class="dropdown-item" *ngIf="canEditContentBlocks$ | async">Media</a>
+              <a routerLink="/media" class="dropdown-item" *ngIf="canEditSitemap$ | async">Media</a>
               <a routerLink="/content/help" class="dropdown-item" *ngIf="canEditSitemap$ | async">Help</a>
             </div>
           </li>
@@ -204,7 +204,7 @@
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/contentblocks">Content</a>
           </li>
-          <li *ngIf="canEditContentBlocks$ | async">
+          <li *ngIf="canEditSitemap$ | async">
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/media">Media</a>
           </li>

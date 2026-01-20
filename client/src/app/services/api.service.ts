@@ -134,8 +134,16 @@ export class ApiService {
       .pipe(tap(() => this.clearCache(`contentblocks/${key}`)));
   }
 
-  uploadMedia(payload: { fileName: string; contentType: string; dataBase64: string }): Observable<unknown> {
+  uploadMedia(payload: { fileName: string; contentType: string; dataBase64: string; prefix?: string }): Observable<unknown> {
     return this.http.post(`${environment.apiUri}media/upload`, payload);
+  }
+
+  listMedia$(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUri}media`);
+  }
+
+  deleteMedia(name: string): Observable<unknown> {
+    return this.http.delete(`${environment.apiUri}media/${encodeURIComponent(name)}`);
   }
 
   whoami() {

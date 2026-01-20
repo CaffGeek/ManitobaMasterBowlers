@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '@services/api.service';
 
 @Component({
@@ -7,20 +8,30 @@ import { ApiService } from '@services/api.service';
   styleUrls: ['./media-page.component.css'],
   standalone: false,
 })
-export class MediaPageComponent {
+export class MediaPageComponent implements OnInit {
+  faTrash = faTrash;
   selectedFile: File | null = null;
   previewUrl: string | null = null;
+  selectedItemUrl: string | null = null;
   uploadedUrl: string | null = null;
   isUploading = false;
   errorMessage = '';
+  mediaItems: any[] = [];
+  filteredItems: any[] = [];
+  filterText = '';
 
   constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.loadMedia();
+  }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] || null;
     this.selectedFile = file;
     this.uploadedUrl = null;
+    this.selectedItemUrl = null;
     this.errorMessage = '';
 
     if (this.previewUrl) {
@@ -54,6 +65,8 @@ export class MediaPageComponent {
       }).subscribe({
         next: (response: any) => {
           this.uploadedUrl = response?.url || '';
+          this.selectedItemUrl = this.uploadedUrl || null;
+          this.loadMedia();
           this.isUploading = false;
         },
         error: () => {
@@ -76,5 +89,57 @@ export class MediaPageComponent {
       return;
     }
     navigator.clipboard?.writeText(this.uploadedUrl);
+  }
+
+  applyFilter() {
+    const term = this.filterText.trim().toLowerCase();
+    if (!term) {
+      this.filteredItems = [...this.mediaItems];
+      return;
+    }
+    this.filteredItems = this.mediaItems.filter(item => item.name.toLowerCase().includes(term));
+  }
+
+  confirmDelete(item: any) {
+    const ok = confirm(`Delete "${item.name}"? This cannot be undone.`);
+    if (!ok) {
+      return;
+    }
+
+    if (this.selectedItemUrl === item.url) {
+      this.selectedItemUrl = null;
+    }
+
+    this.api.deleteMedia(item.name).subscribe({
+      next: () => this.loadMedia(),
+      error: () => {
+        this.errorMessage = 'Delete failed. Please try again.';
+      },
+    });
+  }
+
+  selectItem(item: any) {
+    this.selectedItemUrl = item.url;
+    this.selectedFile = null;
+    this.uploadedUrl = null;
+    this.errorMessage = '';
+  }
+
+  private loadMedia() {
+    this.api.listMedia$().subscribe({
+      next: (items) => {
+        this.mediaItems = items || [];
+        this.filteredItems = [...this.mediaItems];
+        if (this.selectedItemUrl) {
+          const stillExists = this.mediaItems.some(item => item.url === this.selectedItemUrl);
+          if (!stillExists) {
+            this.selectedItemUrl = null;
+          }
+        }
+      },
+      error: () => {
+        this.errorMessage = 'Could not load media list.';
+      },
+    });
   }
 }
