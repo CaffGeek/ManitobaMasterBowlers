@@ -45,6 +45,7 @@ import { ContentPageComponent } from './pages/content-page/content-page.componen
 import { SitemapPageComponent } from './pages/sitemap-page/sitemap-page.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ScheduleEditPageComponent } from './pages/schedule-edit-page/schedule-edit-page.component';
+import { WinnersPageComponent } from './pages/winners-page/winners-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
@@ -82,6 +83,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     ContentPageComponent,
     SitemapPageComponent,
     ScheduleEditPageComponent,
+    WinnersPageComponent,
     ToastComponent
   ],
   imports: [

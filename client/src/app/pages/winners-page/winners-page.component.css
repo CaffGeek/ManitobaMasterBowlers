@@ -1,0 +1,24 @@
+.winners-card {
+  margin: 16px;
+}
+
+.winners-table {
+  width: 100%;
+}
+
+.winners-table .mat-column-Bowler {
+  min-width: 180px;
+}
+
+.winners-table .mat-column-SeasonDesc,
+.winners-table .mat-column-Division {
+  width: 110px;
+}
+
+.winners-table .mat-column-TournamentNumber {
+  width: 80px;
+}
+
+.winners-table .mat-column-TournamentDetails {
+  width: 180px;
+}

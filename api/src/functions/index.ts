@@ -13,6 +13,7 @@ import './DeleteTournament';
 import './DeleteTournamentResults';
 import './PutTournamentResults';
 import './CreateSeason';
+import './GetStarWinners';
 import './GetBowlerSeasons';
 import './AddBowlerSeason';
 import './UpdateBowlerSeason';

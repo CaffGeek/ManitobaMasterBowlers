@@ -84,6 +84,10 @@ export class ApiService {
       .pipe(map(z => z.map(x => Object.assign(new TournamentRecord(), x))));
   }
 
+  starWinners$(): Observable<any[]> {
+    return this.fromCache<any[]>('winners');
+  }
+
   createSeason(seasonCode: string, seasonDesc: string): Observable<unknown> {
     return this.http.post(`${environment.apiUri}seasons`, { SeasonCode: seasonCode, SeasonDesc: seasonDesc })
       .pipe(tap(() => this.clearCache('seasons')));
