@@ -130,6 +130,10 @@ export class MediaPageComponent implements OnInit {
     this.selectedFile = null;
     this.uploadedUrl = null;
     this.errorMessage = '';
+    if (this.previewUrl) {
+      URL.revokeObjectURL(this.previewUrl);
+      this.previewUrl = null;
+    }
   }
 
   private loadMedia() {
