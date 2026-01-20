@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { SitemapService } from '@services/sitemap.service';
 import { SitemapPageRecord } from '@models/SitemapPageRecord';
 import { environment as env } from '../../../environments/environment';
+import { PermissionService } from '@services/permission.service';
 
 @Component({
   selector: 'app-content-page',
@@ -17,13 +18,16 @@ export class ContentPageComponent implements OnInit, OnDestroy {
   contentKey = '';
   sections: SitemapPageRecord[] = [];
   parentPage?: SitemapPageRecord;
+  hasAccess = true;
   private routeSub?: Subscription;
   private sitemapSub?: Subscription;
+  private permissionSub?: Subscription;
   private sitemapPages: SitemapPageRecord[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private sitemap: SitemapService
+    private sitemap: SitemapService,
+    private permissions: PermissionService
   ) {}
 
   ngOnInit(): void {
@@ -42,9 +46,13 @@ export class ContentPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routeSub?.unsubscribe();
     this.sitemapSub?.unsubscribe();
+    this.permissionSub?.unsubscribe();
   }
 
   private applyPageConfig(): void {
+    this.permissionSub?.unsubscribe();
+    this.hasAccess = true;
+
     if (!this.blockKey) {
       this.contentKey = '';
       this.sections = [];
@@ -73,10 +81,12 @@ export class ContentPageComponent implements OnInit, OnDestroy {
     if (this.sections.length > 0) {
       const selected = this.sections.find((section) => section.slug === this.sectionKey) || this.sections[0];
       this.contentKey = selected?.contentKey || selected?.slug || page.slug;
+      this.evaluateAccess(page, selected);
       return;
     }
 
     this.contentKey = page.contentKey || page.slug;
+    this.evaluateAccess(page);
   }
 
   isExternalSection(section: SitemapPageRecord): boolean {
@@ -97,5 +107,27 @@ export class ContentPageComponent implements OnInit, OnDestroy {
       return `${env.appBasePath || ''}/assets${url}`;
     }
     return url;
+  }
+
+  private evaluateAccess(page: SitemapPageRecord, section?: SitemapPageRecord): void {
+    const required = this.parsePermissions(section?.requiredPermissions || page.requiredPermissions);
+    if (required.length === 0) {
+      this.hasAccess = true;
+      return;
+    }
+
+    this.permissionSub = this.permissions.checkAnyPermissions(required).subscribe((allowed) => {
+      this.hasAccess = allowed;
+    });
+  }
+
+  private parsePermissions(value?: string): string[] {
+    if (!value) {
+      return [];
+    }
+    return value
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter((entry) => entry.length > 0);
   }
 }

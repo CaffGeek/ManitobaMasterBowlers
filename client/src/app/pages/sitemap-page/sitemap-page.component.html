@@ -111,6 +111,33 @@
           </div>
         </ng-container>
 
+        <div class="sitemap-field" *ngIf="canEditSecureContent$ | async">
+          <label class="sitemap-label">Required Permissions</label>
+          <div ngbDropdown class="sitemap-permissions">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              ngbDropdownToggle
+              type="button"
+            >
+              {{ getPermissionSummary(page) }}
+            </button>
+            <div ngbDropdownMenu class="dropdown-menu p-2">
+              <div class="form-check" *ngFor="let perm of permissionOptions">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="getPermissionId(page, perm)"
+                  [checked]="isPermissionSelected(page, perm)"
+                  (change)="togglePermission(page, perm, $any($event.target).checked)"
+                />
+                <label class="form-check-label" [for]="getPermissionId(page, perm)">
+                  {{ perm }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
           <div class="sitemap-field" *ngIf="page.type === 'route'">
             <label class="sitemap-label">Route</label>
             <input class="form-control" [(ngModel)]="page.routePath" placeholder="/path" />

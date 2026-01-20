@@ -1,6 +1,6 @@
 <div
   class="content-page"
-  *ngIf="contentKey"
+  *ngIf="contentKey && hasAccess"
   [class.content-page--full]="sections.length === 0"
 >
   <aside class="content-page__sidebar" *ngIf="sections.length > 0">
@@ -32,5 +32,11 @@
   </aside>
   <main class="content-page__body">
     <app-content-block [key]="contentKey"></app-content-block>
+  </main>
+</div>
+<div class="content-page content-page--full" *ngIf="contentKey && !hasAccess">
+  <main class="content-page__body">
+    <h2>Access restricted</h2>
+    <p>You do not have permission to view this page.</p>
   </main>
 </div>

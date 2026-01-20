@@ -4,7 +4,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
 import { environment as env } from '../../../environments/environment';
 import { PermissionService, PERMISSION } from '@services/permission.service';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { SitemapService } from '@services/sitemap.service';
 import { SitemapPageRecord } from '@models/SitemapPageRecord';
 
@@ -23,11 +23,9 @@ export class NavBarComponent implements OnInit {
   isCollapsed = true;
   faUser = faUser;
   faPowerOff = faPowerOff;
-  canAnyAdmin$: Observable<boolean>;
   canEditContent$: Observable<boolean>;
   canEditSchedule$: Observable<boolean>;
   canEditBowler$: Observable<boolean>;
-  canEditContentBlocks$: Observable<boolean>;
   menuNodes: MenuNode[] = [];
 
   constructor(
@@ -66,38 +64,14 @@ export class NavBarComponent implements OnInit {
       })
     );
 
-    this.canEditContentBlocks$ = this.canEditContent$;
-
-    this.canAnyAdmin$ = this.canEditContent$.pipe(
-      switchMap((canEditContent) => {
-        if (canEditContent) {
-          return of(true);
-        }
-
-        return this.canEditSchedule$.pipe(
-          switchMap((canEditSchedule) => {
-            if (canEditSchedule) {
-              return of(true);
-            }
-
-            return this.canEditBowler$.pipe(
-              switchMap((canEditBowler) => {
-                if (canEditBowler) {
-                  return of(true);
-                }
-
-                return this.canEditContentBlocks$;
-              })
-            );
-          })
-        );
-      })
-    );
   }
 
   ngOnInit() {
-    this.sitemap.loadSitemap$().subscribe((data) => {
-      this.menuNodes = this.buildMenu(data.pages || []);
+    combineLatest([
+      this.sitemap.loadSitemap$(),
+      this.permissions.getPermissions$(),
+    ]).subscribe(([data, permissions]) => {
+      this.menuNodes = this.buildMenu(data.pages || [], permissions);
     });
   }
 
@@ -120,12 +94,27 @@ export class NavBarComponent implements OnInit {
     this.isCollapsed = true;
   }
 
-  private buildMenu(pages: SitemapPageRecord[]): MenuNode[] {
-    const visiblePages = pages.filter((page) => {
+  private buildMenu(pages: SitemapPageRecord[], permissions: string[]): MenuNode[] {
+    const allowedIds = new Set(
+      pages
+        .filter((page) => this.isAllowedPage(page, permissions))
+        .map((page) => page.id)
+    );
+    const allowedPages = pages.filter((page) => {
+      if (!allowedIds.has(page.id)) {
+        return false;
+      }
+      if (page.parentId) {
+        return allowedIds.has(page.parentId);
+      }
+      return true;
+    });
+
+    const visiblePages = allowedPages.filter((page) => {
       const type = page.type || 'content';
       return type === 'content' ? !!page.slug : true;
     });
-    const allPagesMap = new Map(pages.map((page) => [page.id, page]));
+    const allPagesMap = new Map(allowedPages.map((page) => [page.id, page]));
     const menuPages = visiblePages.filter((page) => {
       if (!page.parentId) {
         return true;
@@ -160,5 +149,23 @@ export class NavBarComponent implements OnInit {
       page,
       children: sortByOrder(childrenMap.get(page.id) || []),
     }));
+  }
+
+  private isAllowedPage(page: SitemapPageRecord, permissions: string[]): boolean {
+    const required = this.parsePermissions(page.requiredPermissions);
+    if (required.length === 0) {
+      return true;
+    }
+    return required.some((permission) => permissions.includes(permission));
+  }
+
+  private parsePermissions(value?: string): string[] {
+    if (!value) {
+      return [];
+    }
+    return value
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter((entry) => entry.length > 0);
   }
 }

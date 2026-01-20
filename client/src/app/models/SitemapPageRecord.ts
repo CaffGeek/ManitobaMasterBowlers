@@ -8,6 +8,7 @@ export class SitemapPageRecord {
   menuVisible: boolean;
   menuOrder: number;
   contentKey: string;
+  requiredPermissions?: string;
   type?: SitemapPageType;
   routePath?: string;
   externalUrl?: string;

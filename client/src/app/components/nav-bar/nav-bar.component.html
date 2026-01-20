@@ -81,24 +81,6 @@
               </ng-container>
             </li>
           </ng-container>
-          <li class="nav-item dropdown" ngbDropdown *ngIf="canAnyAdmin$ | async">
-            <a
-              ngbDropdownToggle
-              class="nav-link dropdown-toggle"
-              id="adminDropdown"
-              data-toggle="dropdown"
-            >
-              Admin
-            </a>
-            <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
-              <a routerLink="/bowlers" class="dropdown-item" *ngIf="canEditBowler$ | async">Bowlers</a>
-              <a routerLink="/schedule/edit" class="dropdown-item" *ngIf="canEditSchedule$ | async">Schedule</a>
-              <a routerLink="/sitemap" class="dropdown-item" *ngIf="canEditContent$ | async">SiteMap</a>
-              <a routerLink="/contentblocks" class="dropdown-item" *ngIf="canEditContent$ | async">Content</a>
-              <a routerLink="/media" class="dropdown-item" *ngIf="canEditContent$ | async">Media</a>
-              <a routerLink="/content/help" class="dropdown-item" *ngIf="canEditContent$ | async">Help</a>
-            </div>
-          </li>
         </ul>
 
         <ul class="navbar-nav d-none d-md-block">

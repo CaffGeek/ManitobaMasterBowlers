@@ -58,6 +58,7 @@ export class SitemapService {
       routePath: page.routePath || '',
       externalUrl: page.externalUrl || '',
       contentKey: page.contentKey || '',
+      requiredPermissions: page.requiredPermissions || '',
     };
   }
 }

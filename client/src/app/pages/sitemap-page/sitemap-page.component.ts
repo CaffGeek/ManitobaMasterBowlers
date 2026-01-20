@@ -4,6 +4,7 @@ import { SitemapService } from '@services/sitemap.service';
 import { SitemapPageRecord, SitemapPageType } from '@models/SitemapPageRecord';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { PERMISSION, PermissionService } from '@services/permission.service';
 
 @Component({
   selector: 'app-sitemap-page',
@@ -24,12 +25,15 @@ export class SitemapPageComponent implements OnInit {
     { value: 'external', label: 'External link' },
     { value: 'menu-only', label: 'Menu only' },
   ];
+  canEditSecureContent$ = this.permissions.checkPermission(PERMISSION.EDIT_SECURECONTENT);
+  permissionOptions = Object.values(PERMISSION);
 
   constructor(
     private api: ApiService,
     private sitemap: SitemapService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private permissions: PermissionService
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +68,7 @@ export class SitemapPageComponent implements OnInit {
       menuVisible: true,
       menuOrder: maxOrder + 1,
       contentKey: '',
+      requiredPermissions: '',
       type: 'content',
       routePath: '',
       externalUrl: '',
@@ -156,6 +161,7 @@ export class SitemapPageComponent implements OnInit {
         : (page.slug || ''),
       menuOrder: index + 1,
       contentKey: page.contentKey?.trim() || '',
+      requiredPermissions: page.requiredPermissions?.trim() || '',
       type: page.type || 'content',
       routePath: page.routePath?.trim() || '',
       externalUrl: page.externalUrl?.trim() || '',
@@ -193,6 +199,29 @@ export class SitemapPageComponent implements OnInit {
       page.routePath = '';
     }
     this.rebuildTree();
+  }
+
+  isPermissionSelected(page: SitemapPageRecord, permission: string): boolean {
+    return this.parsePermissions(page.requiredPermissions).includes(permission);
+  }
+
+  togglePermission(page: SitemapPageRecord, permission: string, checked: boolean): void {
+    const current = new Set(this.parsePermissions(page.requiredPermissions));
+    if (checked) {
+      current.add(permission);
+    } else {
+      current.delete(permission);
+    }
+    page.requiredPermissions = Array.from(current).join(',');
+  }
+
+  getPermissionSummary(page: SitemapPageRecord): string {
+    const selected = this.parsePermissions(page.requiredPermissions);
+    return selected.length > 0 ? `${selected.length} selected` : 'None';
+  }
+
+  getPermissionId(page: SitemapPageRecord, permission: string): string {
+    return `perm-${page.id}-${permission.replace(/[^a-z0-9]+/gi, '-')}`;
   }
 
   get selectedPage(): SitemapPageRecord | undefined {
@@ -297,6 +326,16 @@ export class SitemapPageComponent implements OnInit {
       ids.push(...this.getDescendantIds(child.id));
     });
     return ids;
+  }
+
+  private parsePermissions(value?: string): string[] {
+    if (!value) {
+      return [];
+    }
+    return value
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter((entry) => entry.length > 0);
   }
 }
 
