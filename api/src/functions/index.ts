@@ -21,3 +21,4 @@ import './DeleteBowlerSeason';
 import './SaveContentBlock';
 import './UpdateBowler';
 import './WhoAmI';
+import './UploadMedia';

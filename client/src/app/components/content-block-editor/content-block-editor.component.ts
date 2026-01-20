@@ -19,9 +19,27 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
     plugins: 'table paste lists link code',
     menubar: 'file edit view insert format table tools',
     toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link | paste | code',
-    paste_data_images: false,
+    paste_data_images: true,
+    automatic_uploads: true,
     height: 640,
     resize: 'both',
+    images_upload_handler: (blobInfo, _progress) => new Promise<string>((resolve, reject) => {
+      const fileName = blobInfo.filename();
+      const contentType = blobInfo.blob()?.type || 'application/octet-stream';
+      const dataBase64 = blobInfo.base64();
+
+      this.api.uploadMedia({ fileName, contentType, dataBase64 }).subscribe({
+        next: (response: any) => {
+          const url = response?.url;
+          if (!url) {
+            reject('Upload failed');
+            return;
+          }
+          resolve(url);
+        },
+        error: () => reject('Upload failed'),
+      });
+    }),
   };
   
   constructor(

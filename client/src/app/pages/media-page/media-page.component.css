@@ -1,0 +1,51 @@
+.media-page {
+  margin: 20px;
+}
+
+.media-help {
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.media-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.media-preview img {
+  max-width: 420px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.media-result {
+  margin-top: 16px;
+}
+
+.media-url {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.media-url input {
+  min-width: 280px;
+  max-width: 520px;
+  width: 100%;
+}
+
+.media-note {
+  color: #777;
+  margin-top: 6px;
+}
+
+.media-error {
+  margin-top: 12px;
+  color: #c0392b;
+  font-weight: 600;
+}

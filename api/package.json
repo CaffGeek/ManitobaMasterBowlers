@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@azure/functions": "^4.4.0",
+    "@azure/storage-blob": "^12.26.0",
     "auth0": "^4.1.0",
     "express-oauth2-jwt-bearer": "^1.6.0",
     "jsonwebtoken": "^9.0.2",

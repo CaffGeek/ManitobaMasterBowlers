@@ -1,0 +1,31 @@
+<div class="media-page">
+  <h1>Media Upload</h1>
+  <p class="media-help">
+    Upload an image and copy the URL into a content block.
+  </p>
+
+  <div class="media-form">
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+    <button class="btn btn-success" (click)="upload()" [disabled]="!selectedFile || isUploading">
+      {{ isUploading ? 'Uploading...' : 'Upload' }}
+    </button>
+  </div>
+
+  <div class="media-preview" *ngIf="previewUrl">
+    <h3>Preview</h3>
+    <img [src]="previewUrl" alt="Selected media preview" />
+  </div>
+
+  <div class="media-result" *ngIf="uploadedUrl">
+    <h3>Uploaded URL</h3>
+    <div class="media-url">
+      <input type="text" [value]="uploadedUrl" readonly />
+      <button class="btn btn-outline-secondary" (click)="copyUrl()">Copy</button>
+    </div>
+    <p class="media-note">Paste this URL into your content block.</p>
+  </div>
+
+  <div class="media-error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+</div>

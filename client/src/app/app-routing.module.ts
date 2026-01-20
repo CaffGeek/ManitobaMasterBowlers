@@ -23,6 +23,7 @@ import { PERMISSION } from '@services/permission.service';
 import { SitemapPageComponent } from '@pages/sitemap-page/sitemap-page.component';
 import { ScheduleEditPageComponent } from '@pages/schedule-edit-page/schedule-edit-page.component';
 import { WinnersPageComponent } from '@pages/winners-page/winners-page.component';
+import { MediaPageComponent } from '@pages/media-page/media-page.component';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -66,6 +67,12 @@ const routes: Routes = [
   {
     path: 'winners',
     component: WinnersPageComponent,
+  },
+  {
+    path: 'media',
+    component: MediaPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_CONTENTBLOCKS },
   },
   {
     path: 'schedule/edit',
