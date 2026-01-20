@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '@services/api.service';
+import { ToastService } from '@services/toast.service';
+import { MEDIA_MAX_UPLOAD_BYTES, MEDIA_MAX_UPLOAD_MB } from '../../constants/media';
 
 @Component({
   selector: 'app-media-page',
@@ -9,6 +11,7 @@ import { ApiService } from '@services/api.service';
   standalone: false,
 })
 export class MediaPageComponent implements OnInit {
+  private readonly maxUploadBytes = MEDIA_MAX_UPLOAD_BYTES;
   faTrash = faTrash;
   selectedFile: File | null = null;
   previewUrl: string | null = null;
@@ -20,7 +23,7 @@ export class MediaPageComponent implements OnInit {
   filteredItems: any[] = [];
   filterText = '';
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private toasts: ToastService) {}
 
   ngOnInit() {
     this.loadMedia();
@@ -46,6 +49,10 @@ export class MediaPageComponent implements OnInit {
 
   upload() {
     if (!this.selectedFile || this.isUploading) {
+      return;
+    }
+    if (this.selectedFile.size > this.maxUploadBytes) {
+      this.toasts.show(`File too large. Maximum size is ${MEDIA_MAX_UPLOAD_MB}MB.`, 'error');
       return;
     }
 

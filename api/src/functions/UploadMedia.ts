@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { requirePermission } from "./auth";
+import { MEDIA_MAX_UPLOAD_BYTES, MEDIA_MAX_UPLOAD_MB } from "../constants/media";
 const { BlobServiceClient } = require("@azure/storage-blob");
 const path = require("path");
 
@@ -54,6 +55,9 @@ export async function UploadMedia(request: HttpRequest, _context: InvocationCont
     buffer = Buffer.from(data, 'base64');
   } catch {
     return { status: 400, jsonBody: { message: 'dataBase64 must be valid base64.' } };
+  }
+  if (buffer.length > MEDIA_MAX_UPLOAD_BYTES) {
+    return { status: 413, jsonBody: { message: `File too large. Maximum size is ${MEDIA_MAX_UPLOAD_MB}MB.` } };
   }
 
   const ext = path.extname(rawName);

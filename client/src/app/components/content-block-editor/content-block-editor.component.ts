@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { environment } from '../../../environments/environment';
+import { MEDIA_MAX_UPLOAD_BYTES, MEDIA_MAX_UPLOAD_MB } from '../../constants/media';
 
 @Component({
   selector: 'app-content-block-editor',
@@ -36,8 +37,13 @@ export class ContentBlockEditorComponent implements OnChanges, AfterViewInit {
     images_upload_handler: (blobInfo, _progress) => new Promise<string>((resolve, reject) => {
       const fileName = blobInfo.filename();
       const contentType = blobInfo.blob()?.type || 'application/octet-stream';
+      const fileSize = blobInfo.blob()?.size || 0;
       const dataBase64 = blobInfo.base64();
       const prefix = this.key ? this.key : 'content';
+      if (fileSize > MEDIA_MAX_UPLOAD_BYTES) {
+        reject(`File too large. Maximum size is ${MEDIA_MAX_UPLOAD_MB}MB.`);
+        return;
+      }
 
       this.api.uploadMedia({ fileName, contentType, dataBase64, prefix }).subscribe({
         next: (response: any) => {
