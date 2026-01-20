@@ -1,4 +1,5 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { requirePermission } from "./auth";
 const { BlobServiceClient } = require("@azure/storage-blob");
 const path = require("path");
 
@@ -12,6 +13,11 @@ type UploadMediaBody = {
 const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9._-]+/g, '-');
 
 export async function UploadMedia(request: HttpRequest, _context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:content");
+  if (auth) {
+    return auth;
+  }
+
   let body: UploadMediaBody = {};
   try {
     body = (await request.json()) as UploadMediaBody;

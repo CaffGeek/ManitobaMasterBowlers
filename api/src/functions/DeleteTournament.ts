@@ -1,7 +1,13 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 export async function DeleteTournament(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:schedule");
+  if (auth) {
+    return auth;
+  }
+
   const id = Number(request.params.id);
   if (!id) {
     return { status: 400, jsonBody: { message: 'Tournament id is required.' } };

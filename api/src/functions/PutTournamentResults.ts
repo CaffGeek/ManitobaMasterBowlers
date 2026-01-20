@@ -1,4 +1,5 @@
 import { app, output, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { requirePermission } from "./auth";
 
 const sqlOutput = output.sql({
     commandText: `TournamentResults`,
@@ -6,6 +7,11 @@ const sqlOutput = output.sql({
 })
 
 export async function PutTournamentResults(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const auth = await requirePermission(request, "edit:tournament");
+    if (auth) {
+        return auth;
+    }
+
     const body = await request.json();
     context.extraOutputs.set(sqlOutput, body);
 

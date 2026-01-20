@@ -24,7 +24,8 @@ export class NavBarComponent implements OnInit {
   faUser = faUser;
   faPowerOff = faPowerOff;
   canAnyAdmin$: Observable<boolean>;
-  canEditSitemap$: Observable<boolean>;
+  canEditContent$: Observable<boolean>;
+  canEditSchedule$: Observable<boolean>;
   canEditBowler$: Observable<boolean>;
   canEditContentBlocks$: Observable<boolean>;
   menuNodes: MenuNode[] = [];
@@ -35,13 +36,23 @@ export class NavBarComponent implements OnInit {
     private permissions: PermissionService,
     private sitemap: SitemapService
   ) {
-    this.canEditSitemap$ = this.auth.isAuthenticated$.pipe(
+    this.canEditContent$ = this.auth.isAuthenticated$.pipe(
       switchMap((isAuthenticated) => {
         if (!isAuthenticated) {
           return of(false);
         }
 
-        return this.permissions.checkPermission(PERMISSION.EDIT_SITEMAP);
+        return this.permissions.checkPermission(PERMISSION.EDIT_CONTENT);
+      })
+    );
+
+    this.canEditSchedule$ = this.auth.isAuthenticated$.pipe(
+      switchMap((isAuthenticated) => {
+        if (!isAuthenticated) {
+          return of(false);
+        }
+
+        return this.permissions.checkPermission(PERMISSION.EDIT_SCHEDULE);
       })
     );
 
@@ -55,29 +66,29 @@ export class NavBarComponent implements OnInit {
       })
     );
 
-    this.canEditContentBlocks$ = this.auth.isAuthenticated$.pipe(
-      switchMap((isAuthenticated) => {
-        if (!isAuthenticated) {
-          return of(false);
-        }
+    this.canEditContentBlocks$ = this.canEditContent$;
 
-        return this.permissions.checkPermission(PERMISSION.EDIT_CONTENTBLOCKS);
-      })
-    );
-
-    this.canAnyAdmin$ = this.canEditSitemap$.pipe(
-      switchMap((canEditSitemap) => {
-        if (canEditSitemap) {
+    this.canAnyAdmin$ = this.canEditContent$.pipe(
+      switchMap((canEditContent) => {
+        if (canEditContent) {
           return of(true);
         }
 
-        return this.canEditBowler$.pipe(
-          switchMap((canEditBowler) => {
-            if (canEditBowler) {
+        return this.canEditSchedule$.pipe(
+          switchMap((canEditSchedule) => {
+            if (canEditSchedule) {
               return of(true);
             }
 
-            return this.canEditContentBlocks$;
+            return this.canEditBowler$.pipe(
+              switchMap((canEditBowler) => {
+                if (canEditBowler) {
+                  return of(true);
+                }
+
+                return this.canEditContentBlocks$;
+              })
+            );
           })
         );
       })

@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 type UpdateBowlerBody = {
   name?: string;
@@ -7,6 +8,11 @@ type UpdateBowlerBody = {
 };
 
 export async function UpdateBowler(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:bowler");
+  if (auth) {
+    return auth;
+  }
+
   const id = Number(request.params.id);
   if (!id) {
     return { status: 400, jsonBody: { message: 'Bowler id is required.' } };

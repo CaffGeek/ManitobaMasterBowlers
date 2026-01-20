@@ -1,7 +1,13 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { requirePermission } from "./auth";
 const { BlobServiceClient } = require("@azure/storage-blob");
 
-export async function ListMedia(_request: HttpRequest, _context: InvocationContext): Promise<HttpResponseInit> {
+export async function ListMedia(request: HttpRequest, _context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:content");
+  if (auth) {
+    return auth;
+  }
+
   const connectionString = process.env.MediaStorageConnectionString;
   if (!connectionString) {
     return { status: 500, jsonBody: { message: 'MediaStorageConnectionString is not configured.' } };

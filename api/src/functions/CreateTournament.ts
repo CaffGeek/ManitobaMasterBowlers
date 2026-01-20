@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 type CreateTournamentBody = {
   Id?: number;
@@ -11,6 +12,11 @@ type CreateTournamentBody = {
 };
 
 export async function CreateTournament(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:schedule");
+  if (auth) {
+    return auth;
+  }
+
   const body = (await request.json()) as CreateTournamentBody | undefined;
   const seasonCode = (body?.SeasonCode || '').trim();
   const division = (body?.Division || '').trim();

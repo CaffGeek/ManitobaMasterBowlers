@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 type CreateSeasonBody = {
   SeasonCode?: string;
@@ -7,6 +8,11 @@ type CreateSeasonBody = {
 };
 
 export async function CreateSeason(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "create:season");
+  if (auth) {
+    return auth;
+  }
+
   const body = (await request.json()) as CreateSeasonBody | undefined;
   const seasonCode = (body?.SeasonCode || '').trim();
   const seasonDesc = (body?.SeasonDesc || '').trim();

@@ -72,31 +72,31 @@ const routes: Routes = [
     path: 'media',
     component: MediaPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENT },
   },
   {
     path: 'schedule/edit',
     component: ScheduleEditPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_TOURNAMENT },
+    data: { requiredPermission: PERMISSION.EDIT_SCHEDULE },
   },
   {
     path: 'schedule/edit/:season',
     component: ScheduleEditPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_TOURNAMENT },
+    data: { requiredPermission: PERMISSION.EDIT_SCHEDULE },
   },
   {
     path: 'sitemap',
     component: SitemapPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENT },
   },
   {
     path: 'sitemap/:slug',
     component: SitemapPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_SITEMAP },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENT },
   },
   {
     matcher: aspxMatcher,
@@ -114,7 +114,7 @@ const routes: Routes = [
     path: 'contentblocks',
     component: ContentBlocksPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_CONTENTBLOCKS },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENT },
     children: [
       { path: '', component: ContentBlockListComponent, outlet: "list" },
     ]
@@ -123,7 +123,7 @@ const routes: Routes = [
     path: 'contentblocks/:key',
     component: ContentBlocksPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
-    data: { requiredPermission: PERMISSION.EDIT_CONTENTBLOCKS },
+    data: { requiredPermission: PERMISSION.EDIT_CONTENT },
     children: [
       { path: '', component: ContentBlockListComponent, outlet: "list" },
       { path: '', component: ContentBlockEditorComponent, outlet: "editor" },

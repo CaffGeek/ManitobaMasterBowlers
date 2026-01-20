@@ -1,11 +1,17 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 type DeleteRequestBody = {
   ids?: number[];
 };
 
 export async function DeleteTournamentResults(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:tournament");
+  if (auth) {
+    return auth;
+  }
+
   const body = (await request.json()) as DeleteRequestBody | undefined;
   const ids = Array.isArray(body?.ids) ? body.ids : [];
 

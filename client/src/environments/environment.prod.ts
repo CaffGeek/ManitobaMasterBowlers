@@ -33,7 +33,8 @@ export const environment = {
     errorPath,
   },
   httpInterceptor: {
-    allowedList: [`${apiUri}/*`],
+    allowedList: [`${apiUri}*`],
+    allowAnonymous: false,
   },
   tinymceApiKey
 };

@@ -32,7 +32,7 @@ export class ContentBlockComponent implements OnInit, OnChanges, OnDestroy {
           return of(false);
         }
 
-        return this.permissions.checkPermission(PERMISSION.EDIT_SITEMAP);
+        return this.permissions.checkPermission(PERMISSION.EDIT_CONTENT);
       })
     );
   }

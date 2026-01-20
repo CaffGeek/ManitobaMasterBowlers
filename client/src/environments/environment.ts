@@ -39,8 +39,8 @@ export const environment = {
   httpInterceptor: {
     //https://github.com/auth0/auth0-angular/blob/main/EXAMPLES.md
     allowedList: [{
-      uri: `${apiUri}/*`,
-      allowAnonymous: true,
+      uri: `${apiUri}*`,
+      allowAnonymous: false,
     }]
   },
   tinymceApiKey

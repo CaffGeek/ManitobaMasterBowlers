@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 type AddBowlerSeasonBody = {
   bowlerId?: number;
@@ -11,6 +12,11 @@ type AddBowlerSeasonBody = {
 };
 
 export async function AddBowlerSeason(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:bowler");
+  if (auth) {
+    return auth;
+  }
+
   const season = (request.params.season || '').trim();
   if (!season) {
     return { status: 400, jsonBody: { message: 'Season is required.' } };

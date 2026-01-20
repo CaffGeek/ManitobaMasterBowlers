@@ -92,11 +92,11 @@
             </a>
             <div class="dropdown-menu dropdown-menu-left nav-results-menu" ngbDropdownMenu>
               <a routerLink="/bowlers" class="dropdown-item" *ngIf="canEditBowler$ | async">Bowlers</a>
-              <a routerLink="/schedule/edit" class="dropdown-item" *ngIf="canEditSitemap$ | async">Schedule</a>
-              <a routerLink="/sitemap" class="dropdown-item" *ngIf="canEditSitemap$ | async">SiteMap</a>
-              <a routerLink="/contentblocks" class="dropdown-item" *ngIf="canEditContentBlocks$ | async">Content</a>
-              <a routerLink="/media" class="dropdown-item" *ngIf="canEditSitemap$ | async">Media</a>
-              <a routerLink="/content/help" class="dropdown-item" *ngIf="canEditSitemap$ | async">Help</a>
+              <a routerLink="/schedule/edit" class="dropdown-item" *ngIf="canEditSchedule$ | async">Schedule</a>
+              <a routerLink="/sitemap" class="dropdown-item" *ngIf="canEditContent$ | async">SiteMap</a>
+              <a routerLink="/contentblocks" class="dropdown-item" *ngIf="canEditContent$ | async">Content</a>
+              <a routerLink="/media" class="dropdown-item" *ngIf="canEditContent$ | async">Media</a>
+              <a routerLink="/content/help" class="dropdown-item" *ngIf="canEditContent$ | async">Help</a>
             </div>
           </li>
         </ul>
@@ -196,21 +196,25 @@
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/profile">Profile</a>
           </li>
-          <li *ngIf="canEditSitemap$ | async">
+          <li *ngIf="canEditContent$ | async">
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/contentblocks">Admin</a>
           </li>
-          <li *ngIf="canEditContentBlocks$ | async">
+          <li *ngIf="canEditContent$ | async">
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/contentblocks">Content</a>
           </li>
-          <li *ngIf="canEditSitemap$ | async">
+          <li *ngIf="canEditContent$ | async">
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/media">Media</a>
           </li>
           <li *ngIf="canEditBowler$ | async">
             <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
             <a routerLink="/bowlers">Bowlers</a>
+          </li>
+          <li *ngIf="canEditSchedule$ | async">
+            <fa-icon [icon]="faUser" class="mr-3"></fa-icon>
+            <a routerLink="/schedule/edit">Schedule</a>
           </li>
 
           <li>

@@ -1,4 +1,5 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext, output } from "@azure/functions";
+import { requirePermission } from "./auth";
 
 const sqlOutput = output.generic({
     type: 'sql',
@@ -7,6 +8,11 @@ const sqlOutput = output.generic({
 });
 
 export async function SaveContentBlock(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const auth = await requirePermission(request, "edit:content");
+    if (auth) {
+        return auth;
+    }
+
     let body: { contentBlock?: string; contentHTML?: string } = {};
     try {
         body = (await request.json()) as { contentBlock?: string; contentHTML?: string };

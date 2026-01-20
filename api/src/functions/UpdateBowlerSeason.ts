@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
+import { requirePermission } from "./auth";
 
 type UpdateBowlerSeasonBody = {
   TournamentFlag?: boolean;
@@ -8,6 +9,11 @@ type UpdateBowlerSeasonBody = {
 };
 
 export async function UpdateBowlerSeason(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const auth = await requirePermission(request, "edit:bowler");
+  if (auth) {
+    return auth;
+  }
+
   const season = (request.params.season || '').trim();
   const bowlerId = Number(request.params.bowlerId);
   if (!season || !bowlerId) {
