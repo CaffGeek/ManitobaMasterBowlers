@@ -28,12 +28,16 @@ export async function CreateAnnouncement(request: HttpRequest, _context: Invocat
     return { status: 400, jsonBody: { message: 'Announcement is required.' } };
   }
 
+  if (!body?.StartDate || !body?.EndDate) {
+    return { status: 400, jsonBody: { message: 'StartDate and EndDate are required.' } };
+  }
+
   const startDate = parseDate(body?.StartDate ?? null);
   const endDate = parseDate(body?.EndDate ?? null);
-  if (body?.StartDate && !startDate) {
+  if (!startDate) {
     return { status: 400, jsonBody: { message: 'StartDate must be a valid date.' } };
   }
-  if (body?.EndDate && !endDate) {
+  if (!endDate) {
     return { status: 400, jsonBody: { message: 'EndDate must be a valid date.' } };
   }
 

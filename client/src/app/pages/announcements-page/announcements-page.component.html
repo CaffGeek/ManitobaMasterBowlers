@@ -35,26 +35,28 @@
         <div class="announcements-form">
           <label>
             Message
-            <textarea
-              rows="3"
+            <editor
+              [apiKey]="editorApiKey"
+              [init]="editorInit"
               [(ngModel)]="editorModel.Announcement"
-              placeholder="Announcement text"
-            ></textarea>
+            ></editor>
           </label>
-          <label>
-            Start Date
-            <input
-              type="datetime-local"
-              [(ngModel)]="editorModel.StartDate"
-            />
-          </label>
-          <label>
-            End Date
-            <input
-              type="datetime-local"
-              [(ngModel)]="editorModel.EndDate"
-            />
-          </label>
+          <div class="announcement-dates-grid">
+            <label>
+              Start Date
+              <input
+                type="datetime-local"
+                [(ngModel)]="editorModel.StartDate"
+              />
+            </label>
+            <label>
+              End Date
+              <input
+                type="datetime-local"
+                [(ngModel)]="editorModel.EndDate"
+              />
+            </label>
+          </div>
           <div class="announcement-actions">
             <button
               class="btn btn-success"

@@ -3,6 +3,7 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '@services/api.service';
 import { AnnouncementRecord } from '@models/AnnouncementRecord';
 import { ToastService } from '@services/toast.service';
+import { environment } from '../../../environments/environment';
 
 type AnnouncementInput = {
   Announcement: string;
@@ -19,6 +20,16 @@ type AnnouncementInput = {
 export class AnnouncementsPageComponent implements OnInit {
   faPen = faPen;
   faTrash = faTrash;
+  editorApiKey = environment.tinymceApiKey;
+  editorInit = {
+    plugins: 'table paste lists link code image',
+    menubar: 'file edit view insert format table tools',
+    toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | link image | paste | code',
+    image_dimensions: true,
+    object_resizing: 'img',
+    image_toolbar: 'imageoptions',
+    height: 200,
+  };
   announcements: AnnouncementRecord[] = [];
   editId?: number;
   editModel: AnnouncementInput = { Announcement: '', StartDate: '', EndDate: '' };
@@ -30,6 +41,7 @@ export class AnnouncementsPageComponent implements OnInit {
   constructor(private api: ApiService, private toasts: ToastService) {}
 
   ngOnInit(): void {
+    this.newModel = { Announcement: '', StartDate: this.todayInputValue(), EndDate: '' };
     this.editorModel = { ...this.newModel };
     this.loadAnnouncements();
   }
@@ -49,13 +61,14 @@ export class AnnouncementsPageComponent implements OnInit {
     this.editId = undefined;
     this.editorMode = 'new';
     this.editModel = { Announcement: '', StartDate: '', EndDate: '' };
+    this.newModel = { Announcement: '', StartDate: this.todayInputValue(), EndDate: '' };
     this.editorModel = { ...this.newModel };
   }
 
   startNew(): void {
     this.editorMode = 'new';
     this.editId = undefined;
-    this.newModel = { Announcement: '', StartDate: '', EndDate: '' };
+    this.newModel = { Announcement: '', StartDate: this.todayInputValue(), EndDate: '' };
     this.editorModel = { ...this.newModel };
   }
 
@@ -64,8 +77,7 @@ export class AnnouncementsPageComponent implements OnInit {
       return;
     }
     const payload = this.toPayload(this.editorModel);
-    if (!payload.Announcement) {
-      this.toasts.show('Announcement is required.', 'error');
+    if (!this.isValid(payload)) {
       return;
     }
 
@@ -86,8 +98,7 @@ export class AnnouncementsPageComponent implements OnInit {
 
   createAnnouncement(): void {
     const payload = this.toPayload(this.editorModel);
-    if (!payload.Announcement) {
-      this.toasts.show('Announcement is required.', 'error');
+    if (!this.isValid(payload)) {
       return;
     }
 
@@ -95,7 +106,7 @@ export class AnnouncementsPageComponent implements OnInit {
     this.api.createAnnouncement(payload).subscribe({
       next: () => {
         this.toasts.show('Announcement created.', 'success');
-        this.newModel = { Announcement: '', StartDate: '', EndDate: '' };
+        this.newModel = { Announcement: '', StartDate: this.todayInputValue(), EndDate: '' };
         this.editorModel = { ...this.newModel };
         this.loadAnnouncements();
         this.isSaving = false;
@@ -172,5 +183,21 @@ export class AnnouncementsPageComponent implements OnInit {
     }
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  private todayInputValue(): string {
+    return this.toInputValue(new Date().toISOString());
+  }
+
+  private isValid(payload: Partial<AnnouncementRecord>): boolean {
+    if (!payload.Announcement) {
+      this.toasts.show('Announcement is required.', 'error');
+      return false;
+    }
+    if (!payload.StartDate || !payload.EndDate) {
+      this.toasts.show('Start Date and End Date are required.', 'error');
+      return false;
+    }
+    return true;
   }
 }

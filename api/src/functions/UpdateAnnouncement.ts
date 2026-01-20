@@ -30,13 +30,16 @@ export async function UpdateAnnouncement(request: HttpRequest, _context: Invocat
 
   const body = (await request.json()) as AnnouncementBody | undefined;
   const message = body?.Announcement !== undefined ? (body?.Announcement || '').trim() : undefined;
-  const startDate = body?.StartDate !== undefined ? parseDate(body?.StartDate ?? null) : undefined;
-  const endDate = body?.EndDate !== undefined ? parseDate(body?.EndDate ?? null) : undefined;
+  if (!body?.StartDate || !body?.EndDate) {
+    return { status: 400, jsonBody: { message: 'StartDate and EndDate are required.' } };
+  }
 
-  if (body?.StartDate && !startDate) {
+  const startDate = parseDate(body?.StartDate ?? null);
+  const endDate = parseDate(body?.EndDate ?? null);
+  if (!startDate) {
     return { status: 400, jsonBody: { message: 'StartDate must be a valid date.' } };
   }
-  if (body?.EndDate && !endDate) {
+  if (!endDate) {
     return { status: 400, jsonBody: { message: 'EndDate must be a valid date.' } };
   }
 

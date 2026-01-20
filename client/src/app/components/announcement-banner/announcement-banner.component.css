@@ -15,6 +15,10 @@
   font-weight: 600;
 }
 
+:host ::ng-deep .announcement-banner__content p {
+  margin: 0;
+}
+
 .announcement-banner__nav {
   border: 1px solid #c9b15b;
   background: #ffdf66;

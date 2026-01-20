@@ -2,8 +2,8 @@
     background-image: url('~src/assets/MBAM.svg');
     background-size: contain;
     background-repeat: no-repeat;
-    height: 64px;
-    width: 64px;
+    height: 48px;
+    width: 48px;
 }
 
 .nav-user-profile {
