@@ -99,7 +99,7 @@ export class TournamentSummaryComponent implements OnChanges {
   }
 
   ngAfterViewInit() {
-    this.resort();
+    setTimeout(() => this.resort());
   }
 
   filterData() {
