@@ -1,6 +1,6 @@
 <div class="sitemap-page">
   <div class="sitemap-layout">
-    <div class="sitemap-tree">
+    <div class="sitemap-tree" #treeScroller>
       <div class="sitemap-tree-header">
         <span>Menu</span>
         <button class="btn btn-link sitemap-add-root" (click)="addPage()" title="Add page">
@@ -18,9 +18,11 @@
             [class.is-selected]="node.page.id === selectedPageId"
           >
             <div
-              class="sitemap-tree-row"
-              (click)="selectPage(node.page.id)"
-            >
+            class="sitemap-tree-row"
+            (click)="selectPage(node.page.id)"
+            #treeRow
+            [attr.data-page-id]="node.page.id"
+          >
               <span class="sitemap-tree-title">{{ node.page.title || 'New Page' }}</span>
               <span class="sitemap-tree-meta">
                 <button
@@ -79,6 +81,7 @@
           <div class="sitemap-field">
             <label class="sitemap-label">Title</label>
             <input class="form-control" [(ngModel)]="page.title" (blur)="updateSlug(page)" />
+            <div class="sitemap-slug">Slug: {{ page.slug || '—' }}</div>
           </div>
 
           <div class="sitemap-field">

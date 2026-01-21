@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { SitemapService } from '@services/sitemap.service';
 import { SitemapPageRecord, SitemapPageType } from '@models/SitemapPageRecord';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PERMISSION, PermissionService } from '@services/permission.service';
+import { ToastService } from '@services/toast.service';
 
 @Component({
   selector: 'app-sitemap-page',
@@ -17,6 +18,8 @@ export class SitemapPageComponent implements OnInit {
   contentKeys: string[] = [];
   tree: SitemapNode[] = [];
   selectedPageId?: string;
+  @ViewChild('treeScroller') treeScroller?: ElementRef<HTMLDivElement>;
+  @ViewChildren('treeRow') treeRows?: QueryList<ElementRef<HTMLDivElement>>;
   private routeSlug?: string;
   private routeSub?: Subscription;
   pageTypes: { value: SitemapPageType; label: string }[] = [
@@ -33,7 +36,8 @@ export class SitemapPageComponent implements OnInit {
     private sitemap: SitemapService,
     private route: ActivatedRoute,
     private router: Router,
-    private permissions: PermissionService
+    private permissions: PermissionService,
+    private toasts: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -99,6 +103,7 @@ export class SitemapPageComponent implements OnInit {
     this.selectedPageId = pageId;
     const page = this.pages.find((entry) => entry.id === pageId);
     const slug = page ? this.getRouteSlug(page) : '';
+    this.scrollSelectedIntoView();
     if (slug) {
       this.router.navigate(['/sitemap', slug]);
     } else {
@@ -159,11 +164,11 @@ export class SitemapPageComponent implements OnInit {
     );
     const normalized = this.pages.map((page, index) => {
       const title = page.title?.trim() || `Page ${index + 1}`;
+      const contentKey = page.contentKey?.trim() || '';
       const id = page.id || this.generateId();
       const parentSlug = this.getParentSlug(page);
-      const baseSlug = parentSlug
-        ? `${parentSlug}-${this.slugify(title || `page-${index + 1}`)}`
-        : this.slugify(title || `page-${index + 1}`);
+      const baseSegment = this.slugify(contentKey || title || `page-${index + 1}`);
+      const baseSlug = parentSlug ? `${parentSlug}-${baseSegment}` : baseSegment;
       const hasSlug = (page.slug || '').trim().length > 0;
       let slug = page.slug || '';
       if (page.type === 'content' && !hasSlug) {
@@ -182,7 +187,7 @@ export class SitemapPageComponent implements OnInit {
         title,
         slug,
         menuOrder: index + 1,
-        contentKey: page.contentKey?.trim() || '',
+        contentKey,
         requiredPermissions: page.requiredPermissions?.trim() || '',
         type: page.type || 'content',
         routePath: page.routePath?.trim() || '',
@@ -193,8 +198,7 @@ export class SitemapPageComponent implements OnInit {
     this.pages = normalized;
     this.sitemap.saveSitemap(normalized);
     this.rebuildTree();
-    this.selectedPageId = undefined;
-    this.router.navigate(['/sitemap']);
+    this.toasts.show('Sitemap saved.', 'success');
   }
 
   updateSlug(page: SitemapPageRecord): void {
@@ -258,6 +262,7 @@ export class SitemapPageComponent implements OnInit {
     if (!this.selectedPageId && this.pages.length > 0 && !this.routeSlug) {
       this.selectedPageId = this.pages[0].id;
     }
+    this.scrollSelectedIntoView();
   }
 
   private buildTree(pages: SitemapPageRecord[]): SitemapNode[] {
@@ -362,6 +367,7 @@ export class SitemapPageComponent implements OnInit {
     const match = this.pages.find((page) => this.getRouteSlug(page) === this.routeSlug);
     if (match) {
       this.selectedPageId = match.id;
+      this.scrollSelectedIntoView();
     }
   }
 
@@ -388,6 +394,30 @@ export class SitemapPageComponent implements OnInit {
       .split(',')
       .map((entry) => entry.trim())
       .filter((entry) => entry.length > 0);
+  }
+
+  private scrollSelectedIntoView(): void {
+    const container = this.treeScroller?.nativeElement;
+    if (!container || !this.selectedPageId) {
+      return;
+    }
+    setTimeout(() => {
+      const row = this.treeRows
+        ?.find((entry) => entry.nativeElement.dataset.pageId === this.selectedPageId)
+        ?.nativeElement;
+      if (!row) {
+        return;
+      }
+      const rowTop = row.offsetTop;
+      const rowBottom = rowTop + row.offsetHeight;
+      const containerTop = container.scrollTop;
+      const containerBottom = containerTop + container.clientHeight;
+      if (rowTop < containerTop) {
+        container.scrollTop = Math.max(0, rowTop - 8);
+      } else if (rowBottom > containerBottom) {
+        container.scrollTop = rowBottom - container.clientHeight + 8;
+      }
+    }, 0);
   }
 }
 
