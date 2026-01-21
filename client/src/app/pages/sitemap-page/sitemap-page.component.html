@@ -21,7 +21,7 @@
               class="sitemap-tree-row"
               (click)="selectPage(node.page.id)"
             >
-              <span class="sitemap-tree-title">{{ node.page.title }}</span>
+              <span class="sitemap-tree-title">{{ node.page.title || 'New Page' }}</span>
               <span class="sitemap-tree-meta">
                 <button
                   class="btn btn-link sitemap-move"
@@ -72,7 +72,7 @@
     <div class="sitemap-detail">
       <div class="sitemap-editor" *ngIf="selectedPage as page; else sitemapEmptySelection">
         <div class="sitemap-editor-header">
-          <h2>{{ page.title || 'Page details' }}</h2>
+          <h2>{{ page.title || 'New Page' }}</h2>
           <button class="btn btn-outline-danger" (click)="removePage(page.id)">Delete</button>
         </div>
         <div class="sitemap-form">

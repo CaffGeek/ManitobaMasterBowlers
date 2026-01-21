@@ -62,8 +62,8 @@ export class SitemapPageComponent implements OnInit {
     const maxOrder = siblings.reduce((max, entry) => Math.max(max, entry.menuOrder || 0), 0);
     this.pages.push({
       id,
-      title: 'New Page',
-      slug: `new-page-${this.pages.length + 1}`,
+      title: '',
+      slug: '',
       parentId: normalizedParentId,
       menuVisible: true,
       menuOrder: maxOrder + 1,
@@ -152,20 +152,43 @@ export class SitemapPageComponent implements OnInit {
 
   save(): void {
     this.syncFromTree();
-    const normalized = this.pages.map((page, index) => ({
-      ...page,
-      id: page.id || this.generateId(),
-      title: page.title?.trim() || `Page ${index + 1}`,
-      slug: page.type === 'content'
-        ? this.slugify(page.title || `page-${index + 1}`)
-        : (page.slug || ''),
-      menuOrder: index + 1,
-      contentKey: page.contentKey?.trim() || '',
-      requiredPermissions: page.requiredPermissions?.trim() || '',
-      type: page.type || 'content',
-      routePath: page.routePath?.trim() || '',
-      externalUrl: page.externalUrl?.trim() || '',
-    }));
+    const usedSlugs = new Set(
+      this.pages
+        .filter((page) => page.type === 'content' && page.slug)
+        .map((page) => (page.slug || '').toLowerCase())
+    );
+    const normalized = this.pages.map((page, index) => {
+      const title = page.title?.trim() || `Page ${index + 1}`;
+      const id = page.id || this.generateId();
+      const parentSlug = this.getParentSlug(page);
+      const baseSlug = parentSlug
+        ? `${parentSlug}-${this.slugify(title || `page-${index + 1}`)}`
+        : this.slugify(title || `page-${index + 1}`);
+      const hasSlug = (page.slug || '').trim().length > 0;
+      let slug = page.slug || '';
+      if (page.type === 'content' && !hasSlug) {
+        slug = this.createUniqueSlug(baseSlug, usedSlugs);
+      }
+      if (page.type === 'content' && hasSlug) {
+        usedSlugs.add(slug.toLowerCase());
+      }
+      if (page.type !== 'content') {
+        slug = page.slug || '';
+      }
+
+      return {
+        ...page,
+        id,
+        title,
+        slug,
+        menuOrder: index + 1,
+        contentKey: page.contentKey?.trim() || '',
+        requiredPermissions: page.requiredPermissions?.trim() || '',
+        type: page.type || 'content',
+        routePath: page.routePath?.trim() || '',
+        externalUrl: page.externalUrl?.trim() || '',
+      };
+    });
 
     this.pages = normalized;
     this.sitemap.saveSitemap(normalized);
@@ -176,7 +199,9 @@ export class SitemapPageComponent implements OnInit {
 
   updateSlug(page: SitemapPageRecord): void {
     if (page.type === 'content') {
-      page.slug = this.slugify(page.title || '');
+      if (!page.slug) {
+        page.slug = this.slugify(page.title || '');
+      }
     }
   }
 
@@ -280,6 +305,33 @@ export class SitemapPageComponent implements OnInit {
     const trimmed = value.trim().toLowerCase();
     const cleaned = trimmed.replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     return cleaned || 'page';
+  }
+
+  private createUniqueSlug(baseSlug: string, usedSlugs: Set<string>): string {
+    let candidate = baseSlug;
+    let counter = 2;
+    while (usedSlugs.has(candidate.toLowerCase())) {
+      candidate = `${baseSlug}-${counter}`;
+      counter += 1;
+    }
+    usedSlugs.add(candidate.toLowerCase());
+    return candidate;
+  }
+
+  private getParentSlug(page: SitemapPageRecord): string {
+    const parts: string[] = [];
+    let currentParentId = page.parentId;
+    while (currentParentId) {
+      const parent = this.pages.find((entry) => entry.id === currentParentId);
+      if (!parent) {
+        break;
+      }
+      if (parent.title) {
+        parts.unshift(this.slugify(parent.title));
+      }
+      currentParentId = parent.parentId;
+    }
+    return parts.filter((part) => part.length > 0).join('-');
   }
 
   private getRouteSlug(page: SitemapPageRecord): string {
