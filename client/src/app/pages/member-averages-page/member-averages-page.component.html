@@ -1,0 +1,102 @@
+<mat-card class="averages-card">
+  <mat-card-header>
+    <div class="averages-header">
+      <h1>Member Averages</h1>
+      <div class="averages-actions">
+        <label class="filter-label">
+          Division
+          <select [(ngModel)]="filterDivision" (change)="applyFilter()">
+            <option value="all">All</option>
+            <option value="Tournament">Tournament</option>
+            <option value="Teaching">Teaching</option>
+            <option value="Senior">Senior</option>
+          </select>
+        </label>
+        <button class="btn btn-success" (click)="exportCsv()">Export as CSV</button>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 averages-table">
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">
+          <a [routerLink]="['/bowlers', row.BowlerId]">{{ row.Name }}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="TournamentFlag">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Tournament</th>
+        <td mat-cell *matCellDef="let row">
+          <fa-icon *ngIf="row.TournamentFlag" [icon]="faCheck" class="flag-check"></fa-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="TeachingFlag">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Teaching</th>
+        <td mat-cell *matCellDef="let row">
+          <fa-icon *ngIf="row.TeachingFlag" [icon]="faCheck" class="flag-check"></fa-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="SeniorFlag">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Senior</th>
+        <td mat-cell *matCellDef="let row">
+          <fa-icon *ngIf="row.SeniorFlag" [icon]="faCheck" class="flag-check"></fa-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="events">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Events</th>
+        <td mat-cell *matCellDef="let row">{{ row.events }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="games">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Games</th>
+        <td mat-cell *matCellDef="let row">{{ row.games }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="missingGames">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Missing Games</th>
+        <td mat-cell *matCellDef="let row">{{ getMissingGames(row) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="pinfall">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Pinfall</th>
+        <td mat-cell *matCellDef="let row">{{ row.pinfall }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="average">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Average</th>
+        <td mat-cell *matCellDef="let row">{{ row.average }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="leagueAverage">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Highest League</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="row.events < 10; else leagueAvgValue">
+            <input
+              type="number"
+              class="avg-input"
+              [value]="getLeagueAverage(row) ?? ''"
+              (input)="setLeagueAverage(row, $any($event.target).value)"
+            />
+          </ng-container>
+          <ng-template #leagueAvgValue>
+            {{ getLeagueAverage(row) ?? '' }}
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="mastersAverage">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Masters Average</th>
+        <td mat-cell *matCellDef="let row">
+          {{ getMastersAverage(row) ?? '' }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

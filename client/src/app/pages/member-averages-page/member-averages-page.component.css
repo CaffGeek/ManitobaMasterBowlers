@@ -1,0 +1,113 @@
+.averages-card {
+  margin: 16px;
+}
+
+.averages-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.averages-header h1 {
+  margin: 0;
+}
+
+.averages-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.filter-label select {
+  min-width: 150px;
+  padding: 4px 6px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.averages-table {
+  width: 100%;
+}
+
+.averages-table .mat-column-Name {
+  min-width: 200px;
+}
+
+.averages-table .mat-column-TournamentFlag,
+.averages-table .mat-column-TeachingFlag,
+.averages-table .mat-column-SeniorFlag {
+  width: 72px;
+  text-align: center;
+}
+
+.averages-table .mat-column-TournamentFlag mat-header-cell,
+.averages-table .mat-column-TeachingFlag mat-header-cell,
+.averages-table .mat-column-SeniorFlag mat-header-cell,
+.averages-table .mat-column-TournamentFlag mat-cell,
+.averages-table .mat-column-TeachingFlag mat-cell,
+.averages-table .mat-column-SeniorFlag mat-cell {
+  justify-content: center;
+}
+
+.averages-table .mat-column-events,
+.averages-table .mat-column-games,
+.averages-table .mat-column-missingGames {
+  width: 90px;
+  text-align: right;
+}
+
+.averages-table .mat-column-average,
+.averages-table .mat-column-mastersAverage {
+  width: 110px;
+  text-align: right;
+}
+
+.averages-table .mat-column-leagueAverage {
+  width: 150px;
+  text-align: right;
+}
+
+.averages-table .mat-column-pinfall {
+  width: 120px;
+  text-align: right;
+}
+
+.averages-table th.mat-header-cell,
+.averages-table td.mat-cell {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.flag-check {
+  color: #1f8b3c;
+  font-size: 0.85rem;
+}
+
+.averages-table .mat-column-events mat-header-cell,
+.averages-table .mat-column-games mat-header-cell,
+.averages-table .mat-column-missingGames mat-header-cell,
+.averages-table .mat-column-pinfall mat-header-cell,
+.averages-table .mat-column-average mat-header-cell,
+.averages-table .mat-column-mastersAverage mat-header-cell,
+.averages-table .mat-column-leagueAverage mat-header-cell {
+  justify-content: flex-end;
+}
+
+.avg-input {
+  width: 100%;
+  max-width: 80px;
+  padding: 4px 6px;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  text-align: right;
+}

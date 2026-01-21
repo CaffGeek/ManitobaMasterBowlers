@@ -21,6 +21,7 @@ import './GetBowlerSeasons';
 import './AddBowlerSeason';
 import './UpdateBowlerSeason';
 import './DeleteBowlerSeason';
+import './GetMemberAverages';
 import './SaveContentBlock';
 import './UpdateBowler';
 import './WhoAmI';

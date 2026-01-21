@@ -49,6 +49,7 @@ import { WinnersPageComponent } from './pages/winners-page/winners-page.componen
 import { MediaPageComponent } from './pages/media-page/media-page.component';
 import { AnnouncementBannerComponent } from './components/announcement-banner/announcement-banner.component';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
+import { MemberAveragesPageComponent } from './pages/member-averages-page/member-averages-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
@@ -90,6 +91,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     MediaPageComponent,
     AnnouncementBannerComponent,
     AnnouncementsPageComponent,
+    MemberAveragesPageComponent,
     ToastComponent
   ],
   imports: [

@@ -89,6 +89,10 @@ export class ApiService {
     return this.fromCache<any[]>('winners');
   }
 
+  memberAverages$(): Observable<any[]> {
+    return this.fromCache<any[]>('memberaverages');
+  }
+
   createSeason(seasonCode: string, seasonDesc: string): Observable<unknown> {
     return this.http.post(`${environment.apiUri}seasons`, { SeasonCode: seasonCode, SeasonDesc: seasonDesc })
       .pipe(tap(() => this.clearCache('seasons')));

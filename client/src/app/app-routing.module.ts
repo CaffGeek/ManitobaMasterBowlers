@@ -25,6 +25,7 @@ import { ScheduleEditPageComponent } from '@pages/schedule-edit-page/schedule-ed
 import { WinnersPageComponent } from '@pages/winners-page/winners-page.component';
 import { MediaPageComponent } from '@pages/media-page/media-page.component';
 import { AnnouncementsPageComponent } from '@pages/announcements-page/announcements-page.component';
+import { MemberAveragesPageComponent } from '@pages/member-averages-page/member-averages-page.component';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -68,6 +69,10 @@ const routes: Routes = [
   {
     path: 'winners',
     component: WinnersPageComponent,
+  },
+  {
+    path: 'member-averages',
+    component: MemberAveragesPageComponent,
   },
   {
     path: 'media',
