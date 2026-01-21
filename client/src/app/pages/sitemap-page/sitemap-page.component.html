@@ -80,7 +80,11 @@
         <div class="sitemap-form">
           <div class="sitemap-field">
             <label class="sitemap-label">Title</label>
-            <input class="form-control" [(ngModel)]="page.title" (blur)="updateSlug(page)" />
+            <input
+              class="form-control"
+              [(ngModel)]="page.title"
+              (blur)="updateSlug(page)"
+            />
             <div class="sitemap-slug">Slug: {{ page.slug || '—' }}</div>
           </div>
 

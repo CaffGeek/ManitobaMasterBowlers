@@ -88,15 +88,23 @@ export class SitemapPageComponent implements OnInit {
     }
 
     const idsToRemove = new Set([pageId, ...this.getDescendantIds(pageId)]);
+    const removedPage = this.pages.find((page) => page.id === pageId);
     this.pages = this.pages.filter((page) => !idsToRemove.has(page.id));
+    this.pages = [...this.pages];
     if (this.selectedPageId && idsToRemove.has(this.selectedPageId)) {
-      this.selectedPageId = undefined;
-      this.router.navigate(['/sitemap']);
+      this.selectedPageId = removedPage?.parentId;
+      const targetId = this.selectedPageId;
+      const targetPage = targetId ? this.pages.find((page) => page.id === targetId) : undefined;
+      const targetSlug = targetPage ? this.getRouteSlug(targetPage) : '';
+      if (targetSlug) {
+        this.router.navigate(['/sitemap', targetSlug]);
+      } else {
+        this.router.navigate(['/sitemap']);
+      }
     }
     this.tree = this.buildTree(this.pages);
     this.syncFromTree();
-    this.sitemap.saveSitemap(this.pages);
-    this.rebuildTree();
+    this.persistAndReload();
   }
 
   selectPage(pageId: string): void {
@@ -151,8 +159,7 @@ export class SitemapPageComponent implements OnInit {
     nodes.splice(0, nodes.length, ...updated);
 
     this.syncFromTree();
-    this.sitemap.saveSitemap(this.pages);
-    this.rebuildTree();
+    this.persistAndReload();
   }
 
   save(): void {
@@ -196,9 +203,9 @@ export class SitemapPageComponent implements OnInit {
     });
 
     this.pages = normalized;
-    this.sitemap.saveSitemap(normalized);
-    this.rebuildTree();
-    this.toasts.show('Sitemap saved.', 'success');
+    this.persistAndReload(() => {
+      this.toasts.show('Sitemap saved.', 'success');
+    });
   }
 
   updateSlug(page: SitemapPageRecord): void {
@@ -208,6 +215,7 @@ export class SitemapPageComponent implements OnInit {
       }
     }
   }
+
 
   trackById(_index: number, page: SitemapPageRecord): string {
     return page.id;
@@ -418,6 +426,21 @@ export class SitemapPageComponent implements OnInit {
         container.scrollTop = rowBottom - container.clientHeight + 8;
       }
     }, 0);
+  }
+
+  private persistAndReload(onSuccess?: () => void): void {
+    const currentSelected = this.selectedPageId;
+    this.sitemap.saveSitemap$(this.pages).subscribe(() => {
+      this.rebuildTree();
+      if (currentSelected && this.pages.some((page) => page.id === currentSelected)) {
+        this.selectedPageId = currentSelected;
+      } else if (this.routeSlug) {
+        this.applyRouteSelection();
+      } else if (this.pages.length > 0) {
+        this.selectedPageId = this.pages[0].id;
+      }
+      onSuccess?.();
+    });
   }
 }
 

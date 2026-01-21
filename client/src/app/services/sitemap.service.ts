@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, shareReplay } from 'rxjs';
+import { Observable, catchError, map, of, shareReplay, tap } from 'rxjs';
 import { ApiService } from '@services/api.service';
 import { SitemapPageRecord } from '@models/SitemapPageRecord';
 
@@ -42,12 +42,15 @@ export class SitemapService {
     return this.sitemap$;
   }
 
-  saveSitemap(pages: SitemapPageRecord[]): void {
+  saveSitemap$(pages: SitemapPageRecord[]): Observable<unknown> {
     const payload: SitemapPayload = {
       pages: pages.map((page) => this.normalizePage(page)),
     };
-    this.api.saveContentBlock(SITEMAP_KEY, JSON.stringify(payload)).subscribe();
-    this.sitemap$ = undefined;
+    return this.api.saveContentBlock(SITEMAP_KEY, JSON.stringify(payload)).pipe(
+      tap(() => {
+        this.sitemap$ = undefined;
+      })
+    );
   }
 
   private normalizePage(page: SitemapPageRecord): SitemapPageRecord {
