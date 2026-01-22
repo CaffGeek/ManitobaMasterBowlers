@@ -8,3 +8,67 @@
     gap: 16px;
     flex-wrap: nowrap;
 }
+
+@media (max-width: 700px) {
+    #exports {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    #exports .btn {
+        width: auto;
+        align-self: flex-start;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+
+    .filter-field {
+        min-width: 0;
+        width: 100%;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-text-field-wrapper,
+    :host ::ng-deep .filter-field .mat-mdc-form-field-flex {
+        height: 40px;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-form-field-infix {
+        min-height: 40px;
+        padding-top: 10px;
+        padding-bottom: 6px;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-select-trigger {
+        font-size: 0.9rem;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-floating-label {
+        font-size: 0.85rem;
+    }
+
+    :host ::ng-deep .mat-mdc-form-field {
+        width: 100%;
+    }
+
+    :host ::ng-deep .mat-column-Pos {
+        width: 28px;
+    }
+
+    :host ::ng-deep .mat-column-Bowler a {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    :host ::ng-deep .mat-column-Bowler {
+        width: 140px;
+        max-width: 140px;
+        min-width: 140px;
+    }
+}

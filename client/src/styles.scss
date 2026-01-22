@@ -102,6 +102,25 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .mat-mdc-table .mat-mdc-header-cell,
+    .mat-mdc-table .mat-mdc-cell,
+    .mat-table .mat-header-cell,
+    .mat-table .mat-cell {
+        padding: 4px 6px;
+        font-size: 0.85rem;
+    }
+
+    .mat-mdc-table .mdc-data-table__row,
+    .mat-table .mat-row,
+    .mat-table .mat-header-row {
+        height: 36px;
+    }
+
     .navbar .nav-results-menu {
         margin-top: 8px;
         border-radius: 12px;
