@@ -16,6 +16,11 @@
   gap: 10px;
 }
 
+.content-page__section-select {
+  display: none;
+  width: 100%;
+}
+
 .content-page__menu a {
   text-decoration: none;
   color: #9a6b00;
@@ -41,5 +46,19 @@
 
   .content-page__sidebar {
     position: static;
+  }
+
+  .content-page__menu {
+    display: none;
+  }
+
+  .content-page__section-select {
+    display: block;
+    position: sticky;
+    top: 72px;
+    z-index: 2;
+    background: #fff7dc;
+    padding: 6px 8px 8px;
+    border-radius: 8px;
   }
 }

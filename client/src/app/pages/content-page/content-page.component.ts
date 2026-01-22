@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SitemapService } from '@services/sitemap.service';
 import { SitemapPageRecord } from '@models/SitemapPageRecord';
@@ -27,7 +27,8 @@ export class ContentPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private sitemap: SitemapService,
-    private permissions: PermissionService
+    private permissions: PermissionService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -107,6 +108,37 @@ export class ContentPageComponent implements OnInit, OnDestroy {
       return `${env.appBasePath || ''}/assets${url}`;
     }
     return url;
+  }
+
+  get selectedSectionId(): string {
+    if (this.sections.length === 0) {
+      return '';
+    }
+    const selected = this.sections.find((section) => section.slug === this.sectionKey) || this.sections[0];
+    return selected?.id || '';
+  }
+
+  onSectionSelect(sectionId: string): void {
+    const section = this.sections.find((entry) => entry.id === sectionId);
+    if (!section) {
+      return;
+    }
+
+    if (this.isExternalSection(section)) {
+      window.open(this.getSectionExternalUrl(section), '_blank', 'noopener');
+      return;
+    }
+
+    if (this.isRouteSection(section)) {
+      this.router.navigateByUrl(this.getSectionRoute(section));
+      return;
+    }
+
+    if (!this.parentPage) {
+      return;
+    }
+
+    this.router.navigate(['/content', this.parentPage.slug, section.slug]);
   }
 
   private evaluateAccess(page: SitemapPageRecord, section?: SitemapPageRecord): void {

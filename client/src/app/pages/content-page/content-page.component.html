@@ -4,6 +4,14 @@
   [class.content-page--full]="sections.length === 0"
 >
   <aside class="content-page__sidebar" *ngIf="sections.length > 0">
+    <mat-form-field class="content-page__section-select" appearance="outline">
+      <mat-label>Section</mat-label>
+      <mat-select [value]="selectedSectionId" (selectionChange)="onSectionSelect($event.value)">
+        <mat-option *ngFor="let section of sections" [value]="section.id">
+          {{ section.title }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <nav class="content-page__menu">
       <ng-container *ngFor="let section of sections">
         <a
