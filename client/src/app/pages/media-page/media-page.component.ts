@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '@services/api.service';
 import { ToastService } from '@services/toast.service';
+import { ConfirmDialogService } from '@services/confirm-dialog.service';
 import { MEDIA_MAX_UPLOAD_BYTES, MEDIA_MAX_UPLOAD_MB } from '../../constants/media';
 
 @Component({
@@ -23,7 +24,11 @@ export class MediaPageComponent implements OnInit {
   filteredItems: any[] = [];
   filterText = '';
 
-  constructor(private api: ApiService, private toasts: ToastService) {}
+  constructor(
+    private api: ApiService,
+    private toasts: ToastService,
+    private confirm: ConfirmDialogService
+  ) {}
 
   ngOnInit() {
     this.loadMedia();
@@ -108,21 +113,28 @@ export class MediaPageComponent implements OnInit {
   }
 
   confirmDelete(item: any) {
-    const ok = confirm(`Delete "${item.name}"? This cannot be undone.`);
-    if (!ok) {
-      return;
-    }
+    this.confirm
+      .confirm({
+        title: 'Remove media',
+        message: `Remove "${item.name}"? This cannot be undone.`,
+        confirmText: 'Remove',
+      })
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
 
-    if (this.selectedItemUrl === item.url) {
-      this.selectedItemUrl = null;
-    }
+        if (this.selectedItemUrl === item.url) {
+          this.selectedItemUrl = null;
+        }
 
-    this.api.deleteMedia(item.name).subscribe({
-      next: () => this.loadMedia(),
-      error: () => {
-        this.errorMessage = 'Delete failed. Please try again.';
-      },
-    });
+        this.api.deleteMedia(item.name).subscribe({
+          next: () => this.loadMedia(),
+          error: () => {
+            this.errorMessage = 'Delete failed. Please try again.';
+          },
+        });
+      });
   }
 
   selectItem(item: any) {

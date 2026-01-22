@@ -3,6 +3,7 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '@services/api.service';
 import { AnnouncementRecord } from '@models/AnnouncementRecord';
 import { ToastService } from '@services/toast.service';
+import { ConfirmDialogService } from '@services/confirm-dialog.service';
 import { environment } from '../../../environments/environment';
 
 type AnnouncementInput = {
@@ -38,7 +39,11 @@ export class AnnouncementsPageComponent implements OnInit {
   editorModel: AnnouncementInput = { Announcement: '', StartDate: '', EndDate: '' };
   isSaving = false;
 
-  constructor(private api: ApiService, private toasts: ToastService) {}
+  constructor(
+    private api: ApiService,
+    private toasts: ToastService,
+    private confirm: ConfirmDialogService
+  ) {}
 
   ngOnInit(): void {
     this.newModel = { Announcement: '', StartDate: this.todayInputValue(), EndDate: '' };
@@ -119,20 +124,27 @@ export class AnnouncementsPageComponent implements OnInit {
   }
 
   confirmDelete(item: AnnouncementRecord): void {
-    const ok = confirm('Delete this announcement?');
-    if (!ok) {
-      return;
-    }
+    this.confirm
+      .confirm({
+        title: 'Remove announcement',
+        message: 'Remove this announcement?',
+        confirmText: 'Remove',
+      })
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
 
-    this.api.deleteAnnouncement(item.Id).subscribe({
-      next: () => {
-        this.toasts.show('Announcement deleted.', 'success');
-        this.loadAnnouncements();
-      },
-      error: () => {
-        this.toasts.show('Delete failed. Please try again.', 'error');
-      },
-    });
+        this.api.deleteAnnouncement(item.Id).subscribe({
+          next: () => {
+            this.toasts.show('Announcement deleted.', 'success');
+            this.loadAnnouncements();
+          },
+          error: () => {
+            this.toasts.show('Delete failed. Please try again.', 'error');
+          },
+        });
+      });
   }
 
   private loadAnnouncements(): void {

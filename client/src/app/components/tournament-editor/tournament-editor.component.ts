@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@services/api.service';
 import { BowlerRecord } from '@models/BowlerRecord';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
+import { ConfirmDialogService } from '@services/confirm-dialog.service';
 
 @Component({
   selector: 'app-tournament-editor',
@@ -20,6 +21,7 @@ export class TournamentEditorComponent implements OnChanges {
 
   constructor(
     private api: ApiService,
+    private confirm: ConfirmDialogService,
   ) {
   }
 
@@ -95,45 +97,64 @@ export class TournamentEditorComponent implements OnChanges {
   }
 
   removeRow(index: number) {
-    if (!window.confirm('Remove this bowler from the results?')) {
-      return;
-    }
+    this.confirm
+      .confirm({
+        title: 'Remove bowler',
+        message: 'Remove this bowler from the results?',
+        confirmText: 'Remove',
+      })
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
 
-    const row = this.results[index];
-    this.results = this.results.filter((_row, rowIndex) => rowIndex !== index);
-    this.dataSource.data = this.results;
+        const row = this.results[index];
+        this.results = this.results.filter((_row, rowIndex) => rowIndex !== index);
+        this.dataSource.data = this.results;
 
-    if (row?.Id && row.Id > 0) {
-      this.api.deleteTournamentResults(this.tournament, [row.Id]).subscribe();
-    }
+        if (row?.Id && row.Id > 0) {
+          this.api.deleteTournamentResults(this.tournament, [row.Id]).subscribe();
+        }
+      });
   }
 
   onSubmit() {
-    if (!window.confirm("Do you want to save?"))  return;
-    
-    var data = this.results
-      .map((c: TournamentResultsRecord) => {
-        let record = {
-          TournamentId: this.tournament,
-          BowlerId: c.BowlerId,
-          Game1: c.Game1,
-          Game2: c.Game2,
-          Game3: c.Game3,
-          Game4: c.Game4,
-          Game5: c.Game5,
-          Game6: c.Game6,
-          Game7: c.Game7,
-          Game8: c.Game8,
-          BowlerAverage: c.Average,
-          IgnoreForAverage: !!c.IgnoreForAverage,
-          WonStars: !!c.WonStars,
-        };
+    this.confirm
+      .confirm({
+        title: 'Save results',
+        message: 'Do you want to save these results?',
+        confirmText: 'Save',
+        cancelText: 'Cancel',
+      })
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
 
-        //If there's an Id, tack it on, so it's an update, not an insert of a new record
-        return (!!c.Id) ? { Id: c.Id, ...record } : record;
+        const data = this.results
+          .map((c: TournamentResultsRecord) => {
+            const record = {
+              TournamentId: this.tournament,
+              BowlerId: c.BowlerId,
+              Game1: c.Game1,
+              Game2: c.Game2,
+              Game3: c.Game3,
+              Game4: c.Game4,
+              Game5: c.Game5,
+              Game6: c.Game6,
+              Game7: c.Game7,
+              Game8: c.Game8,
+              BowlerAverage: c.Average,
+              IgnoreForAverage: !!c.IgnoreForAverage,
+              WonStars: !!c.WonStars,
+            };
+
+            //If there's an Id, tack it on, so it's an update, not an insert of a new record
+            return (!!c.Id) ? { Id: c.Id, ...record } : record;
+          });
+
+        this.api.saveTournamentResults(this.tournament, data);
       });
-
-    this.api.saveTournamentResults(this.tournament, data);
   }
 
   getErrors(form) {

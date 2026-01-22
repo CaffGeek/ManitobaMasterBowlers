@@ -25,6 +25,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule} from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { AppendValuesPipe } from './pipes/append-values.pipe';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
 import { TournamentViewerComponent } from './components/tournament-viewer/tournament-viewer.component';
@@ -50,6 +52,7 @@ import { MediaPageComponent } from './pages/media-page/media-page.component';
 import { AnnouncementBannerComponent } from './components/announcement-banner/announcement-banner.component';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { MemberAveragesPageComponent } from './pages/member-averages-page/member-averages-page.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
@@ -92,6 +95,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     AnnouncementBannerComponent,
     AnnouncementsPageComponent,
     MemberAveragesPageComponent,
+    ConfirmDialogComponent,
     ToastComponent
   ],
   imports: [
@@ -118,6 +122,8 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     MatSortModule,
     MatSelectModule,
     MatTableModule,
+    MatDialogModule,
+    MatButtonModule,
     DragDropModule,
     EditorModule,
   ],

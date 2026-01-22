@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PERMISSION, PermissionService } from '@services/permission.service';
 import { ToastService } from '@services/toast.service';
+import { ConfirmDialogService } from '@services/confirm-dialog.service';
 
 @Component({
   selector: 'app-sitemap-page',
@@ -37,7 +38,8 @@ export class SitemapPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private permissions: PermissionService,
-    private toasts: ToastService
+    private toasts: ToastService,
+    private confirm: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -83,28 +85,36 @@ export class SitemapPageComponent implements OnInit {
   }
 
   removePage(pageId: string): void {
-    if (!confirm('Delete this page?')) {
-      return;
-    }
+    this.confirm
+      .confirm({
+        title: 'Remove page',
+        message: 'Remove this page and any child pages?',
+        confirmText: 'Remove',
+      })
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
 
-    const idsToRemove = new Set([pageId, ...this.getDescendantIds(pageId)]);
-    const removedPage = this.pages.find((page) => page.id === pageId);
-    this.pages = this.pages.filter((page) => !idsToRemove.has(page.id));
-    this.pages = [...this.pages];
-    if (this.selectedPageId && idsToRemove.has(this.selectedPageId)) {
-      this.selectedPageId = removedPage?.parentId;
-      const targetId = this.selectedPageId;
-      const targetPage = targetId ? this.pages.find((page) => page.id === targetId) : undefined;
-      const targetSlug = targetPage ? this.getRouteSlug(targetPage) : '';
-      if (targetSlug) {
-        this.router.navigate(['/sitemap', targetSlug]);
-      } else {
-        this.router.navigate(['/sitemap']);
-      }
-    }
-    this.tree = this.buildTree(this.pages);
-    this.syncFromTree();
-    this.persistAndReload();
+        const idsToRemove = new Set([pageId, ...this.getDescendantIds(pageId)]);
+        const removedPage = this.pages.find((page) => page.id === pageId);
+        this.pages = this.pages.filter((page) => !idsToRemove.has(page.id));
+        this.pages = [...this.pages];
+        if (this.selectedPageId && idsToRemove.has(this.selectedPageId)) {
+          this.selectedPageId = removedPage?.parentId;
+          const targetId = this.selectedPageId;
+          const targetPage = targetId ? this.pages.find((page) => page.id === targetId) : undefined;
+          const targetSlug = targetPage ? this.getRouteSlug(targetPage) : '';
+          if (targetSlug) {
+            this.router.navigate(['/sitemap', targetSlug]);
+          } else {
+            this.router.navigate(['/sitemap']);
+          }
+        }
+        this.tree = this.buildTree(this.pages);
+        this.syncFromTree();
+        this.persistAndReload();
+      });
   }
 
   selectPage(pageId: string): void {

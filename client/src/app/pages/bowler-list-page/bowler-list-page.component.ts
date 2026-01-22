@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '@services/api.service';
 import { BowlerRecord } from '@models/BowlerRecord';
 import { SeasonRecord } from '@models/SeasonRecord';
+import { ConfirmDialogService } from '@services/confirm-dialog.service';
 
 type BowlerSeasonRecord = {
   BowlerId: number;
@@ -33,7 +34,7 @@ export class BowlerListPageComponent implements OnInit {
   addTeaching = false;
   addSenior = false;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private confirm: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.api.seasons$().subscribe((seasons) => {
@@ -136,13 +137,21 @@ export class BowlerListPageComponent implements OnInit {
       return;
     }
 
-    if (!window.confirm(`Remove ${row.Name} from ${this.selectedSeason}?`)) {
-      return;
-    }
+    this.confirm
+      .confirm({
+        title: 'Remove bowler',
+        message: `Remove ${row.Name} from ${this.selectedSeason}?`,
+        confirmText: 'Remove',
+      })
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
 
-    this.api.deleteBowlerSeason(this.selectedSeason, row.BowlerId).subscribe(() => {
-      this.seasonBowlers = this.seasonBowlers.filter((b) => b.BowlerId !== row.BowlerId);
-    });
+        this.api.deleteBowlerSeason(this.selectedSeason, row.BowlerId).subscribe(() => {
+          this.seasonBowlers = this.seasonBowlers.filter((b) => b.BowlerId !== row.BowlerId);
+        });
+      });
   }
 
   addBowlerToSeason() {
