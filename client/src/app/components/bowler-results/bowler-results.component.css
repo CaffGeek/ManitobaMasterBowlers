@@ -2,14 +2,6 @@ a {
     white-space: nowrap;
 }
 
-#exports {
-    width: 100%;
-
-    #csv {
-        float: right;
-    }
-}
-
 .non-average {
     background-color: #eee !important;
 }

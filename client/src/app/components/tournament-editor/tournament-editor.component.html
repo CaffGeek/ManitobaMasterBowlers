@@ -11,8 +11,9 @@
     {{error.message}}
   </div>
   
-  <div class="mbam-table-surface">
-  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+  <mat-card class="mbam-table-surface">
+    <mat-card-content>
+      <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="Bowler">
       <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let element; let i = index;">
@@ -138,8 +139,9 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns:  displayedColumns"></tr>
-  </table>
-  </div>
+      </table>
+    </mat-card-content>
+  </mat-card>
 
   <div class="justify">
     <button type="button" class="btn btn-outline-secondary" (click)="addRow()">Add Row</button>

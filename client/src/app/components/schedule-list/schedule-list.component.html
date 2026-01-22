@@ -1,4 +1,5 @@
-<div class="mbam-table-surface">
+<mat-card class="mbam-table-surface">
+  <mat-card-content>
     <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="TournamentLocation">
             <th mat-header-cell mat-sort-header *matHeaderCellDef>Location</th>
@@ -27,4 +28,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns:  displayedColumns" [class.oldSeason]="!isCurrentSeason(row)" [class.futureTournament]="isFutureTournament(row)"></tr>
     </table>
-</div>
+  </mat-card-content>
+</mat-card>

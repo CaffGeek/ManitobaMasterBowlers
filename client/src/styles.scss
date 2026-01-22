@@ -114,6 +114,32 @@ a:hover {
     padding: 0;
 }
 
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 12px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.table-actions--split {
+    justify-content: space-between;
+}
+
+.table-actions__left,
+.table-actions__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.table-actions__right {
+    margin-left: auto;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 100% !important;
