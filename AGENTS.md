@@ -74,6 +74,9 @@ standard, add/update a note here.
 - CSV export helper: `client/src/app/utils/export-to-csv.ts`.
 - Material tables: sortable + sticky headers.
 - FontAwesome icons via `app.module.ts` (add to library if needed).
+- Folder structure: `client/src/app/pages` for page-level views and
+  `client/src/app/components` for reusable UI pieces. Prefer extracting shared
+  UI into components when duplication appears.
 
 ## Update Triggers (keep this file current)
 Add a note here when you make a cross-cutting change:
