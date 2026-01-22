@@ -35,6 +35,7 @@ export class ScheduleListComponent {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property.toLocaleLowerCase()) {
+        case 'tournamentdetails': return item.date().valueOf();
         default: return item[property];
       }
     };
