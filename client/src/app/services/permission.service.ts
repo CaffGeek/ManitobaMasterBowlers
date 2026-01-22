@@ -56,7 +56,6 @@ export class PermissionService {
         return this.auth.getAccessTokenSilently().pipe(
           map((token) => {
             const decoded = jwtDecode(token);
-            console.log('permissions', (decoded?.['permissions'] || []));
             const assigned = decoded?.['permissions'] || [];
             return permissions.some((permission) => assigned.includes(permission));
           }),
