@@ -77,6 +77,10 @@ standard, add/update a note here.
 - Folder structure: `client/src/app/pages` for page-level views and
   `client/src/app/components` for reusable UI pieces. Prefer extracting shared
   UI into components when duplication appears.
+- UI patterns: prefer Angular Material (tables, dialogs, menus, form controls).
+  Keep table patterns consistent (sortable + sticky headers; export affordance
+  when relevant). If Material doesn't fit, build thin wrapper components that
+  compose Material primitives so styling remains consistent.
 
 ## Update Triggers (keep this file current)
 Add a note here when you make a cross-cutting change:
