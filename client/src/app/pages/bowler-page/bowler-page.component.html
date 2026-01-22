@@ -11,36 +11,30 @@
                 />
             </div>
             <div class="bowler-title-actions" *ngIf="canEditBowler$ | async">
-                <button
+                <app-action-icon-button
                     *ngIf="!isEditingName"
-                    type="button"
-                    class="btn btn-icon btn-edit"
-                    (click)="startEditName()"
-                    aria-label="Edit bowler name"
+                    [icon]="faPen"
+                    variant="edit"
+                    ariaLabel="Edit bowler name"
                     title="Edit name"
-                >
-                    <fa-icon [icon]="faPen"></fa-icon>
-                </button>
-                <button
+                    (action)="startEditName()"
+                ></app-action-icon-button>
+                <app-action-icon-button
                     *ngIf="isEditingName"
-                    type="button"
-                    class="btn btn-icon btn-save"
-                    (click)="saveName()"
-                    aria-label="Save bowler name"
+                    [icon]="faCheck"
+                    variant="save"
+                    ariaLabel="Save bowler name"
                     title="Save"
-                >
-                    <fa-icon [icon]="faCheck"></fa-icon>
-                </button>
-                <button
+                    (action)="saveName()"
+                ></app-action-icon-button>
+                <app-action-icon-button
                     *ngIf="isEditingName"
-                    type="button"
-                    class="btn btn-icon btn-cancel"
-                    (click)="cancelEditName()"
-                    aria-label="Cancel edit"
+                    [icon]="faXmark"
+                    variant="cancel"
+                    ariaLabel="Cancel edit"
                     title="Cancel"
-                >
-                    <fa-icon [icon]="faXmark"></fa-icon>
-                </button>
+                    (action)="cancelEditName()"
+                ></app-action-icon-button>
             </div>
         </div>
     </mat-card-header>

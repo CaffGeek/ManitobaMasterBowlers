@@ -20,9 +20,12 @@
           <a href="" (click)="$event.preventDefault(); selectItem(item)">
             {{ item.name }}
           </a>
-          <button class="btn btn-icon btn-delete" (click)="confirmDelete(item)" aria-label="Delete media">
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
+          <app-action-icon-button
+            [icon]="faTrash"
+            variant="delete"
+            ariaLabel="Delete media"
+            (action)="confirmDelete(item)"
+          ></app-action-icon-button>
         </div>
       </div>
     </aside>

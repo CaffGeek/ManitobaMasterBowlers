@@ -1,0 +1,11 @@
+<button
+  class="action-icon-button"
+  [ngClass]="variant"
+  [attr.aria-label]="ariaLabel || title"
+  [attr.title]="title || ariaLabel"
+  [attr.type]="type"
+  [disabled]="disabled"
+  (click)="action.emit()"
+>
+  <fa-icon [icon]="icon"></fa-icon>
+</button>

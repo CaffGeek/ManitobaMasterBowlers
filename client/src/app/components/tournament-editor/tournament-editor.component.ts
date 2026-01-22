@@ -5,6 +5,7 @@ import { ApiService } from '@services/api.service';
 import { BowlerRecord } from '@models/BowlerRecord';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { ConfirmDialogService } from '@services/confirm-dialog.service';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-tournament-editor',
@@ -18,6 +19,7 @@ export class TournamentEditorComponent implements OnChanges {
   bowlers: BowlerRecord[];
   private tempBowlerId = -1;
   filteredBowlerNames: string[] = [];
+  faTrash = faTrash;
 
   constructor(
     private api: ApiService,

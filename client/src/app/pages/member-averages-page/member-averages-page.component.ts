@@ -3,7 +3,6 @@ import { ApiService } from '@services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { exportToCsv } from '../../utils/export-to-csv';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 type MemberAverageRecord = {
   BowlerId: number;
@@ -24,7 +23,6 @@ type MemberAverageRecord = {
   standalone: false,
 })
 export class MemberAveragesPageComponent implements OnInit, AfterViewInit {
-  faCheck = faCheck;
   displayedColumns: string[] = [
     'Name',
     'TournamentFlag',

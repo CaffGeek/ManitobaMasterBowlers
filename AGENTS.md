@@ -73,7 +73,9 @@ standard, add/update a note here.
 ## Frontend Conventions
 - CSV export helper: `client/src/app/utils/export-to-csv.ts`.
 - Material tables: sortable + sticky headers.
-- FontAwesome icons via `app.module.ts` (add to library if needed).
+- FontAwesome icons are imported directly in components (no library registration).
+- Standard UI components: `app-action-icon-button` for CRUD icon buttons and
+  `app-boolean-flag` for boolean checkmarks.
 - Folder structure: `client/src/app/pages` for page-level views and
   `client/src/app/components` for reusable UI pieces. Prefer extracting shared
   UI into components when duplication appears.

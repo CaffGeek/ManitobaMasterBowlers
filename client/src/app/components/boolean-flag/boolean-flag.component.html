@@ -1,0 +1,9 @@
+<span
+  class="boolean-flag"
+  [class.boolean-flag--active]="value"
+  role="img"
+  [attr.aria-label]="ariaLabel"
+  [attr.title]="ariaLabel"
+>
+  <fa-icon *ngIf="value" [icon]="faCheck"></fa-icon>
+</span>

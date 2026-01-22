@@ -4,7 +4,7 @@ import { ApiService } from '@services/api.service';
 import { SeasonRecord } from '@models/SeasonRecord';
 import { TournamentRecord } from '@models/TournamentRecord';
 import { Division } from '@models/types/Division';
-import { faTrash, faSave, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { PERMISSION, PermissionService } from '@services/permission.service';
 import { Observable, of, switchMap } from 'rxjs';
 
@@ -28,7 +28,6 @@ export class ScheduleEditPageComponent implements OnInit {
 
   divisions: Division[] = ['Tournament', 'Teaching', 'Senior'];
 
-  faTrash = faTrash;
   faSave = faSave;
   faPlus = faPlus;
 

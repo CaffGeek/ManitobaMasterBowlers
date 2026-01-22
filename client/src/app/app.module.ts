@@ -4,8 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
-import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from '@pages/home/home.component';
@@ -53,6 +52,8 @@ import { AnnouncementBannerComponent } from './components/announcement-banner/an
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { MemberAveragesPageComponent } from './pages/member-averages-page/member-averages-page.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { ActionIconButtonComponent } from './components/action-icon-button/action-icon-button.component';
+import { BooleanFlagComponent } from './components/boolean-flag/boolean-flag.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
@@ -96,6 +97,8 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     AnnouncementsPageComponent,
     MemberAveragesPageComponent,
     ConfirmDialogComponent,
+    ActionIconButtonComponent,
+    BooleanFlagComponent,
     ToastComponent
   ],
   imports: [
@@ -154,8 +157,4 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(library: FaIconLibrary) {
-    library.addIcons(faPen, faTrash);
-  }
-}
+export class AppModule {}

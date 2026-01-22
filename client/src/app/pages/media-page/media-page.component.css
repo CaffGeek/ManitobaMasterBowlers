@@ -55,15 +55,6 @@
   text-decoration: underline;
 }
 
-.btn-icon.btn-delete {
-  border: 1px solid #c0392b;
-  color: #c0392b;
-  background: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  line-height: 1;
-}
-
 .media-form {
   display: flex;
   align-items: center;

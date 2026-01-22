@@ -1,0 +1,42 @@
+.action-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid #c9c9c9;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+.action-icon-button.edit {
+  border-color: #d1a500;
+  color: #8a6d00;
+}
+
+.action-icon-button.save {
+  border-color: #1b5e20;
+  color: #1b5e20;
+}
+
+.action-icon-button.cancel {
+  border-color: #9e9e9e;
+  color: #616161;
+}
+
+.action-icon-button.delete {
+  border-color: #c62828;
+  color: #c62828;
+}
+
+.action-icon-button:hover:not(:disabled) {
+  background: #f7f7f7;
+}
+
+.action-icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

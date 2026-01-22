@@ -16,12 +16,18 @@
           <span>End: {{ item.EndDate ? (item.EndDate | date:'MMM d, y h:mm a') : 'None' }}</span>
         </div>
         <div class="announcement-actions">
-          <button class="btn btn-icon" (click)="startEdit(item)" aria-label="Edit announcement">
-            <fa-icon [icon]="faPen"></fa-icon>
-          </button>
-          <button class="btn btn-icon btn-delete" (click)="confirmDelete(item)" aria-label="Delete announcement">
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
+          <app-action-icon-button
+            [icon]="faPen"
+            variant="edit"
+            ariaLabel="Edit announcement"
+            (action)="startEdit(item)"
+          ></app-action-icon-button>
+          <app-action-icon-button
+            [icon]="faTrash"
+            variant="delete"
+            ariaLabel="Delete announcement"
+            (action)="confirmDelete(item)"
+          ></app-action-icon-button>
         </div>
       </div>
       <ng-template #emptyState>

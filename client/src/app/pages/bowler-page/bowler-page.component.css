@@ -31,22 +31,3 @@
     align-items: center;
     gap: 6px;
 }
-
-.btn-icon {
-    border: 1px solid #d0d0d0;
-    background: #fff;
-    color: #333;
-    padding: 4px 8px;
-    border-radius: 6px;
-    line-height: 1;
-}
-
-.btn-icon.btn-save {
-    border-color: #2e7d32;
-    color: #2e7d32;
-}
-
-.btn-icon.btn-cancel {
-    border-color: #c0392b;
-    color: #c0392b;
-}

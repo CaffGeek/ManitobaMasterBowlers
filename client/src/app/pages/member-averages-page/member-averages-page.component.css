@@ -88,11 +88,6 @@
   padding-right: 8px;
 }
 
-.flag-check {
-  color: #1f8b3c;
-  font-size: 0.85rem;
-}
-
 .averages-table .mat-column-events mat-header-cell,
 .averages-table .mat-column-games mat-header-cell,
 .averages-table .mat-column-missingGames mat-header-cell,

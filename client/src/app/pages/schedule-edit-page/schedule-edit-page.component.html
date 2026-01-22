@@ -90,9 +90,12 @@
             <input type="text" [(ngModel)]="row.TournamentDetails" />
           </td>
           <td class="actions-col">
-            <button type="button" class="btn btn-icon btn-save" (click)="saveTournament(row)" aria-label="Save tournament">
-              <fa-icon [icon]="faSave"></fa-icon>
-            </button>
+            <app-action-icon-button
+              [icon]="faSave"
+              variant="save"
+              ariaLabel="Save tournament"
+              (action)="saveTournament(row)"
+            ></app-action-icon-button>
           </td>
         </tr>
       </tbody>

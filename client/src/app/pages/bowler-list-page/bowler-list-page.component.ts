@@ -3,6 +3,7 @@ import { ApiService } from '@services/api.service';
 import { BowlerRecord } from '@models/BowlerRecord';
 import { SeasonRecord } from '@models/SeasonRecord';
 import { ConfirmDialogService } from '@services/confirm-dialog.service';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 type BowlerSeasonRecord = {
   BowlerId: number;
@@ -21,6 +22,7 @@ type BowlerSeasonRecord = {
   standalone: false,
 })
 export class BowlerListPageComponent implements OnInit {
+  faTrash = faTrash;
   seasons: SeasonRecord[] = [];
   allBowlers: BowlerRecord[] = [];
   seasonBowlers: BowlerSeasonRecord[] = [];

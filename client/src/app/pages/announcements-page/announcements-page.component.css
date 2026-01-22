@@ -108,27 +108,6 @@
   margin: 8px 0 0;
 }
 
-.btn.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border-radius: 6px;
-  border: 1px solid #d5d5d5;
-  background: #fff;
-}
-
-.btn.btn-icon.btn-delete {
-  border-color: #e74c3c;
-  color: #e74c3c;
-}
-
-.btn.btn-icon.btn-delete:hover {
-  background: #ffeceb;
-}
-
 @media (max-width: 900px) {
   .announcements-layout {
     grid-template-columns: 1fr;

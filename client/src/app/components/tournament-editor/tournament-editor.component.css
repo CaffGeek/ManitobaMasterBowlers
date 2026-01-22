@@ -36,29 +36,6 @@ input[type="number"] {
     text-align: center;
 }
 
-.btn-icon {
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: transparent;
-    border: 1px solid transparent;
-    color: #b3261e;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    line-height: 1;
-}
-
-.btn-icon:hover {
-    border-color: #e6b9b7;
-    background: #fff5f5;
-}
-
-.btn-delete fa-icon {
-    font-size: 14px;
-    display: block;
-}
-
 @media (max-width: 768px) {
     input[type="number"] {
         min-width: 35px;

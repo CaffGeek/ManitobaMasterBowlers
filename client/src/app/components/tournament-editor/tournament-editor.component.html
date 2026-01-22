@@ -126,9 +126,12 @@
     <ng-container matColumnDef="Actions">
       <th mat-header-cell *matHeaderCellDef width="4em"></th>
       <td mat-cell *matCellDef="let element; let i = index;">
-        <button type="button" class="btn btn-icon btn-delete" (click)="removeRow(i)" aria-label="Delete row">
-          <fa-icon [icon]="['fas', 'trash']"></fa-icon>
-        </button>
+        <app-action-icon-button
+          [icon]="faTrash"
+          variant="delete"
+          ariaLabel="Delete row"
+          (action)="removeRow(i)"
+        ></app-action-icon-button>
       </td>
     </ng-container>
 

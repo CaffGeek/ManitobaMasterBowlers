@@ -125,9 +125,12 @@
             />
           </td>
           <td class="flag-col">
-            <button type="button" class="btn btn-icon btn-delete" (click)="removeBowlerFromSeason(row)" aria-label="Remove bowler from season">
-              <fa-icon [icon]="['fas', 'trash']"></fa-icon>
-            </button>
+            <app-action-icon-button
+              [icon]="faTrash"
+              variant="delete"
+              ariaLabel="Remove bowler from season"
+              (action)="removeBowlerFromSeason(row)"
+            ></app-action-icon-button>
           </td>
         </tr>
       </tbody>

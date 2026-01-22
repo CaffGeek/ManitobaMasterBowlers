@@ -118,12 +118,3 @@
   font-style: italic;
   padding: 8px 0 16px;
 }
-
-.btn-icon.btn-delete {
-  border: 1px solid #c0392b;
-  color: #c0392b;
-  background: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  line-height: 1;
-}
