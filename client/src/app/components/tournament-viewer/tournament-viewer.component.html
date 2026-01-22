@@ -6,6 +6,7 @@
     <button class="btn btn-success" (click)="exportCsv()">Export as CSV</button>
 </div>
 
+<div class="mbam-table-surface">
 <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="Pos">
         <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
@@ -79,3 +80,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns:  displayedColumns"></tr>
 </table>
+</div>

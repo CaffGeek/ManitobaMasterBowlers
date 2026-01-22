@@ -1,7 +1,3 @@
-.winners-card {
-  margin: 16px;
-}
-
 .winners-table {
   width: 100%;
 }
@@ -21,4 +17,47 @@
 
 .winners-table .mat-column-TournamentDetails {
   width: 180px;
+}
+
+@media (max-width: 700px) {
+  .winners-card {
+    margin: 8px;
+  }
+
+  .winners-table {
+    table-layout: fixed;
+  }
+
+  .winners-table .mat-mdc-header-cell,
+  .winners-table .mat-mdc-cell,
+  .winners-table .mat-header-cell,
+  .winners-table .mat-cell {
+    font-size: 0.85rem;
+  }
+
+  .winners-table .mat-column-Bowler {
+    width: 140px;
+    max-width: 140px;
+  }
+
+  .winners-table .mat-column-SeasonDesc,
+  .winners-table .mat-column-Division {
+    width: 86px;
+  }
+
+  .winners-table .mat-column-TournamentNumber {
+    width: 52px;
+  }
+
+  .winners-table .mat-column-TournamentDetails {
+    width: 110px;
+  }
+
+  .winners-table .mat-column-Bowler a,
+  .winners-table .mat-column-TournamentLocation a {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

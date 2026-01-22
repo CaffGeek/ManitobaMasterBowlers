@@ -1,7 +1,7 @@
 <div class="nav-container">
   <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="container">
-      <div class="navbar-brand logo"></div>
+      <a routerLink="/" class="navbar-brand logo d-md-none"></a>
       <button
         class="navbar-toggler"
         type="button"
@@ -83,7 +83,10 @@
           </ng-container>
         </ul>
 
-        <ul class="navbar-nav d-none d-md-block">
+        <ul class="navbar-nav d-none d-md-flex align-items-center">
+          <li class="nav-item">
+            <a routerLink="/" class="nav-link logo logo-link" aria-label="Home"></a>
+          </li>
           <!-- Login button: show if NOT authenticated -->
           <li
             class="nav-item"

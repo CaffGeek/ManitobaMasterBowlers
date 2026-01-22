@@ -1,4 +1,4 @@
-<mat-card class="winners-card">
+<mat-card class="mbam-table-surface">
   <mat-card-header>
     <h1>Winners</h1>
   </mat-card-header>
@@ -37,7 +37,7 @@
 
       <ng-container matColumnDef="TournamentDetails">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let row">{{ row.TournamentDetails }}</td>
+        <td mat-cell *matCellDef="let row">{{ row.TournamentDetails | dateDisplay }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

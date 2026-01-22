@@ -2,6 +2,7 @@
     <button id="csv" mat-button (click)="exportCsv()">Export as CSV</button>
 </div>
 
+<div class="mbam-table-surface">
 <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="TournamentLocation">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Location</th>
@@ -89,3 +90,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns:  displayedColumns" [class.non-average]="!row.countsForAverage"></tr>
 </table>
+</div>

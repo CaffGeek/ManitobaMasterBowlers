@@ -12,8 +12,8 @@
       <div class="announcement-row" *ngFor="let item of announcements; else emptyState">
         <div class="announcement-text" [innerHTML]="item.Announcement"></div>
         <div class="announcement-dates">
-          <span>Start: {{ item.StartDate ? (item.StartDate | date:'MMM d, y h:mm a') : 'None' }}</span>
-          <span>End: {{ item.EndDate ? (item.EndDate | date:'MMM d, y h:mm a') : 'None' }}</span>
+          <span>Start: {{ item.StartDate ? (item.StartDate | dateDisplay:'MMM d, y h:mm a') : 'None' }}</span>
+          <span>End: {{ item.EndDate ? (item.EndDate | dateDisplay:'MMM d, y h:mm a') : 'None' }}</span>
         </div>
         <div class="announcement-actions">
           <app-action-icon-button

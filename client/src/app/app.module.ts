@@ -54,6 +54,7 @@ import { MemberAveragesPageComponent } from './pages/member-averages-page/member
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ActionIconButtonComponent } from './components/action-icon-button/action-icon-button.component';
 import { BooleanFlagComponent } from './components/boolean-flag/boolean-flag.component';
+import { DateDisplayPipe } from './pipes/date-display.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
@@ -99,7 +100,8 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     ConfirmDialogComponent,
     ActionIconButtonComponent,
     BooleanFlagComponent,
-    ToastComponent
+    ToastComponent,
+    DateDisplayPipe
   ],
   imports: [
     BrowserModule,
