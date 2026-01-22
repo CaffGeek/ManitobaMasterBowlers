@@ -45,8 +45,7 @@
   gap: 12px;
 }
 
-.announcements-form label,
-.announcement-edit label {
+.announcements-form label {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -54,9 +53,7 @@
 }
 
 .announcements-form textarea,
-.announcement-edit textarea,
-.announcements-form input,
-.announcement-edit input {
+.announcements-form input {
   border: 1px solid #cfd4da;
   border-radius: 6px;
   padding: 8px 10px;
