@@ -1,0 +1,47 @@
+<mat-card class="mbam-table-surface">
+  <mat-card-header>
+    <div class="lane-draw-header">
+      <h1>Lane Draw</h1>
+      <div class="lane-draw-controls">
+        <mat-form-field appearance="fill" class="lane-count-field">
+          <mat-label>Number of lanes</mat-label>
+          <input matInput type="number" min="1" max="99" step="1" [(ngModel)]="laneCount" />
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="lane-draw-grid">
+      <section class="lane-draw-lane" *ngFor="let lane of lanes">
+        <h2>Lane {{ lane.lane }}</h2>
+        <ol>
+          <li *ngFor="let bowler of lane.bowlers">
+            <div class="lane-bowler">
+              <a
+                class="lane-bowler__name"
+                [routerLink]="['/bowlers', bowler.BowlerId]"
+                target="_blank"
+                rel="noopener"
+              >{{ bowler.Name }}</a>
+              <span class="lane-bowler__average">
+                <!-- TODO: CHAD: Fix this hardcoded 10 -->
+                <button *ngIf="bowler.events < 10"
+                  type="button"
+                  class="lane-bowler__icon"
+                  [class.warn]="getLeagueAverage(bowler) === null"
+                  [class.info]="getLeagueAverage(bowler) !== null"
+                  (click)="promptLeagueAverage(bowler)"
+                  aria-label="Enter league average"
+                >
+                  <fa-icon [icon]="getLeagueAverage(bowler) === null ? faExclamationTriangle : faInfoCircle"></fa-icon>
+                </button>
+                <span *ngIf="getMastersAverage(bowler) !== null"
+                  class="lane-bowler__masters">{{ getMastersAverage(bowler) }}</span>
+              </span>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </mat-card-content>
+</mat-card>

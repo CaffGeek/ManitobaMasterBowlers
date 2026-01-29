@@ -1,10 +1,11 @@
 <mat-card class="mbam-table-surface">
   <mat-card-header>
     <div class="table-actions table-actions--split">
-      <div class="table-actions__left">
-        <a *ngIf="(canEditTournament) && !dataSource.data.length" [routerLink]="['./upload']">Upload Results</a>
-        <a *ngIf="(canEditTournament) && !!dataSource.data.length" [routerLink]="['./edit']">Edit Results</a>
-      </div>
+    <div class="table-actions__left">
+        <button mat-stroked-button color="primary" *ngIf="(canEditTournament) && !dataSource.data.length" [routerLink]="['./lanedraw']">Generate Draw</button>
+        <button mat-stroked-button color="primary" *ngIf="(canEditTournament) && !dataSource.data.length" [routerLink]="['./upload']">Upload Results</button>
+        <button mat-stroked-button color="primary" *ngIf="(canEditTournament) && !!dataSource.data.length" [routerLink]="['./edit']">Edit Results</button>
+    </div>
       <div class="table-actions__right">
         <button mat-raised-button color="primary" (click)="exportCsv()">Export as CSV</button>
       </div>

@@ -1,0 +1,95 @@
+.lane-draw-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+
+.lane-draw-header h1 {
+  margin: 0;
+}
+
+.lane-draw-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lane-count-field {
+  width: 140px;
+}
+
+.lane-count-field input {
+  text-align: right;
+}
+
+.lane-draw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.lane-draw-lane {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fffaf0;
+}
+
+.lane-draw-lane h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.lane-draw-lane ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.lane-bowler {
+  display: grid;
+  grid-template-columns: 1fr 48px;
+  align-items: center;
+  gap: 4px;
+}
+
+.lane-bowler__name {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.lane-bowler__name:hover,
+.lane-bowler__name:focus {
+  text-decoration: underline;
+}
+
+.lane-bowler__average {
+  text-align: right !important;
+}
+
+.lane-bowler__masters {
+  font-size: 0.85rem;
+  color: #5a4a00;
+}
+
+.lane-bowler__icon {
+  border: none;
+  background: transparent;
+  padding: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+}
+
+.lane-bowler__icon.warn {
+  color: #c0392b;
+  cursor: pointer;
+}
+
+.lane-bowler__icon.info {
+  color: #1976d2;
+}

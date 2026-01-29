@@ -6,6 +6,7 @@ import { ProfileComponent } from '@pages/profile/profile.component';
 import { TournamentPageComponent } from '@pages/tournament-page/tournament-page.component';
 import { ErrorComponent } from '@pages/error/error.component';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
+import { TournamentLaneDrawPageComponent } from '@pages/tournament-lane-draw-page/tournament-lane-draw-page.component';
 import { TournamentEditPageComponent } from '@pages/tournament-edit-page/tournament-edit-page.component';
 import { BowlerPageComponent } from '@pages/bowler-page/bowler-page.component';
 import { BowlerResultsComponent } from '@components/bowler-results/bowler-results.component';
@@ -151,8 +152,9 @@ const routes: Routes = [
     children: [
       { path: '0', component: TournamentSummaryComponent },
       { path: ':tournament', component: TournamentViewerComponent },
-      { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
-      { path: ':tournament/edit', component: TournamentEditPageComponent, pathMatch: 'full', canActivate: [AuthGuard], },
+      { path: ':tournament/upload', component: TournamentUploadPageComponent, pathMatch: 'full', canActivate: [AuthGuard, PermissionGuard], data: { requiredPermission: PERMISSION.EDIT_TOURNAMENT }, },
+      { path: ':tournament/lanedraw', component: TournamentLaneDrawPageComponent, pathMatch: 'full', canActivate: [AuthGuard, PermissionGuard], data: { requiredPermission: PERMISSION.EDIT_TOURNAMENT }, },
+      { path: ':tournament/edit', component: TournamentEditPageComponent, pathMatch: 'full', canActivate: [AuthGuard, PermissionGuard], data: { requiredPermission: PERMISSION.EDIT_TOURNAMENT }, },
     ]
   },
   {

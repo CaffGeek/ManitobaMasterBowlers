@@ -28,6 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { AppendValuesPipe } from './pipes/append-values.pipe';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
+import { TournamentLaneDrawPageComponent } from '@pages/tournament-lane-draw-page/tournament-lane-draw-page.component';
 import { TournamentViewerComponent } from './components/tournament-viewer/tournament-viewer.component';
 import { BowlerPageComponent } from './pages/bowler-page/bowler-page.component';
 import { TournamentSummaryComponent } from './components/tournament-summary/tournament-summary.component';
@@ -35,6 +36,7 @@ import { BowlerResultsComponent } from './components/bowler-results/bowler-resul
 import { BowlerStatsComponent } from './components/bowler-stats/bowler-stats.component';
 import { BowlerListPageComponent } from './pages/bowler-list-page/bowler-list-page.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
 import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
 import { TournamentEditPageComponent } from './pages/tournament-edit-page/tournament-edit-page.component';
@@ -75,6 +77,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     TournamentEditorComponent,
     AppendValuesPipe,
     TournamentUploadPageComponent,
+    TournamentLaneDrawPageComponent,
     TournamentViewerComponent,
     BowlerPageComponent,
     TournamentSummaryComponent,
@@ -123,6 +126,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     }),
     BrowserAnimationsModule,
     MatFormFieldModule,
+    MatInputModule,
     MatCardModule,
     MatSortModule,
     MatSelectModule,
