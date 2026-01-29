@@ -21,6 +21,7 @@
               [routerLink]="['/bowlers', bowler.BowlerId]"
               target="_blank"
               rel="noopener"
+              [title]="bowler.Name"
             >{{ bowler.Name }}</a>
             <span class="lane-bowler__average">
               <span *ngIf="getMastersAverage(bowler) !== null"
@@ -28,6 +29,7 @@
             </span>
             <span class="lane-bowler__actions">
               <app-action-icon-button
+                class="lane-bowler__add"
                 [icon]="faUserPlus"
                 variant="neutral"
                 [hideBorder]="true"
@@ -46,12 +48,13 @@
         <ol>
           <li *ngFor="let bowler of lane.bowlers">
             <div class="lane-bowler">
-              <a
-                class="lane-bowler__name"
-                [routerLink]="['/bowlers', bowler.BowlerId]"
-                target="_blank"
-                rel="noopener"
-              >{{ bowler.Name }}</a>
+            <a
+              class="lane-bowler__name"
+              [routerLink]="['/bowlers', bowler.BowlerId]"
+              target="_blank"
+              rel="noopener"
+              [title]="bowler.Name"
+            >{{ bowler.Name }}</a>
               <span class="lane-bowler__average">
                 <!-- TODO: CHAD: Fix this hardcoded 10 -->
                 <app-action-icon-button
