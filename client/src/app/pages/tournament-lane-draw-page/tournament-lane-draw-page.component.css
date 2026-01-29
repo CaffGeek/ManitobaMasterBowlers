@@ -32,7 +32,7 @@
 
 .lane-draw-actions {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 12px;
   margin: 12px 0 16px;
   flex-wrap: wrap;
@@ -41,6 +41,10 @@
 .lane-draw-search {
   min-width: 240px;
   flex: 1 1 260px;
+}
+
+.lane-draw-actions ::ng-deep .mat-mdc-form-field {
+  margin-bottom: 0;
 }
 
 .lane-draw-not-playing {
