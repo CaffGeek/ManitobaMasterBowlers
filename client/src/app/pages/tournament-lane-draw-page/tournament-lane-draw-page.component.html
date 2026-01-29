@@ -42,6 +42,29 @@
         </li>
       </ol>
     </section>
+    <div class="lane-draw-actions">
+      <mat-form-field appearance="fill" class="lane-draw-search">
+        <mat-label>Add bowler to draw</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="bowlerSearch"
+          (input)="updateFilteredBowlerOptions()"
+          [matAutocomplete]="bowlerAuto"
+        />
+        <mat-autocomplete #bowlerAuto="matAutocomplete" (optionSelected)="selectBowler($event.option.value)">
+          <mat-option *ngFor="let bowler of filteredBowlerOptions" [value]="bowler">
+            {{ bowler.Name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="button" (click)="addSelectedBowler()" [disabled]="!selectedBowler">
+        Add to draw
+      </button>
+      <button mat-stroked-button color="primary" type="button" (click)="rebalanceLanes()" [disabled]="!lanes.length">
+        Rebalance
+      </button>
+    </div>
     <div class="lane-draw-grid">
       <section class="lane-draw-lane" *ngFor="let lane of lanes">
         <h2>Lane {{ lane.lane }}</h2>

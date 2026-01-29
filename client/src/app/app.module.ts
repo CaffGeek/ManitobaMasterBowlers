@@ -26,6 +26,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule} from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AppendValuesPipe } from './pipes/append-values.pipe';
 import { TournamentUploadPageComponent } from '@pages/tournament-upload-page/tournament-upload-page.component';
 import { TournamentLaneDrawPageComponent } from '@pages/tournament-lane-draw-page/tournament-lane-draw-page.component';
@@ -133,6 +134,7 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     MatTableModule,
     MatDialogModule,
     MatButtonModule,
+    MatAutocompleteModule,
     DragDropModule,
     EditorModule,
   ],

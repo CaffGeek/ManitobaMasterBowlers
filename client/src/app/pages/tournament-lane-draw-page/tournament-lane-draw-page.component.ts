@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { ApiService } from '@services/api.service';
 import { faExclamationTriangle, faInfoCircle, faSquareMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { BowlerRecord } from '@models/BowlerRecord';
 
 type LaneDrawBowler = {
   BowlerId: number;
@@ -29,9 +30,13 @@ export class TournamentLaneDrawPageComponent implements OnInit, OnDestroy {
   lanes: { lane: number; bowlers: LaneDrawBowler[] }[] = [];
   notPlaying: LaneDrawBowler[] = [];
   leagueAverages: Record<number, number | null> = {};
+  bowlerSearch = '';
+  selectedBowler?: BowlerRecord;
+  filteredBowlerOptions: BowlerRecord[] = [];
   private allBowlers: LaneDrawBowler[] = [];
   private notPlayingIds = new Set<number>();
   private averagesByBowlerId = new Map<number, any>();
+  private bowlerOptions: BowlerRecord[] = [];
   private routeSub?: Subscription;
 
   constructor(
@@ -45,6 +50,11 @@ export class TournamentLaneDrawPageComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.api.bowlers$().subscribe((rows) => {
+      this.bowlerOptions = rows || [];
+      this.updateFilteredBowlerOptions();
+    });
+
     this.routeSub = combineLatest([parentParams$, this.route.paramMap]).subscribe(([parentParams]) => {
       const division = (parentParams.get('division') || '').toLowerCase();
       const season = parentParams.get('season') || '';
@@ -53,6 +63,7 @@ export class TournamentLaneDrawPageComponent implements OnInit, OnDestroy {
         this.allBowlers = [];
         this.lanes = [];
         this.notPlaying = [];
+        this.updateFilteredBowlerOptions();
         return;
       }
 
@@ -74,6 +85,7 @@ export class TournamentLaneDrawPageComponent implements OnInit, OnDestroy {
         this.refreshNotPlaying();
         this.setDefaultLaneCount(this.allBowlers.length);
         this.buildLanes();
+        this.updateFilteredBowlerOptions();
       });
     });
   }
@@ -169,6 +181,7 @@ export class TournamentLaneDrawPageComponent implements OnInit, OnDestroy {
     this.notPlayingIds.add(bowler.BowlerId);
     lane.bowlers = lane.bowlers.filter((row) => row.BowlerId !== bowler.BowlerId);
     this.refreshNotPlaying();
+    this.updateFilteredBowlerOptions();
   }
 
   moveToLane(bowler: LaneDrawBowler): void {
@@ -179,21 +192,70 @@ export class TournamentLaneDrawPageComponent implements OnInit, OnDestroy {
       this.buildLanes();
     }
     this.notPlayingIds.delete(bowler.BowlerId);
-    const minCount = Math.min(...this.lanes.map((lane) => lane.bowlers.length));
-    const candidates = this.lanes.filter((lane) => lane.bowlers.length === minCount);
-    const oddCandidates = candidates.filter((lane) => lane.lane % 2 === 1);
-    const preferred = (oddCandidates.length ? oddCandidates : candidates).sort((a, b) => a.lane - b.lane);
-    const targetLane = preferred[0] || null;
+    const targetLane = this.pickLaneForAdd(this.lanes);
     if (targetLane) {
       targetLane.bowlers = [...targetLane.bowlers, bowler];
     }
     this.refreshNotPlaying();
+    this.updateFilteredBowlerOptions();
+  }
+
+  updateFilteredBowlerOptions(): void {
+    const term = this.bowlerSearch.trim().toLowerCase();
+    const existingIds = new Set(this.allBowlers.map((row) => row.BowlerId));
+    let available = this.bowlerOptions.filter((row) => !existingIds.has(row.ID));
+    if (term) {
+      available = available.filter((row) => row.Name.toLowerCase().includes(term));
+    }
+    this.filteredBowlerOptions = available
+      .sort((a, b) => a.Name.localeCompare(b.Name))
+      .slice(0, 10);
+  }
+
+  selectBowler(bowler: BowlerRecord): void {
+    this.selectedBowler = bowler;
+    this.bowlerSearch = bowler.Name;
+  }
+
+  addSelectedBowler(): void {
+    if (!this.selectedBowler) {
+      return;
+    }
+    const newRow = this.mergeAverage({
+      BowlerId: this.selectedBowler.ID,
+      Name: this.selectedBowler.Name,
+      Gender: this.selectedBowler.Gender,
+    });
+    this.allBowlers = [...this.allBowlers, newRow];
+    const targetLane = this.pickLaneForAdd(this.lanes);
+    if (targetLane) {
+      targetLane.bowlers = [...targetLane.bowlers, newRow];
+    }
+    this.selectedBowler = undefined;
+    this.bowlerSearch = '';
+    this.refreshNotPlaying();
+    this.updateFilteredBowlerOptions();
+  }
+
+  rebalanceLanes(): void {
+    this.buildLanes();
   }
 
   private refreshNotPlaying(): void {
     this.notPlaying = this.allBowlers
       .filter((bowler) => this.notPlayingIds.has(bowler.BowlerId))
       .sort((a, b) => a.Name.localeCompare(b.Name));
+  }
+
+  private pickLaneForAdd(lanes: { lane: number; bowlers: LaneDrawBowler[] }[]): { lane: number; bowlers: LaneDrawBowler[] } | null {
+    if (!lanes.length) {
+      return null;
+    }
+    const minCount = Math.min(...lanes.map((lane) => lane.bowlers.length));
+    const candidates = lanes.filter((lane) => lane.bowlers.length === minCount);
+    const oddCandidates = candidates.filter((lane) => lane.lane % 2 === 1);
+    const preferred = (oddCandidates.length ? oddCandidates : candidates).sort((a, b) => a.lane - b.lane);
+    return preferred[0] || null;
   }
 
   private getLaneOrder(lanes: { lane: number; bowlers: LaneDrawBowler[] }[]): { lane: number; bowlers: LaneDrawBowler[] }[] {

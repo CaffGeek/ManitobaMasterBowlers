@@ -30,6 +30,19 @@
   gap: 16px;
 }
 
+.lane-draw-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 12px 0 16px;
+  flex-wrap: wrap;
+}
+
+.lane-draw-search {
+  min-width: 240px;
+  flex: 1 1 260px;
+}
+
 .lane-draw-not-playing {
   margin-top: 20px;
   border: 1px dashed #d7c38a;
