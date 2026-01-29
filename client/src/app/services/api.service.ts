@@ -89,8 +89,9 @@ export class ApiService {
     return this.fromCache<any[]>('winners');
   }
 
-  memberAverages$(): Observable<any[]> {
-    return this.fromCache<any[]>('memberaverages');
+  memberAverages$(bowlerId?: number): Observable<any[]> {
+    const route = bowlerId ? `memberaverages/${bowlerId}` : 'memberaverages';
+    return this.fromCache<any[]>(route);
   }
 
   createSeason(seasonCode: string, seasonDesc: string): Observable<unknown> {

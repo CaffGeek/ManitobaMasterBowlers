@@ -34,6 +34,7 @@ const sqlInput = input.generic({
       join TournamentResults tr on tr.TournamentId = tt.Id
       join MasterList b on tr.BowlerId = b.Id
       where tr.IgnoreForAverage = 0
+        and (@bowlerId is null or b.Id = @bowlerId)
     ),
     summary as (
       select
@@ -59,6 +60,7 @@ const sqlInput = input.generic({
       and msl.SeasonYear = cs.SeasonCode
     order by s.Name asc
   `,
+  parameters: '@bowlerId={bowlerId}',
   commandType: 'Text',
   connectionStringSetting: 'SqlConnectionString'
 });
@@ -75,7 +77,7 @@ export async function GetMemberAverages(request: HttpRequest, context: Invocatio
 app.http('GetMemberAverages', {
   methods: ['GET'],
   authLevel: 'anonymous',
-  route: 'memberaverages',
+  route: 'memberaverages/{bowlerId:int?}',
   extraInputs: [sqlInput],
   handler: GetMemberAverages,
 });
