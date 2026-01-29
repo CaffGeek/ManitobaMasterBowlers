@@ -16,5 +16,6 @@ export class ActionIconButtonComponent {
   @Input() title = '';
   @Input() disabled = false;
   @Input() type: 'button' | 'submit' = 'button';
+  @Input() hideBorder = false;
   @Output() action = new EventEmitter<void>();
 }

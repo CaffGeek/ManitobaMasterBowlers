@@ -40,3 +40,7 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.action-icon-button.borderless {
+  border-color: transparent;
+}

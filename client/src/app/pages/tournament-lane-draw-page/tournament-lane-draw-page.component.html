@@ -11,6 +11,35 @@
     </div>
   </mat-card-header>
   <mat-card-content>
+    <section class="lane-draw-not-playing" *ngIf="notPlaying.length">
+      <h2>Not Playing</h2>
+      <ol>
+        <li *ngFor="let bowler of notPlaying">
+          <div class="lane-bowler lane-bowler--not-playing">
+            <a
+              class="lane-bowler__name"
+              [routerLink]="['/bowlers', bowler.BowlerId]"
+              target="_blank"
+              rel="noopener"
+            >{{ bowler.Name }}</a>
+            <span class="lane-bowler__average">
+              <span *ngIf="getMastersAverage(bowler) !== null"
+                class="lane-bowler__masters">{{ getMastersAverage(bowler) }}</span>
+            </span>
+            <span class="lane-bowler__actions">
+              <app-action-icon-button
+                [icon]="faUserPlus"
+                variant="neutral"
+                [hideBorder]="true"
+                ariaLabel="Move back to lanes"
+                title="Move back to lanes"
+                (action)="moveToLane(bowler)"
+              ></app-action-icon-button>
+            </span>
+          </div>
+        </li>
+      </ol>
+    </section>
     <div class="lane-draw-grid">
       <section class="lane-draw-lane" *ngFor="let lane of lanes">
         <h2>Lane {{ lane.lane }}</h2>
@@ -25,18 +54,30 @@
               >{{ bowler.Name }}</a>
               <span class="lane-bowler__average">
                 <!-- TODO: CHAD: Fix this hardcoded 10 -->
-                <button *ngIf="bowler.events < 10"
-                  type="button"
+                <app-action-icon-button
+                  *ngIf="bowler.events < 10"
                   class="lane-bowler__icon"
                   [class.warn]="getLeagueAverage(bowler) === null"
                   [class.info]="getLeagueAverage(bowler) !== null"
-                  (click)="promptLeagueAverage(bowler)"
-                  aria-label="Enter league average"
-                >
-                  <fa-icon [icon]="getLeagueAverage(bowler) === null ? faExclamationTriangle : faInfoCircle"></fa-icon>
-                </button>
+                  [icon]="getLeagueAverage(bowler) === null ? faExclamationTriangle : faInfoCircle"
+                  [hideBorder]="true"
+                  ariaLabel="Enter league average"
+                  title="Enter league average"
+                  (action)="promptLeagueAverage(bowler)"
+                ></app-action-icon-button>
                 <span *ngIf="getMastersAverage(bowler) !== null"
                   class="lane-bowler__masters">{{ getMastersAverage(bowler) }}</span>
+              </span>
+              <span class="lane-bowler__actions">
+                <app-action-icon-button
+                  class="lane-bowler__remove"
+                  [icon]="faSquareMinus"
+                  variant="delete"
+                  [hideBorder]="true"
+                  ariaLabel="Move to Not Playing"
+                  title="Move to Not Playing"
+                  (action)="moveToNotPlaying(bowler, lane)"
+                ></app-action-icon-button>
               </span>
             </div>
           </li>
