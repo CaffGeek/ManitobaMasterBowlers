@@ -100,7 +100,7 @@ export class MemberAveragesPageComponent implements OnInit, AfterViewInit {
   }
 
   getMissingGames(row: MemberAverageRecord): number {
-    const missing = Math.max(0, 80 - (row.games || 0));
+    const missing = Math.max(0, (10 - (row.events || 0)) * 8);
     return missing;
   }
 
