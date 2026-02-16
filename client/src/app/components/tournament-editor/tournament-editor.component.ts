@@ -98,7 +98,7 @@ export class TournamentEditorComponent implements OnChanges {
     this.dataSource.data = this.results;
   }
 
-  removeRow(index: number) {
+  removeRow(row: TournamentResultsRecord) {
     this.confirm
       .confirm({
         title: 'Remove bowler',
@@ -110,8 +110,11 @@ export class TournamentEditorComponent implements OnChanges {
           return;
         }
 
-        const row = this.results[index];
-        this.results = this.results.filter((_row, rowIndex) => rowIndex !== index);
+        if (row?.Id && row.Id > 0) {
+          this.results = this.results.filter((candidate) => candidate.Id !== row.Id);
+        } else {
+          this.results = this.results.filter((candidate) => candidate !== row);
+        }
         this.dataSource.data = this.results;
 
         if (row?.Id && row.Id > 0) {
