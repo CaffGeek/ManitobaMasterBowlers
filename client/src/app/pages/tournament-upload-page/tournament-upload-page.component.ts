@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TournamentUploadRecord } from '@models/TournamentUploadRecord';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tournament-upload-page',
@@ -12,6 +13,8 @@ export class TournamentUploadPageComponent implements OnInit {
   tournamentResults: TournamentUploadRecord[] = [];
   
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
@@ -20,5 +23,9 @@ export class TournamentUploadPageComponent implements OnInit {
 
   tournamentUploaded(tournamentResults: TournamentUploadRecord[]) {
     this.tournamentResults = [...tournamentResults];
+  }
+
+  onSaveCompleted() {
+    this.router.navigate(['../edit'], { relativeTo: this.route });
   }
 }

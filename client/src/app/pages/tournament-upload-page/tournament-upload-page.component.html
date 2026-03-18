@@ -1,5 +1,9 @@
 <app-upload-tournament (tournamentUploadedEvent)="tournamentUploaded($event)">
 </app-upload-tournament>
 
-<app-tournament-editor [results]="tournamentResults" [tournament]="tournament">
+<app-tournament-editor
+  [results]="tournamentResults"
+  [tournament]="tournament"
+  (saveCompleted)="onSaveCompleted()"
+>
 </app-tournament-editor>

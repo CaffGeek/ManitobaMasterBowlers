@@ -123,7 +123,7 @@ export class ApiService {
 
   saveTournamentResults(tournamentId: number, results) {
     return this.http.put(`${environment.apiUri}tournamentresults/${tournamentId}`, results)
-      .subscribe(() => this.clearCache(`tournamentresults/${tournamentId}`));
+      .pipe(tap(() => this.clearCache(`tournamentresults/${tournamentId}`)));
   }
 
   deleteTournamentResults(tournamentId: number, ids: number[]) {

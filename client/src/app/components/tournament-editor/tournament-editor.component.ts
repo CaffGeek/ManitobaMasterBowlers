@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@services/api.service';
@@ -6,6 +6,8 @@ import { BowlerRecord } from '@models/BowlerRecord';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { ConfirmDialogService } from '@services/confirm-dialog.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ToastService } from '@services/toast.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-tournament-editor',
@@ -16,28 +18,24 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 export class TournamentEditorComponent implements OnChanges {
   @Input() tournament: number;
   @Input() results: TournamentResultsRecord[] = [];
+  @Output() saveCompleted = new EventEmitter<void>();
   bowlers: BowlerRecord[];
   private tempBowlerId = -1;
   filteredBowlerNames: string[] = [];
   faTrash = faTrash;
+  isSaving = false;
 
   constructor(
     private api: ApiService,
     private confirm: ConfirmDialogService,
+    private toast: ToastService,
   ) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.api.bowlers$().subscribe((bowlers) => {
       this.bowlers = bowlers;
-
-      this.dataSource.data = changes.results.currentValue
-        .map((x,i) => {
-          x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler)?.ID || (-i);
-          x.IgnoreForAverage = !!x.IgnoreForAverage;
-          x.WonStars = !!x.WonStars;
-          return x;
-        });
+      this.applyResults(changes.results.currentValue || []);
     });
   }
 
@@ -136,6 +134,10 @@ export class TournamentEditorComponent implements OnChanges {
           return;
         }
 
+        if (this.isSaving) {
+          return;
+        }
+
         const data = this.results
           .map((c: TournamentResultsRecord) => {
             const record = {
@@ -158,7 +160,18 @@ export class TournamentEditorComponent implements OnChanges {
             return (!!c.Id) ? { Id: c.Id, ...record } : record;
           });
 
-        this.api.saveTournamentResults(this.tournament, data);
+        this.isSaving = true;
+        this.api.saveTournamentResults(this.tournament, data)
+          .pipe(finalize(() => {
+            this.isSaving = false;
+          }))
+          .subscribe(() => {
+            this.api.tournamentResults$(this.tournament).subscribe((rows) => {
+              this.applyResults(rows);
+              this.toast.show('Tournament results saved.', 'success');
+              this.saveCompleted.emit();
+            });
+          });
       });
   }
 
@@ -176,6 +189,16 @@ export class TournamentEditorComponent implements OnChanges {
       this.tempBowlerId = minId;
     }
     return this.tempBowlerId--;
+  }
+
+  private applyResults(results: TournamentResultsRecord[]) {
+    this.results = (results || []).map((x, i) => {
+      x.BowlerId = this.bowlers.find(b => b.Name === x.Bowler)?.ID || (-i);
+      x.IgnoreForAverage = !!x.IgnoreForAverage;
+      x.WonStars = !!x.WonStars;
+      return x;
+    });
+    this.dataSource.data = this.results;
   }
 
   private buildBowlerSuggestions(input: string): string[] {

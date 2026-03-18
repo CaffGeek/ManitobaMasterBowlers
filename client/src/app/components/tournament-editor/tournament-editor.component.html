@@ -4,7 +4,9 @@
   </datalist>
   <div class="justify">
     <a routerLink=".." class="nav-link">Cancel</a>
-    <button type="submit" class="btn btn-success" [disabled]="!tournamentForm.form.valid">Save</button> 
+    <button type="submit" class="btn btn-success" [disabled]="!tournamentForm.form.valid || isSaving">
+      {{ isSaving ? 'Saving...' : 'Save' }}
+    </button> 
   </div>
 
   <div *ngFor="let error of getErrors(tournamentForm.form)">
