@@ -16,6 +16,9 @@
 /api/dist
 /api/node_modules
 /api/local.settings.json
+/api/prod.settings.json
+/infra/local/.env
+/infra/.backups
 
 # profiling files
 chrome-profiler-events.json

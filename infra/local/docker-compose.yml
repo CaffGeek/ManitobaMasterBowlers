@@ -1,4 +1,15 @@
 services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+      - MSSQL_SA_PASSWORD=${MBAM_SQL_SA_PASSWORD:-LocalDevSql!234}
+    volumes:
+      - mbam-sql-data:/var/opt/mssql
+
   frontend:
     build:
       context: ../..
@@ -16,6 +27,8 @@ services:
     build:
       context: ../..
       dockerfile: infra/local/backend.Dockerfile
+    depends_on:
+      - db
     ports:
       - "7071:7071"
     volumes:
@@ -26,3 +39,7 @@ services:
       - AzureWebJobsStorage=UseDevelopmentStorage=true
       - FUNCTIONS_WORKER_RUNTIME=node
       - FUNCTIONS_INPROC_NET8_ENABLED=1
+      - SqlConnectionString=Server=db,1433;Initial Catalog=ManitobaMastersLocal;User ID=sa;Password=${MBAM_SQL_SA_PASSWORD:-LocalDevSql!234};Encrypt=False;TrustServerCertificate=True;Connection Timeout=30;
+
+volumes:
+  mbam-sql-data:

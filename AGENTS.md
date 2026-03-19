@@ -13,6 +13,12 @@ standard, add/update a note here.
 - Frontend: `client` (Angular)
 - Backend: `api` (Azure Functions Core Tools)
 - Local settings: `api/local.settings.json` (do not commit secrets)
+- Local docker compose also runs SQL Server for development; the backend points at
+  `ManitobaMastersLocal` when using `infra/local/docker-compose.yml`.
+- In local docker, `SqlConnectionString` is overridden by compose so the backend
+  uses the local docker SQL instance instead of production.
+- Production database backup scripts read from a separate local-only
+  `api/prod.settings.json` file.
 
 ## API Notes
 - Functions live in `api/src/functions/*` and must be registered in

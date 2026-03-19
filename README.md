@@ -7,6 +7,18 @@
 
 ## Getting started - Run w/ Docker (dev)
 - `./start.sh` runs `infra/local/docker-compose.yml` to start frontend (http://localhost:4200) and backend (7071) with live reload via volume mounts.
+- Local docker now includes SQL Server on `localhost:1433`.
+- Copy `infra/local/.env.example` to `infra/local/.env` if you want to override the default local SA password.
+- Copy `api/local.settings.example.json` to `api/local.settings.json` for local secrets/config; the example includes all keys but no real secrets.
+- `api/local.settings.json` is for local runtime settings. In docker, compose still overrides `SqlConnectionString` so the backend uses the local SQL container.
+
+## Local database refresh
+- Start the local stack first so the SQL container is running.
+- Run `./backup.sh` to export production to a `.bacpac` in `infra/.backups`.
+- Run `./restore.sh <path-to-bacpac>` to import a `.bacpac` into the local docker SQL database.
+- Create a local `api/prod.settings.json` file from `api/prod.settings.example.json`; the backup script reads the production `SqlConnectionString` from that file unless you pass one explicitly.
+- The backup/restore scripts expect `SqlPackage`/`SqlPackage.exe` to be installed. If it isn't, they will stop and tell you where to get it.
+- The local target database is `ManitobaMastersLocal`.
 
 ## Deploying to production
 - CI/CD is handled by `.github/workflows/main.yml` on pushes to `master`.
