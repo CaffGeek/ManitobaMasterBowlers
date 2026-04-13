@@ -56,6 +56,11 @@
         <td mat-cell *matCellDef="let element; let i = index;">{{element.Scratch6}}</td>
     </ng-container>
     
+    <ng-container matColumnDef="Top5Scratch">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 5</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(5)}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="Top4Scratch">
         <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 4</th>
         <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(4)}}</td>
@@ -64,6 +69,11 @@
     <ng-container matColumnDef="Top3Scratch">
         <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 3</th>
         <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(3)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Top2Scratch">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 2</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(2)}}</td>
     </ng-container>
     
     <ng-container matColumnDef="POA1">
@@ -96,6 +106,11 @@
         <td mat-cell *matCellDef="let element; let i = index;">{{element.POA6}}<br/>{{element.Scratch6}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="Top5POA">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 5</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(5)}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="Top4POA">
         <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 4</th>
         <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(4)}}</td>
@@ -104,6 +119,11 @@
     <ng-container matColumnDef="Top3POA">
         <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 3</th>
         <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(3)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Top2POA">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 2</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(2)}}</td>
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

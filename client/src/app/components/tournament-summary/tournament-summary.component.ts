@@ -50,8 +50,8 @@ export class TournamentSummaryComponent implements OnChanges {
   ngOnChanges(_changes: SimpleChanges): void {
     const scratchTotals: string[] = ['Scratch1', 'Scratch2', 'Scratch3', 'Scratch4', 'Scratch5', 'Scratch6'];
     const poaTotals: string[] = ['POA1', 'POA2', 'POA3', 'POA4', 'POA5', 'POA6'];
-    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'Top4Scratch', 'Top3Scratch'];
-    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'Top4POA', 'Top3POA'];
+    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'Top5Scratch', 'Top4Scratch', 'Top3Scratch', 'Top2Scratch'];
+    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'Top5POA', 'Top4POA', 'Top3POA', 'Top2POA'];
 
     this.isTournament(this.division)
         ? this.displayedColumns = scratchColumns
@@ -108,18 +108,25 @@ export class TournamentSummaryComponent implements OnChanges {
   }
 
   resort() {
-    this.isTournament(this.division)
-        ? this.sort.sort(({ id: 'Top4Scratch', start: 'desc'}) as MatSortable)
-        : this.sort.sort(({ id: 'Top4POA', start: 'desc'}) as MatSortable);
+    const isSenior = 'Senior'.localeCompare(this.division?.toString() || '', undefined, { sensitivity: 'base' }) === 0;
+    const defaultColumn = this.isTournament(this.division)
+      ? (isSenior ? 'Top3Scratch' : 'Top4Scratch')
+      : (isSenior ? 'Top3POA' : 'Top4POA');
+
+    this.sort.sort(({ id: defaultColumn, start: 'desc'}) as MatSortable);
 
     this.dataSource.sort = this.sort;
 
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property.toLocaleLowerCase()) {
+        case 'top5scratch': return item.topNScratch(5);
         case 'top3scratch': return item.topNScratch(3);
         case 'top4scratch': return item.topNScratch(4);
+        case 'top2scratch': return item.topNScratch(2);
+        case 'top5poa': return item.topNPoa(5);
         case 'top3poa': return item.topNPoa(3);
         case 'top4poa': return item.topNPoa(4);
+        case 'top2poa': return item.topNPoa(2);
         default: return item[property];
       }
     };
