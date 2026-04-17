@@ -35,7 +35,8 @@ export class TournamentSummaryComponent implements OnChanges {
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource([]);
   bestCount = 4;
-  bestCountOptions = [5, 4, 3, 2];
+  playedTournamentCount = 0;
+  private initialSortApplied = false;
 
   tournaments: TournamentRecord[];
   tournamentSummary: SeasonSummaryRecord[] = [];
@@ -61,17 +62,24 @@ export class TournamentSummaryComponent implements OnChanges {
     return this.isSenior(this.division) ? 4 : 5;
   }
 
+  get bestCountOptions(): number[] {
+    const maxCount = Math.min(this.playedTournamentCount || 0, 5);
+    if (maxCount <= 0) {
+      return [];
+    }
+
+    const minCount = maxCount === 1 ? 1 : 2;
+    const options: number[] = [];
+    for (let count = maxCount; count >= minCount; count--) {
+      options.push(count);
+    }
+
+    return options;
+  }
+
   ngOnChanges(_changes: SimpleChanges): void {
-    const scratchTotals: string[] = ['Scratch1', 'Scratch2', 'Scratch3', 'Scratch4', 'Scratch5', 'Scratch6'];
-    const poaTotals: string[] = ['POA1', 'POA2', 'POA3', 'POA4', 'POA5', 'POA6'];
-    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'OfficialBestScratch', 'BestScratch'];
-    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'OfficialBestPOA', 'BestPOA'];
-
+    this.initialSortApplied = false;
     this.bestCount = this.defaultSelectableBestCount;
-
-    this.isTournament(this.division)
-        ? this.displayedColumns = scratchColumns
-        : this.displayedColumns = poaColumns;
 
     this.api.tournaments$().subscribe((tournaments) => {
       this.tournaments = tournaments
@@ -79,11 +87,18 @@ export class TournamentSummaryComponent implements OnChanges {
         .filter(x => x.SeasonCode === this.season);
         
       this.tournaments.sort((x, y) => x.TournamentNumber - y.TournamentNumber);
+      this.displayedColumns = this.buildDisplayedColumns(this.tournaments.length);
 
       const records = [];
       forkJoin([
         ...this.tournaments.map(tournament => this.api.tournamentResults$(tournament.Id))
       ]).subscribe((resultsList) => {
+        this.playedTournamentCount = resultsList.filter((results) => (results?.length || 0) > 0).length;
+        const availableOptions = this.bestCountOptions;
+        this.bestCount = availableOptions.includes(this.defaultSelectableBestCount)
+          ? this.defaultSelectableBestCount
+          : (availableOptions[0] || 1);
+
         resultsList.forEach((results) => {
           const tournament = this.tournaments.find(x => x.Id === results[0]?.TournamentId);
           if (!tournament) return;
@@ -110,12 +125,14 @@ export class TournamentSummaryComponent implements OnChanges {
 
         this.tournamentSummary = records;
         this.dataSource.data = this.tournamentSummary;
+        this.resort(true);
+        this.initialSortApplied = true;
       });
     });
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.resort());
+    setTimeout(() => this.resort(!this.initialSortApplied));
   }
 
   filterData() {
@@ -124,13 +141,23 @@ export class TournamentSummaryComponent implements OnChanges {
   }
 
   onBestCountChange() {
-    this.resort();
+    this.resort(false);
   }
 
-  resort() {
-    const defaultColumn = this.isTournament(this.division)
-      ? 'BestScratch'
-      : 'BestPOA';
+  private buildDisplayedColumns(tournamentCount: number): string[] {
+    const totalCount = Math.min(tournamentCount || 0, 6);
+    const scratchTotals = Array.from({ length: totalCount }, (_, index) => `Scratch${index + 1}`);
+    const poaTotals = Array.from({ length: totalCount }, (_, index) => `POA${index + 1}`);
+
+    return this.isTournament(this.division)
+      ? ['Pos', 'Bowler', ...scratchTotals, 'OfficialBestScratch', 'BestScratch']
+      : ['Pos', 'Bowler', ...poaTotals, 'OfficialBestPOA', 'BestPOA'];
+  }
+
+  resort(useOfficialColumn = false) {
+    const defaultColumn = useOfficialColumn
+      ? (this.isTournament(this.division) ? 'OfficialBestScratch' : 'OfficialBestPOA')
+      : (this.isTournament(this.division) ? 'BestScratch' : 'BestPOA');
 
     this.dataSource.sort = this.sort;
     this.sort.active = defaultColumn;
