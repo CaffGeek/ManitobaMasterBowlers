@@ -34,6 +34,8 @@ export class TournamentSummaryComponent implements OnChanges {
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource([]);
+  bestCount = 4;
+  bestCountOptions = [5, 4, 3, 2];
 
   tournaments: TournamentRecord[];
   tournamentSummary: SeasonSummaryRecord[] = [];
@@ -47,11 +49,25 @@ export class TournamentSummaryComponent implements OnChanges {
     return "Tournament".localeCompare(division.toString(), undefined, {sensitivity: 'base'}) === 0;
   }
 
+  isSenior(division: Division): boolean {
+    return 'Senior'.localeCompare(division?.toString() || '', undefined, { sensitivity: 'base' }) === 0;
+  }
+
+  get officialBestCount(): number {
+    return this.isSenior(this.division) ? 3 : 4;
+  }
+
+  get defaultSelectableBestCount(): number {
+    return this.isSenior(this.division) ? 4 : 5;
+  }
+
   ngOnChanges(_changes: SimpleChanges): void {
     const scratchTotals: string[] = ['Scratch1', 'Scratch2', 'Scratch3', 'Scratch4', 'Scratch5', 'Scratch6'];
     const poaTotals: string[] = ['POA1', 'POA2', 'POA3', 'POA4', 'POA5', 'POA6'];
-    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'Top5Scratch', 'Top4Scratch', 'Top3Scratch', 'Top2Scratch'];
-    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'Top5POA', 'Top4POA', 'Top3POA', 'Top2POA'];
+    const scratchColumns: string[] = ['Pos', 'Bowler', ...scratchTotals, 'OfficialBestScratch', 'BestScratch'];
+    const poaColumns: string[] = ['Pos', 'Bowler', ...poaTotals, 'OfficialBestPOA', 'BestPOA'];
+
+    this.bestCount = this.defaultSelectableBestCount;
 
     this.isTournament(this.division)
         ? this.displayedColumns = scratchColumns
@@ -107,26 +123,26 @@ export class TournamentSummaryComponent implements OnChanges {
       .filter(x => !this.genderFilter || x.Gender.localeCompare(this.genderFilter, undefined, {sensitivity: 'base'}) === 0);
   }
 
-  resort() {
-    const isSenior = 'Senior'.localeCompare(this.division?.toString() || '', undefined, { sensitivity: 'base' }) === 0;
-    const defaultColumn = this.isTournament(this.division)
-      ? (isSenior ? 'Top3Scratch' : 'Top4Scratch')
-      : (isSenior ? 'Top3POA' : 'Top4POA');
+  onBestCountChange() {
+    this.resort();
+  }
 
-    this.sort.sort(({ id: defaultColumn, start: 'desc'}) as MatSortable);
+  resort() {
+    const defaultColumn = this.isTournament(this.division)
+      ? 'BestScratch'
+      : 'BestPOA';
 
     this.dataSource.sort = this.sort;
+    this.sort.active = defaultColumn;
+    this.sort.direction = 'desc';
+    this.sort.sortChange.emit({ active: defaultColumn, direction: 'desc' });
 
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property.toLocaleLowerCase()) {
-        case 'top5scratch': return item.topNScratch(5);
-        case 'top3scratch': return item.topNScratch(3);
-        case 'top4scratch': return item.topNScratch(4);
-        case 'top2scratch': return item.topNScratch(2);
-        case 'top5poa': return item.topNPoa(5);
-        case 'top3poa': return item.topNPoa(3);
-        case 'top4poa': return item.topNPoa(4);
-        case 'top2poa': return item.topNPoa(2);
+        case 'officialbestscratch': return item.topNScratch(this.officialBestCount);
+        case 'bestscratch': return item.topNScratch(this.bestCount);
+        case 'officialbestpoa': return item.topNPoa(this.officialBestCount);
+        case 'bestpoa': return item.topNPoa(this.bestCount);
         default: return item[property];
       }
     };
@@ -134,6 +150,27 @@ export class TournamentSummaryComponent implements OnChanges {
 
   exportCsv() {
     const rows = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.dataSource.data;
-    exportToCsv('tournament-summary.csv', this.displayedColumns, rows);
+    const officialColumn = this.isTournament(this.division) ? 'OfficialBestScratch' : 'OfficialBestPOA';
+    const bestColumn = this.isTournament(this.division) ? 'BestScratch' : 'BestPOA';
+    const exportColumns = this.displayedColumns.map((column) => {
+      if (column === officialColumn) {
+        return `Best ${this.officialBestCount}`;
+      }
+      if (column === bestColumn) {
+        return `Best ${this.bestCount}`;
+      }
+      return column;
+    });
+    const exportRows = rows.map((row) => ({
+      ...row,
+      [`Best ${this.officialBestCount}`]: this.isTournament(this.division)
+        ? row.topNScratch(this.officialBestCount)
+        : row.topNPoa(this.officialBestCount),
+      [`Best ${this.bestCount}`]: this.isTournament(this.division)
+        ? row.topNScratch(this.bestCount)
+        : row.topNPoa(this.bestCount),
+    }));
+
+    exportToCsv('tournament-summary.csv', exportColumns, exportRows);
   }
 }

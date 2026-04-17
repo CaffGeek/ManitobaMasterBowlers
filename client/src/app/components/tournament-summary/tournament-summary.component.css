@@ -3,6 +3,15 @@
     flex: 0 0 auto;
 }
 
+.best-filter-field {
+    width: 100%;
+    min-width: 0;
+}
+
+:host ::ng-deep .best-filter-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
 @media (max-width: 700px) {
     .table-actions {
         flex-direction: column;
@@ -19,26 +28,36 @@
         width: 100%;
     }
 
+    .best-filter-field {
+        width: 100%;
+    }
+
     :host ::ng-deep .filter-field .mat-mdc-text-field-wrapper,
-    :host ::ng-deep .filter-field .mat-mdc-form-field-flex {
+    :host ::ng-deep .filter-field .mat-mdc-form-field-flex,
+    :host ::ng-deep .best-filter-field .mat-mdc-text-field-wrapper,
+    :host ::ng-deep .best-filter-field .mat-mdc-form-field-flex {
         height: 40px;
     }
 
-    :host ::ng-deep .filter-field .mat-mdc-form-field-infix {
+    :host ::ng-deep .filter-field .mat-mdc-form-field-infix,
+    :host ::ng-deep .best-filter-field .mat-mdc-form-field-infix {
         min-height: 40px;
         padding-top: 10px;
         padding-bottom: 6px;
     }
 
-    :host ::ng-deep .filter-field .mat-mdc-form-field-subscript-wrapper {
+    :host ::ng-deep .filter-field .mat-mdc-form-field-subscript-wrapper,
+    :host ::ng-deep .best-filter-field .mat-mdc-form-field-subscript-wrapper {
         display: none;
     }
 
-    :host ::ng-deep .filter-field .mat-mdc-select-trigger {
+    :host ::ng-deep .filter-field .mat-mdc-select-trigger,
+    :host ::ng-deep .best-filter-field .mat-mdc-select-trigger {
         font-size: 0.9rem;
     }
 
-    :host ::ng-deep .filter-field .mat-mdc-floating-label {
+    :host ::ng-deep .filter-field .mat-mdc-floating-label,
+    :host ::ng-deep .best-filter-field .mat-mdc-floating-label {
         font-size: 0.85rem;
     }
 

@@ -56,24 +56,20 @@
         <td mat-cell *matCellDef="let element; let i = index;">{{element.Scratch6}}</td>
     </ng-container>
     
-    <ng-container matColumnDef="Top5Scratch">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 5</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(5)}}</td>
+    <ng-container matColumnDef="OfficialBestScratch">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Best {{officialBestCount}}</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(officialBestCount)}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="Top4Scratch">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 4</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(4)}}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="Top3Scratch">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 3</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(3)}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="Top2Scratch">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 2</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(2)}}</td>
+    <ng-container matColumnDef="BestScratch">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="140px">
+          <mat-form-field appearance="fill" class="best-filter-field" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
+            <mat-select [(value)]="bestCount" (selectionChange)="onBestCountChange()">
+              <mat-option *ngFor="let option of bestCountOptions" [value]="option">Best {{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNScratch(bestCount)}}</td>
     </ng-container>
     
     <ng-container matColumnDef="POA1">
@@ -106,24 +102,20 @@
         <td mat-cell *matCellDef="let element; let i = index;">{{element.POA6}}<br/>{{element.Scratch6}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="Top5POA">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 5</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(5)}}</td>
+    <ng-container matColumnDef="OfficialBestPOA">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Best {{officialBestCount}}</th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(officialBestCount)}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="Top4POA">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 4</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(4)}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="Top3POA">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 3</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(3)}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="Top2POA">
-        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="120px">Top 2</th>
-        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(2)}}</td>
+    <ng-container matColumnDef="BestPOA">
+        <th mat-header-cell mat-sort-header start="desc" *matHeaderCellDef width="140px">
+          <mat-form-field appearance="fill" class="best-filter-field" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
+            <mat-select [(value)]="bestCount" (selectionChange)="onBestCountChange()">
+              <mat-option *ngFor="let option of bestCountOptions" [value]="option">Best {{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{element.topNPoa(bestCount)}}</td>
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
