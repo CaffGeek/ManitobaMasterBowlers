@@ -22,10 +22,12 @@
 
 ## Deploying to production
 - CI/CD is handled by `.github/workflows/main.yml` on pushes to `master`.
-- Frontend: builds `client` in production mode (`--configuration production --base-href /ManitobaMasterBowlers/`) and deploys `client/dist/beta` to the `gh-pages` branch (404.html is copied from index.html for SPA routing).
+- Frontend: builds `client` in production mode and deploys `client/dist/beta` to the Azure App Service web app.
 - Backend: builds `api` (TypeScript -> `dist`) and deploys the Azure Functions app via publish profile.
 - Required GitHub secrets:
   - `TINYMCE_API_KEY` (optional for the WYSIWYG editor; injected at build time)
+  - `AZURE_WEBAPP_NAME` (your frontend App Service resource name, e.g. `ManitobaMasters`)
+  - `AZURE_WEBAPP_PUBLISH_PROFILE` (full publish profile XML for that web app)
   - `AZURE_FUNCTIONAPP_NAME` (your Function App resource name, e.g. `manitobamastersfunc`)
   - `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` (full publish profile XML for that app)
   - `GITHUB_TOKEN` is provided by GitHub Actions automatically.

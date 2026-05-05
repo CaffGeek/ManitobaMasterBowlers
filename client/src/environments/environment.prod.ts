@@ -21,7 +21,7 @@ try {
 
 export const environment = {
   production: true,
-  appBasePath: '/ManitobaMasterBowlers',
+  appBasePath: '',
   apiUri: apiUri,
   auth: {
     domain,

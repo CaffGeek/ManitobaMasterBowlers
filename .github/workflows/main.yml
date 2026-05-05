@@ -13,10 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  client-gh-pages:
+  client-azure-webapp:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     defaults:
       run:
         working-directory: client
@@ -53,7 +51,7 @@ jobs:
           fi
 
       - name: Build Angular app
-        run: npm run build -- --configuration production --base-href /ManitobaMasterBowlers/
+        run: npm run build -- --configuration production
 
       - name: Copy TinyMCE assets into build
         run: |
@@ -70,18 +68,15 @@ jobs:
             exit 1
           fi
 
-      - name: Add SPA fallback (404 -> index)
-        run: cp dist/beta/index.html dist/beta/404.html
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           publish_dir: client/dist/beta
 
   api-azure-functions:
-    needs: client-gh-pages
+    needs: client-azure-webapp
     runs-on: ubuntu-latest
     permissions:
       contents: read

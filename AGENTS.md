@@ -19,6 +19,9 @@ standard, add/update a note here.
   uses the local docker SQL instance instead of production.
 - Production database backup scripts read from a separate local-only
   `api/prod.settings.json` file.
+- Production frontend deploys to Azure App Service rather than GitHub Pages.
+  Angular production builds assume root hosting (`/`) and include `web.config`
+  for SPA route fallback on App Service.
 
 ## API Notes
 - Functions live in `api/src/functions/*` and must be registered in
