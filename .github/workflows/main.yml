@@ -73,7 +73,7 @@ jobs:
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          publish_dir: client/dist/beta
+          package: client/dist/beta
 
   api-azure-functions:
     needs: client-azure-webapp
