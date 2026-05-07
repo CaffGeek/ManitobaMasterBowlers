@@ -5,6 +5,6 @@
     "audience": "https://manitobamastersfunc.azurewebsites.net/"
   },
   "apiUri": "https://manitobamastersfunc.azurewebsites.net/api/",
-  "appUri": "https://manitobamasters.azurewebsites.net",
+  "appUri": "https://manitobamasterbowlers.ca",
   "errorPath": "/error"
 }

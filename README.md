@@ -34,16 +34,19 @@
 - To trigger a deploy: push to `master` (or merge PRs into `master`).
 
 ## Auth0 configuration
-The app uses the dev tenant for both local and GH Pages. Ensure these settings are applied to the SPA in Auth0:
+The app uses the dev tenant for both local and production. Ensure these settings are applied to the SPA in Auth0:
 - Allowed Callback URLs:
   - `http://localhost:4200`
-  - `https://caffgeek.github.io`
+  - `https://manitobamasterbowlers.ca`
+  - `https://manitobamasters.azurewebsites.net`
 - Allowed Logout URLs:
   - `http://localhost:4200`
-  - `https://caffgeek.github.io`
+  - `https://manitobamasterbowlers.ca`
+  - `https://manitobamasters.azurewebsites.net`
 - Allowed Web Origins / Allowed Origins (CORS):
   - `http://localhost:4200`
-  - `https://caffgeek.github.io`
+  - `https://manitobamasterbowlers.ca`
+  - `https://manitobamasters.azurewebsites.net`
 - API (Auth0 -> APIs) settings:
   - Identifier: `https://manitobamastersfunc.azurewebsites.net/`
   - RBAC: enabled
@@ -53,5 +56,6 @@ The app uses the dev tenant for both local and GH Pages. Ensure these settings a
 ## Azure Functions settings
 - CORS allow list should include:
   - `http://localhost:4200`
-  - `https://caffgeek.github.io`
+  - `https://manitobamasterbowlers.ca`
+  - `https://manitobamasters.azurewebsites.net`
 - App settings should include `AzureWebJobsStorage`, `FUNCTIONS_WORKER_RUNTIME=node`, and `SqlConnectionString`.

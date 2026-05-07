@@ -93,6 +93,13 @@ standard, add/update a note here.
   when relevant). If Material doesn't fit, build thin wrapper components that
   compose Material primitives so styling remains consistent.
 
+## Current Production URLs
+- Frontend production domain: `https://manitobamasterbowlers.ca`
+- Frontend Azure hostname: `https://manitobamasters.azurewebsites.net`
+- API production hostname: `https://manitobamastersfunc.azurewebsites.net`
+- Auth0 SPA settings for production should allow both the custom domain and the
+  Azure frontend hostname for callback, logout, and web origin entries.
+
 ## Update Triggers (keep this file current)
 Add a note here when you make a cross-cutting change:
 - New permission or auth rule.
