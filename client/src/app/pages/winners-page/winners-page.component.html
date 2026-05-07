@@ -1,8 +1,37 @@
 <mat-card class="mbam-table-surface">
   <mat-card-header>
-    <h1>Winners</h1>
+    <div class="table-actions table-actions--split">
+      <div class="table-actions__left">
+        <h1>Winners</h1>
+      </div>
+      <div class="table-actions__right winners-actions">
+        <mat-form-field appearance="fill" class="filter-field filter-field--tokens">
+          <mat-label>Filter winners</mat-label>
+          <input
+            matInput
+            [(ngModel)]="filterInput"
+            [matAutocomplete]="filterAuto"
+            (input)="onFilterInputChange()"
+          />
+          <mat-autocomplete #filterAuto="matAutocomplete" [displayWith]="displayFilterOption.bind(this)" (optionSelected)="selectFilter($event)">
+            <mat-option *ngFor="let option of filteredFilterOptions" [value]="option">
+              {{ option.displayLabel }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="exportCsv()">Export as CSV</button>
+      </div>
+    </div>
   </mat-card-header>
   <mat-card-content>
+    <div class="filter-pills filter-pills--below-header" *ngIf="selectedFilters.length">
+      <span class="filter-pill" *ngFor="let filter of selectedFilters">
+        {{ filter.displayLabel }}
+        <button type="button" class="filter-pill__remove" (click)="removeFilter(filter)" aria-label="Remove filter">×</button>
+      </span>
+    </div>
+
     <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 winners-table">
       <ng-container matColumnDef="Bowler">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Bowler</th>

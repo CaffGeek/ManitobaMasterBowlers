@@ -1,5 +1,56 @@
+.winners-actions {
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-field {
+  min-width: 160px;
+}
+
+.filter-field--tokens {
+  min-width: 360px;
+  flex: 1 1 420px;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-pills--below-header {
+  margin-bottom: 12px;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #d3d3d3;
+  border-radius: 999px;
+  background: #fff8e8;
+  color: #4a4a4a;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.filter-pill__remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
 .winners-table {
   width: 100%;
+}
+
+:host ::ng-deep .filter-field--tokens .mat-mdc-form-field-infix {
+  min-height: 40px;
 }
 
 .winners-table .mat-column-Bowler {
@@ -20,8 +71,18 @@
 }
 
 @media (max-width: 700px) {
-  .winners-card {
-    margin: 8px;
+  .winners-actions {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .filter-field {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  .filter-field--tokens {
+    flex-basis: 100%;
   }
 
   .winners-table {
@@ -59,5 +120,28 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  :host ::ng-deep .filter-field .mat-mdc-text-field-wrapper,
+  :host ::ng-deep .filter-field .mat-mdc-form-field-flex {
+    height: 40px;
+  }
+
+  :host ::ng-deep .filter-field .mat-mdc-form-field-infix {
+    min-height: 40px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+  }
+
+  :host ::ng-deep .filter-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  :host ::ng-deep .filter-field .mat-mdc-select-trigger {
+    font-size: 0.9rem;
+  }
+
+  :host ::ng-deep .filter-field .mat-mdc-floating-label {
+    font-size: 0.85rem;
   }
 }
