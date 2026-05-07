@@ -109,3 +109,14 @@ jobs:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
           package: api
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
+      - name: Restart Azure Functions host
+        env:
+          AZURE_FUNCTIONAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        run: |
+          python -c "import os, xml.etree.ElementTree as ET; root = ET.fromstring(os.environ['AZURE_FUNCTIONAPP_PUBLISH_PROFILE']); profile = next((p for p in root.findall('.//publishProfile') if '.scm.' in p.attrib.get('publishUrl', '')), root.find('.//publishProfile')); print(f'SCM_HOST={profile.attrib[\"publishUrl\"].replace(\":443\", \"\")}'); print(f'SCM_USERNAME={profile.attrib[\"userName\"]}'); print(f'SCM_PASSWORD={profile.attrib[\"userPWD\"]}')" >> $GITHUB_ENV
+
+      - name: Wait for restart to settle
+        run: |
+          curl --fail-with-body --user "$SCM_USERNAME:$SCM_PASSWORD" --request POST "https://$SCM_HOST/api/app/restart"
+          sleep 20

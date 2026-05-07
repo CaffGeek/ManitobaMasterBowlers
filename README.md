@@ -24,6 +24,7 @@
 - CI/CD is handled by `.github/workflows/main.yml` on pushes to `master`.
 - Frontend: builds `client` in production mode and deploys `client/dist/beta` to the Azure App Service web app.
 - Backend: builds `api` (TypeScript -> `dist`) and deploys the Azure Functions app via publish profile.
+- Backend deploy also performs an explicit post-deploy Functions host restart via Kudu because the app has shown intermittent host/runtime issues until restarted after ZIP deploy.
 - Required GitHub secrets:
   - `TINYMCE_API_KEY` (optional for the WYSIWYG editor; injected at build time)
   - `AZURE_WEBAPP_NAME` (your frontend App Service resource name, e.g. `ManitobaMasters`)
