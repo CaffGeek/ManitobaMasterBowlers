@@ -62,6 +62,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { environment as env } from '../environments/environment';
 import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
+import { ApiRetryInterceptor } from './interceptors/api-retry.interceptor';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,11 @@ import { ErrorToastInterceptor } from './interceptors/error-toast.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorToastInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiRetryInterceptor,
       multi: true,
     },
     {

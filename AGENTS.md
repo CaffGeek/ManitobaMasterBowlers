@@ -92,6 +92,9 @@ standard, add/update a note here.
   Keep table patterns consistent (sortable + sticky headers; export affordance
   when relevant). If Material doesn't fit, build thin wrapper components that
   compose Material primitives so styling remains consistent.
+- Public API `GET` calls use a shared retry interceptor for transient cold-start
+  failures from Azure Functions. Retries are limited and only apply to API GETs
+  with transient statuses (`0`, `500`, `502`, `503`, `504`).
 
 ## Current Production URLs
 - Frontend production domain: `https://manitobamasterbowlers.ca`
