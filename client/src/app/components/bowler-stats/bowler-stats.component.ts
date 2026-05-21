@@ -89,7 +89,7 @@ export class BowlerStatsComponent implements OnInit {
       return appearance.SeasonCode;
     }
 
-    const rangeMatch = seasonDesc.match(/(20\d{2})\D+(\d{2}|\d{4})$/);
+    const rangeMatch = seasonDesc.match(/((?:19|20)\d{2})\D+(\d{2}|\d{4})$/);
     if (rangeMatch) {
       const startYear = Number(rangeMatch[1]);
       const endPart = rangeMatch[2];
@@ -98,11 +98,17 @@ export class BowlerStatsComponent implements OnInit {
         return endPart;
       }
 
+      const startShortYear = startYear % 100;
+      const endShortYear = Number(endPart);
       const century = Math.floor(startYear / 100) * 100;
-      return String(century + Number(endPart));
+      const endYear = endShortYear < startShortYear
+        ? century + 100 + endShortYear
+        : century + endShortYear;
+
+      return String(endYear);
     }
 
-    const fullYearMatch = seasonDesc.match(/(20\d{2})(?!.*20\d{2})/);
+    const fullYearMatch = seasonDesc.match(/((?:19|20)\d{2})(?!.*(?:19|20)\d{2})/);
     if (fullYearMatch) {
       return fullYearMatch[1];
     }
@@ -111,7 +117,25 @@ export class BowlerStatsComponent implements OnInit {
   }
 
   get nationalAppearanceCount(): number {
-    return this.nationalAppearances.length;
+    return new Set(
+      this.nationalAppearances.map((appearance) => this.nationalAppearanceGroupKey(appearance))
+    ).size;
+  }
+
+  get listedNationalAppearances(): NationalAppearanceRecord[] {
+    const singlesKeys = new Set(
+      this.nationalAppearances
+        .filter((appearance) => appearance.EntryType === 'Singles')
+        .map((appearance) => this.nationalAppearanceGroupKey(appearance))
+    );
+
+    return this.nationalAppearances.filter((appearance) => {
+      if (appearance.EntryType !== 'Team') {
+        return true;
+      }
+
+      return !singlesKeys.has(this.nationalAppearanceGroupKey(appearance));
+    });
   }
 
   onLeagueAverageChange() {
@@ -158,5 +182,9 @@ export class BowlerStatsComponent implements OnInit {
 
   sumGames = (results: any[]): number => {
     return results.map(x => x.Game1 + x.Game2 + x.Game3 + x.Game4 + x.Game5 + x.Game6 + x.Game7 + x.Game8).reduce((a, b) => a + b, 0);
+  }
+
+  private nationalAppearanceGroupKey(appearance: NationalAppearanceRecord): string {
+    return `${appearance.SeasonCode}|${appearance.GroupKey}`;
   }
 }

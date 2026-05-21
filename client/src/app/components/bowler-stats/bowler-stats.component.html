@@ -60,7 +60,7 @@
 <div class="national-appearances" *ngIf="showNationalAppearances && nationalAppearanceCount > 0">
     <div class="national-appearances__title">National Appearances</div>
     <div class="national-appearances__list">
-        <div class="national-appearance-row" *ngFor="let appearance of nationalAppearances">
+        <div class="national-appearance-row" *ngFor="let appearance of listedNationalAppearances">
             <div class="national-appearance-season">
                 <a [routerLink]="['/contingents', appearance.SeasonCode]">
                     {{nationalAppearanceSeasonLabel(appearance)}}
