@@ -43,6 +43,7 @@ standard, add/update a note here.
 - `GET /api/bowlers` — GetBowlers
 - `PUT /api/bowlers/{id:int}` — UpdateBowler
 - `GET /api/bowlerresults/{id:int?}` — GetBowlerResults
+- `GET /api/nationalappearances/{id:int}` — GetNationalAppearances
 - `GET /api/contentblocks/{key?}` — GetContentBlocks
 - `GET /api/contingents/{season}` — GetContingents
 - `PUT /api/contingents/{season}` — SaveContingents

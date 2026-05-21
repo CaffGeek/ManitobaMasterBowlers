@@ -11,6 +11,7 @@ import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { AnnouncementRecord } from '@models/AnnouncementRecord';
 import { ContingentResponseRecord, SaveContingentEntryRecord } from '@models/ContingentRecord';
+import { NationalAppearanceRecord } from '@models/NationalAppearanceRecord';
 
 @Injectable({
   providedIn: 'root',
@@ -79,6 +80,13 @@ export class ApiService {
 
     return this.fromCache<BowlerResultsRecord[]>(`bowlerresults/${bowlerId}`)
       .pipe(map(z => z.map(x => Object.assign(new BowlerResultsRecord(), x).ensureTypes())));
+  }
+
+  nationalAppearances$(bowlerId: number): Observable<NationalAppearanceRecord[]> {
+    if (!bowlerId) return of([]);
+
+    return this.fromCache<NationalAppearanceRecord[]>(`nationalappearances/${bowlerId}`)
+      .pipe(map(z => z.map(x => Object.assign(new NationalAppearanceRecord(), x))));
   }
 
   tournaments$(): Observable<TournamentRecord[]> {

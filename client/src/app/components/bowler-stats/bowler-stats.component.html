@@ -40,12 +40,36 @@
             <div class="stat-value">{{stats.highSet}}</div>
         </div>
         <div class="stat-block">
-            <div class="stat-label">Career Games</div>
-            <div class="stat-value">{{stats.games | number}}</div>
+            <div class="stat-label">National Appearances</div>
+            <div class="stat-value">
+                <button
+                    *ngIf="nationalAppearanceCount > 0"
+                    class="calc-toggle inline"
+                    (click)="showNationalAppearances = !showNationalAppearances"
+                    title="Show national appearances"
+                >
+                    <fa-icon [icon]="showNationalAppearances ? faEyeSlash : faEye"></fa-icon>
+                </button>
+                {{nationalAppearanceCount}}
+            </div>
         </div>
     </div>
 </div>
 <div class="note">* since 2005</div>
+
+<div class="national-appearances" *ngIf="showNationalAppearances && nationalAppearanceCount > 0">
+    <div class="national-appearances__title">National Appearances</div>
+    <div class="national-appearances__list">
+        <div class="national-appearance-row" *ngFor="let appearance of nationalAppearances">
+            <div class="national-appearance-season">
+                <a [routerLink]="['/contingents', appearance.SeasonCode]">
+                    {{nationalAppearanceSeasonLabel(appearance)}}
+                </a>
+            </div>
+            <div class="national-appearance-label">{{nationalAppearanceLabel(appearance)}}</div>
+        </div>
+    </div>
+</div>
 
 <div class="calc-panel" *ngIf="showCalc">
     <div class="calc-row">

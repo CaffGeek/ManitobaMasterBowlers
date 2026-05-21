@@ -112,3 +112,47 @@
     font-size: 0.85em;
     color: #6b5a00;
 }
+
+.national-appearances {
+    margin-top: 1rem;
+    border: 1px solid #e6dcb0;
+    background: #fff9e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.national-appearances__title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.national-appearances__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+}
+
+.national-appearance-row {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 0.75rem;
+}
+
+.national-appearance-season {
+    font-weight: 600;
+}
+
+.national-appearance-season a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.national-appearance-season a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 680px) {
+    .national-appearances__list {
+        grid-template-columns: 1fr;
+    }
+}
