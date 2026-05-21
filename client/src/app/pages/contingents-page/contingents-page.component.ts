@@ -15,6 +15,10 @@ import { combineLatest } from 'rxjs';
 type CoachSeasonBowlerRecord = {
   BowlerId: number;
   Name: string;
+  Gender: string | null;
+  TournamentFlag: boolean;
+  TeachingFlag: boolean;
+  SeniorFlag: boolean;
 };
 
 @Component({
@@ -230,8 +234,8 @@ export class ContingentsPageComponent implements OnInit {
     this.isLoading = true;
     this.api.contingents$(this.selectedSeason).subscribe({
       next: (response: ContingentResponseRecord) => {
-        this.groups = this.cloneGroups(response.groups || []);
-        this.defaultGroups = this.cloneGroups(response.defaultGroups || []);
+        this.groups = this.mergeSeasonCandidates(this.cloneGroups(response.groups || []));
+        this.defaultGroups = this.mergeSeasonCandidates(this.cloneGroups(response.defaultGroups || []));
         this.hasSavedContingent = !!response.hasSavedContingent;
         this.coachInputs = this.groups.reduce((result, group) => {
           result[group.key] = group.coach?.bowlerId ? `${group.coach.bowler} [${group.coach.bowlerId}]` : '';
@@ -417,9 +421,21 @@ export class ContingentsPageComponent implements OnInit {
           .map((row) => ({
             BowlerId: row.BowlerId,
             Name: row.Name,
+            Gender: row.Gender ?? null,
+            TournamentFlag: !!row.TournamentFlag,
+            TeachingFlag: !!row.TeachingFlag,
+            SeniorFlag: !!row.SeniorFlag,
           }))
           .filter((row) => !!row.BowlerId && !!row.Name)
           .sort((a, b) => a.Name.localeCompare(b.Name));
+
+        if (this.groups.length) {
+          this.groups = this.mergeSeasonCandidates(this.groups);
+        }
+
+        if (this.defaultGroups.length) {
+          this.defaultGroups = this.mergeSeasonCandidates(this.defaultGroups);
+        }
       },
       error: () => {
         this.coachCandidates = [];
@@ -437,5 +453,56 @@ export class ContingentsPageComponent implements OnInit {
 
     const normalized = value.trim().toLowerCase();
     return this.coachCandidates.find((candidate) => candidate.Name.trim().toLowerCase() === normalized);
+  }
+
+  private mergeSeasonCandidates(groups: ContingentGroupRecord[]): ContingentGroupRecord[] {
+    if (!this.coachCandidates.length) {
+      return groups;
+    }
+
+    return groups.map((group) => {
+      const candidatesById = new Map(group.candidates.map((candidate) => [candidate.bowlerId, candidate]));
+
+      for (const bowler of this.coachCandidates) {
+        if (!this.bowlerMatchesGroup(bowler, group) || candidatesById.has(bowler.BowlerId)) {
+          continue;
+        }
+
+        candidatesById.set(bowler.BowlerId, {
+          bowlerId: bowler.BowlerId,
+          bowler: bowler.Name,
+          gender: bowler.Gender,
+          division: group.division,
+          eventCount: 0,
+          bestFive: null,
+          bestFour: null,
+          bestThree: null,
+          eligibleSingles: false,
+          eligibleTeam: false,
+        });
+      }
+
+      return {
+        ...group,
+        candidates: Array.from(candidatesById.values()),
+      };
+    });
+  }
+
+  private bowlerMatchesGroup(bowler: CoachSeasonBowlerRecord, group: ContingentGroupRecord): boolean {
+    if (group.gender && bowler.Gender !== group.gender) {
+      return false;
+    }
+
+    switch (group.division) {
+      case 'Tournament':
+        return bowler.TournamentFlag;
+      case 'Teaching':
+        return bowler.TeachingFlag;
+      case 'Senior':
+        return bowler.SeniorFlag;
+      default:
+        return false;
+    }
   }
 }
