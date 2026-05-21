@@ -1,0 +1,72 @@
+.contingents-card {
+  margin: 1rem;
+}
+
+.contingents-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.contingents-toolbar select {
+  min-width: 12rem;
+}
+
+.contingents-note {
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.contingents-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.contingent-group {
+  border: 1px solid #d9dee3;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.contingent-group h2 {
+  margin-top: 0;
+}
+
+.bowler-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.bowler-link {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.bowler-link:hover {
+  text-decoration: underline;
+}
+
+.coach-row {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+.contingents-loading {
+  color: #495057;
+}
+
+@media (min-width: 960px) {
+  .seniors-group {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .contingents-layout {
+    grid-template-columns: 1fr;
+  }
+}

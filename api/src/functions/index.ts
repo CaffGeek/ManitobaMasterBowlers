@@ -28,3 +28,5 @@ import './WhoAmI';
 import './UploadMedia';
 import './ListMedia';
 import './DeleteMedia';
+import './GetContingents';
+import './SaveContingents';

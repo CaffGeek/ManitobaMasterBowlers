@@ -10,6 +10,7 @@ import { TournamentRecord } from '@models/TournamentRecord';
 import { TournamentResultsRecord } from '@models/TournamentResultsRecord';
 import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { AnnouncementRecord } from '@models/AnnouncementRecord';
+import { ContingentResponseRecord, SaveContingentEntryRecord } from '@models/ContingentRecord';
 
 @Injectable({
   providedIn: 'root',
@@ -173,5 +174,14 @@ export class ApiService {
 
   whoami() {
     return this.http.get(`${environment.apiUri}whoami`);
+  }
+
+  contingents$(season: string): Observable<ContingentResponseRecord> {
+    return this.fromCache<ContingentResponseRecord>(`contingents/${season}`);
+  }
+
+  saveContingents(season: string, entries: SaveContingentEntryRecord[]): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}contingents/${season}`, { entries })
+      .pipe(tap(() => this.clearCache(`contingents/${season}`)));
   }
 }

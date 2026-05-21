@@ -1,0 +1,75 @@
+<mat-card class="contingents-card">
+  <mat-card-header>
+    <h1>Nationals Contingents</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="contingents-toolbar">
+      <label for="seasonSelect">Season</label>
+      <select id="seasonSelect" [(ngModel)]="selectedSeason" (change)="onSeasonChange()">
+        <option *ngFor="let season of seasons" [value]="season.SeasonCode">
+          {{ season.SeasonDesc || season.SeasonCode }}
+        </option>
+      </select>
+      <button type="button" class="btn btn-outline-primary" [routerLink]="['/contingents', selectedSeason]">
+        View page
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="resetToDefaults()" [disabled]="isLoading">
+        Reset to defaults
+      </button>
+      <button type="button" class="btn btn-success" (click)="save()" [disabled]="isSaving || isLoading">
+        {{ isSaving ? 'Saving...' : 'Save' }}
+      </button>
+    </div>
+
+    <p class="contingents-note" *ngIf="hasSavedContingent">
+      Loaded saved contingent entries for this season.
+    </p>
+    <p class="contingents-note" *ngIf="!hasSavedContingent">
+      No saved contingent entries found. Defaults shown are based on current qualifying rules.
+    </p>
+
+    <app-content-block [key]="contentBlockKey"></app-content-block>
+
+    <div class="contingents-loading" *ngIf="isLoading">Loading contingents...</div>
+
+    <div class="contingents-groups" *ngIf="!isLoading">
+      <section class="contingent-group" *ngFor="let group of groups; trackBy: trackByGroup">
+        <h2>{{ group.label }}</h2>
+
+        <div class="slot-row" *ngIf="group.singles && !group.teamIncludesSingles">
+          <label>Singles</label>
+          <select [ngModel]="group.singles.bowlerId" (ngModelChange)="updateSlot(group, group.singles!, $event)">
+            <option [ngValue]="null">Select bowler</option>
+            <option *ngFor="let candidate of candidatesForSlot(group, group.singles!)" [ngValue]="candidate.bowlerId">
+              {{ optionLabel(group, group.singles!, candidate) }}
+            </option>
+          </select>
+        </div>
+
+        <div class="slot-row" *ngFor="let slot of group.team">
+          <label>{{ teamLabel(group, slot) }}</label>
+          <select [ngModel]="slot.bowlerId" (ngModelChange)="updateSlot(group, slot, $event)">
+            <option [ngValue]="null">Select bowler</option>
+            <option *ngFor="let candidate of candidatesForSlot(group, slot)" [ngValue]="candidate.bowlerId">
+              {{ optionLabel(group, slot, candidate) }}
+            </option>
+          </select>
+        </div>
+
+        <div class="slot-row">
+          <label>Coach</label>
+          <input
+            type="text"
+            [ngModel]="coachDisplayValue(group)"
+            (ngModelChange)="onCoachInputChange(group, $event)"
+            [attr.list]="coachListId(group)"
+            placeholder="Type to search this season's masters"
+          />
+          <datalist [id]="coachListId(group)">
+            <option *ngFor="let candidate of coachCandidates" [value]="coachOptionLabel(candidate)"></option>
+          </datalist>
+        </div>
+      </section>
+    </div>
+  </mat-card-content>
+</mat-card>

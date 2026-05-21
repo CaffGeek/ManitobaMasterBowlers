@@ -44,6 +44,8 @@ standard, add/update a note here.
 - `PUT /api/bowlers/{id:int}` — UpdateBowler
 - `GET /api/bowlerresults/{id:int?}` — GetBowlerResults
 - `GET /api/contentblocks/{key?}` — GetContentBlocks
+- `GET /api/contingents/{season}` — GetContingents
+- `PUT /api/contingents/{season}` — SaveContingents
 - `POST /api/contentblocks/save` — SaveContentBlock
 - `GET /api/memberaverages` — GetMemberAverages
 - `GET /api/media` — ListMedia
@@ -68,6 +70,12 @@ standard, add/update a note here.
   `_sitemap`).
 - Media upload/list/delete via `/api/media/*`.
 - Member averages endpoint: `GET /api/memberaverages` (public).
+- Season-specific contingent custom text uses content block keys in the form
+  `contingents-{seasonCode}` and is rendered on both the public and edit
+  contingent pages.
+- Nationals contingents are stored in `NationalContingentEntries`; the admin UI
+  falls back to computed defaults from season tournament results when no saved
+  entries exist.
 
 ## Permissions (Auth0)
 - `edit:tournament` (results upload/edit)

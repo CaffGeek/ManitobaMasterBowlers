@@ -1,0 +1,78 @@
+.contingents-card {
+  margin: 1rem;
+}
+
+.contingents-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.contingents-toolbar select {
+  min-width: 12rem;
+}
+
+.contingents-note {
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.contingents-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.contingent-group {
+  border: 1px solid #d9dee3;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.contingent-group h2 {
+  margin-top: 0;
+}
+
+.group-note {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.slot-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.slot-row select {
+  min-width: 0;
+}
+
+.slot-row input {
+  min-width: 0;
+}
+
+.slot-meta {
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.contingents-loading {
+  color: #495057;
+}
+
+@media (max-width: 720px) {
+  .contingents-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .slot-row {
+    grid-template-columns: 1fr;
+  }
+}

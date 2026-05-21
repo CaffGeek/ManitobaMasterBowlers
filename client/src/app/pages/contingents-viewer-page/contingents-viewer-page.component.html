@@ -1,0 +1,150 @@
+<mat-card class="contingents-card">
+  <mat-card-header>
+    <h1>Nationals Contingents</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="contingents-toolbar">
+      <label for="seasonSelect">Season</label>
+      <select id="seasonSelect" [(ngModel)]="selectedSeason" (change)="onSeasonChange()">
+        <option *ngFor="let season of seasons" [value]="season.SeasonCode">
+          {{ season.SeasonDesc || season.SeasonCode }}
+        </option>
+      </select>
+      <button
+        *ngIf="canEditTournament$ | async"
+        type="button"
+        class="btn btn-outline-primary"
+        [routerLink]="['/contingents', selectedSeason, 'edit']"
+      >
+        Edit
+      </button>
+    </div>
+
+    <p class="contingents-note" *ngIf="!hasSavedContingent">
+      No saved contingent entries found. Defaults shown are based on current qualifying rules.
+    </p>
+
+    <app-content-block [key]="contentBlockKey"></app-content-block>
+
+    <div class="contingents-loading" *ngIf="isLoading">Loading contingents...</div>
+
+    <div class="contingents-layout" *ngIf="!isLoading">
+      <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomen">
+        <h2>Tournament Women Single</h2>
+        <a
+          *ngIf="tournamentSinglesByKey('tournament-women')?.bowlerId"
+          class="bowler-link"
+          [routerLink]="['/bowlers', tournamentSinglesByKey('tournament-women')?.bowlerId]"
+        >
+          {{ tournamentSinglesByKey('tournament-women')?.bowler }}
+        </a>
+      </section>
+
+      <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMen">
+        <h2>Tournament Men Single</h2>
+        <a
+          *ngIf="tournamentSinglesByKey('tournament-men')?.bowlerId"
+          class="bowler-link"
+          [routerLink]="['/bowlers', tournamentSinglesByKey('tournament-men')?.bowlerId]"
+        >
+          {{ tournamentSinglesByKey('tournament-men')?.bowler }}
+        </a>
+      </section>
+
+      <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomenTeam">
+        <h2>Tournament Women</h2>
+        <div class="bowler-list">
+          <a
+            class="bowler-link"
+            *ngFor="let slot of sortedFilledSlots(tournamentWomenTeam.team)"
+            [routerLink]="['/bowlers', slot.bowlerId]"
+          >
+            {{ slot.bowler }}
+          </a>
+        </div>
+        <p class="coach-row" *ngIf="tournamentWomenTeam.coach?.bowlerId">
+          Coach:
+          <a class="bowler-link" [routerLink]="['/bowlers', tournamentWomenTeam.coach?.bowlerId]">
+            {{ tournamentWomenTeam.coach?.bowler }}
+          </a>
+        </p>
+      </section>
+
+      <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMenTeam">
+        <h2>Tournament Men</h2>
+        <div class="bowler-list">
+          <a
+            class="bowler-link"
+            *ngFor="let slot of sortedFilledSlots(tournamentMenTeam.team)"
+            [routerLink]="['/bowlers', slot.bowlerId]"
+          >
+            {{ slot.bowler }}
+          </a>
+        </div>
+        <p class="coach-row" *ngIf="tournamentMenTeam.coach?.bowlerId">
+          Coach:
+          <a class="bowler-link" [routerLink]="['/bowlers', tournamentMenTeam.coach?.bowlerId]">
+            {{ tournamentMenTeam.coach?.bowler }}
+          </a>
+        </p>
+      </section>
+
+      <section class="contingent-group" *ngIf="groupByKey('teaching-women') as teachingWomen">
+        <h2>Teaching Women</h2>
+        <div class="bowler-list">
+          <a
+            class="bowler-link"
+            *ngFor="let slot of sortedFilledSlots(teachingWomen.team)"
+            [routerLink]="['/bowlers', slot.bowlerId]"
+          >
+            {{ slot.bowler }}
+          </a>
+        </div>
+        <p class="coach-row" *ngIf="teachingWomen.coach?.bowlerId">
+          Coach:
+          <a class="bowler-link" [routerLink]="['/bowlers', teachingWomen.coach?.bowlerId]">
+            {{ teachingWomen.coach?.bowler }}
+          </a>
+        </p>
+      </section>
+
+      <section class="contingent-group" *ngIf="groupByKey('teaching-men') as teachingMen">
+        <h2>Teaching Men</h2>
+        <div class="bowler-list">
+          <a
+            class="bowler-link"
+            *ngFor="let slot of sortedFilledSlots(teachingMen.team)"
+            [routerLink]="['/bowlers', slot.bowlerId]"
+          >
+            {{ slot.bowler }}
+          </a>
+        </div>
+        <p class="coach-row" *ngIf="teachingMen.coach?.bowlerId">
+          Coach:
+          <a class="bowler-link" [routerLink]="['/bowlers', teachingMen.coach?.bowlerId]">
+            {{ teachingMen.coach?.bowler }}
+          </a>
+        </p>
+      </section>
+
+      <section class="contingent-group seniors-group" *ngIf="groupByKey('senior-mixed') as seniorMixed">
+        <h2>Seniors</h2>
+        <div class="bowler-list">
+          <a
+            class="bowler-link"
+            *ngFor="let slot of sortedFilledSlots(seniorMixed.team)"
+            [routerLink]="['/bowlers', slot.bowlerId]"
+          >
+            {{ slot.bowler }}
+          </a>
+        </div>
+        <p class="coach-row" *ngIf="seniorMixed.coach?.bowlerId">
+          Coach:
+          <a class="bowler-link" [routerLink]="['/bowlers', seniorMixed.coach?.bowlerId]">
+            {{ seniorMixed.coach?.bowler }}
+          </a>
+        </p>
+      </section>
+    </div>
+  </mat-card-content>
+</mat-card>

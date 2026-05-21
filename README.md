@@ -34,6 +34,15 @@
   - `GITHUB_TOKEN` is provided by GitHub Actions automatically.
 - To trigger a deploy: push to `master` (or merge PRs into `master`).
 
+## Nationals contingents
+- Admin route: `/contingents/:season`
+- Saved contingent entries live in SQL table `dbo.NationalContingentEntries`.
+- Apply [api/sql/001-create-national-contingent-entries.sql](/c:/code/ManitobaMasterBowlers/api/sql/001-create-national-contingent-entries.sql) before using the feature in a new environment.
+- If a season has no saved contingent entries yet, the admin page loads computed defaults:
+  - Tournament men/women: singles from best `5 of 5`, team from next 5 using best `4 of 5`
+  - Teaching men/women: singles from best `5 of 5`, team includes that singles rep plus next 4 using best `4 of 5`
+  - Senior mixed: same pattern as teaching, but mixed rather than gender-split
+
 ## Auth0 configuration
 The app uses the dev tenant for both local and production. Ensure these settings are applied to the SPA in Auth0:
 - Allowed Callback URLs:

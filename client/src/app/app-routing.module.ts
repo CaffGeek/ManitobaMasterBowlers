@@ -27,6 +27,8 @@ import { WinnersPageComponent } from '@pages/winners-page/winners-page.component
 import { MediaPageComponent } from '@pages/media-page/media-page.component';
 import { AnnouncementsPageComponent } from '@pages/announcements-page/announcements-page.component';
 import { MemberAveragesPageComponent } from '@pages/member-averages-page/member-averages-page.component';
+import { ContingentsPageComponent } from '@pages/contingents-page/contingents-page.component';
+import { ContingentsViewerPageComponent } from '@pages/contingents-viewer-page/contingents-viewer-page.component';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -86,6 +88,20 @@ const routes: Routes = [
     component: AnnouncementsPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
     data: { requiredPermission: PERMISSION.EDIT_ANNOUNCEMENTS },
+  },
+  {
+    path: 'contingents',
+    component: ContingentsViewerPageComponent,
+  },
+  {
+    path: 'contingents/:season/edit',
+    component: ContingentsPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_TOURNAMENT },
+  },
+  {
+    path: 'contingents/:season',
+    component: ContingentsViewerPageComponent,
   },
   {
     path: 'schedule/edit',
