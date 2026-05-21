@@ -210,9 +210,7 @@ export class ContingentsPageComponent implements OnInit {
   }
 
   candidatesForSlot(group: ContingentGroupRecord, slot: ContingentSlotRecord): ContingentCandidateRecord[] {
-    const count = this.slotScoreCount(group, slot);
     return [...group.candidates]
-      .filter((candidate) => this.candidateEligibleForCount(candidate, count))
       .sort((a, b) => {
         const aScore = this.candidateScore(group, slot, a) ?? Number.NEGATIVE_INFINITY;
         const bScore = this.candidateScore(group, slot, b) ?? Number.NEGATIVE_INFINITY;

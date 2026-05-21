@@ -77,7 +77,13 @@ export class ContingentsViewerPageComponent implements OnInit {
   sortedFilledSlots(slots: ContingentSlotRecord[]): ContingentSlotRecord[] {
     return [...slots]
       .filter((slot) => !!slot.bowlerId && !!slot.bowler)
-      .sort((a, b) => a.bowler.localeCompare(b.bowler));
+      .sort((a, b) => {
+        if (a.position !== b.position) {
+          return a.position - b.position;
+        }
+
+        return a.bowler.localeCompare(b.bowler);
+      });
   }
 
   private loadSeasons(): void {
