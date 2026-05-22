@@ -74,6 +74,20 @@ export class BowlerListPageComponent implements OnInit {
     });
   }
 
+  onAddNameChange(): void {
+    const name = (this.addName || '').trim();
+    if (!name) {
+      return;
+    }
+
+    const existing = this.allBowlers.find((b) => b.Name === name);
+    if (!existing?.Gender) {
+      return;
+    }
+
+    this.addGender = existing.Gender;
+  }
+
   setSort(key: keyof BowlerSeasonRecord) {
     if (this.sortKey === key) {
       this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';

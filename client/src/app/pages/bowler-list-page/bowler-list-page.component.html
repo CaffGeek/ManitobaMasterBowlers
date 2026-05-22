@@ -19,6 +19,7 @@
           type="text"
           list="bowlerNameList"
           [(ngModel)]="addName"
+          (ngModelChange)="onAddNameChange()"
           placeholder="Find or add bowler name"
           aria-label="Bowler name"
         />
