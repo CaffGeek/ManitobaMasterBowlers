@@ -1,7 +1,7 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as sql from 'mssql';
 import { requirePermission } from "./auth";
-import { ContingentEntryType, getGroupConfigs, SaveContingentEntry } from "./contingent-utils";
+import { ContingentEntryType, ContingentFinish, getGroupConfigs, SaveContingentEntry } from "./contingent-utils";
 
 type SaveContingentBody = {
   entries?: SaveContingentEntry[];
@@ -22,6 +22,7 @@ export async function SaveContingents(request: HttpRequest, _context: Invocation
   const entries = (body?.entries || []).filter((entry) => !!entry?.bowlerId);
   const validGroupKeys = new Set(getGroupConfigs().map((group) => group.key));
   const validEntryTypes = new Set<ContingentEntryType>(['Singles', 'Team', 'Coach']);
+  const validFinishes = new Set<ContingentFinish>([1, 2, 3, 4, 5, 6, 7, 8]);
 
   if (entries.some((entry) => !validGroupKeys.has(entry.groupKey))) {
     return { status: 400, jsonBody: { message: 'Invalid contingent group key.' } };
@@ -29,6 +30,10 @@ export async function SaveContingents(request: HttpRequest, _context: Invocation
 
   if (entries.some((entry) => !validEntryTypes.has(entry.entryType))) {
     return { status: 400, jsonBody: { message: 'Invalid contingent entry type.' } };
+  }
+
+  if (entries.some((entry) => !!entry.finish && !validFinishes.has(entry.finish))) {
+    return { status: 400, jsonBody: { message: 'Invalid contingent finish.' } };
   }
 
   const connectionString = process.env.SqlConnectionString;
@@ -54,11 +59,12 @@ export async function SaveContingents(request: HttpRequest, _context: Invocation
         .input('entryType', sql.VarChar(10), entry.entryType)
         .input('position', sql.Int, entry.position)
         .input('bowlerId', sql.Int, entry.bowlerId)
+        .input('finish', sql.Int, entry.finish || null)
         .query(`
           INSERT INTO NationalContingentEntries
-            (SeasonCode, GroupKey, Division, Gender, EntryType, Position, BowlerId, UpdatedAt)
+            (SeasonCode, GroupKey, Division, Gender, EntryType, Position, BowlerId, Finish, UpdatedAt)
           VALUES
-            (@seasonCode, @groupKey, @division, @gender, @entryType, @position, @bowlerId, SYSUTCDATETIME())
+            (@seasonCode, @groupKey, @division, @gender, @entryType, @position, @bowlerId, @finish, SYSUTCDATETIME())
         `);
     }
 

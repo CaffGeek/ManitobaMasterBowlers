@@ -34,7 +34,16 @@
 
     <div class="contingents-groups" *ngIf="!isLoading">
       <section class="contingent-group" *ngFor="let group of groups; trackBy: trackByGroup">
-        <h2>{{ group.label }}</h2>
+        <div class="group-header">
+          <h2>{{ group.label }}</h2>
+          <div class="group-finish">
+            <label>Team finish</label>
+            <select [(ngModel)]="group.teamFinish">
+              <option [ngValue]="null">No result</option>
+              <option *ngFor="let option of finishOptions" [ngValue]="option.value">{{ option.label }}</option>
+            </select>
+          </div>
+        </div>
 
         <div class="slot-row" *ngIf="group.singles && !group.teamIncludesSingles">
           <label>Singles</label>
@@ -43,6 +52,10 @@
             <option *ngFor="let candidate of candidatesForSlot(group, group.singles!)" [ngValue]="candidate.bowlerId">
               {{ optionLabel(group, group.singles!, candidate) }}
             </option>
+          </select>
+          <select [(ngModel)]="group.singlesFinish">
+            <option [ngValue]="null">No result</option>
+            <option *ngFor="let option of finishOptions" [ngValue]="option.value">{{ option.label }}</option>
           </select>
         </div>
 
@@ -53,6 +66,10 @@
             <option *ngFor="let candidate of candidatesForSlot(group, slot)" [ngValue]="candidate.bowlerId">
               {{ optionLabel(group, slot, candidate) }}
             </option>
+          </select>
+          <select *ngIf="group.teamIncludesSingles && slot.position === 1" [(ngModel)]="group.singlesFinish">
+            <option [ngValue]="null">No result</option>
+            <option *ngFor="let option of finishOptions" [ngValue]="option.value">{{ option.label }}</option>
           </select>
         </div>
 

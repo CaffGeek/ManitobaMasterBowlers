@@ -1,6 +1,7 @@
 import * as sql from 'mssql';
 
 export type ContingentEntryType = 'Singles' | 'Team' | 'Coach';
+export type ContingentFinish = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 type GroupConfig = {
   key: string;
@@ -35,6 +36,7 @@ type SavedEntryRow = {
   Position: number;
   BowlerId: number;
   Bowler: string;
+  Finish: ContingentFinish | null;
 };
 
 type AggregatedCandidate = {
@@ -65,6 +67,8 @@ type ContingentGroup = {
   division: string;
   gender: string | null;
   teamIncludesSingles: boolean;
+  singlesFinish: ContingentFinish | null;
+  teamFinish: ContingentFinish | null;
   singles: ContingentSlot | null;
   coach: ContingentSlot | null;
   team: ContingentSlot[];
@@ -85,6 +89,7 @@ export type SaveContingentEntry = {
   entryType: ContingentEntryType;
   position: number;
   bowlerId: number;
+  finish: ContingentFinish | null;
 };
 
 const groupConfigs: GroupConfig[] = [
@@ -178,7 +183,8 @@ export async function loadContingent(seasonCode: string): Promise<ContingentResp
           e.EntryType,
           e.Position,
           e.BowlerId,
-          ml.Name AS Bowler
+          ml.Name AS Bowler,
+          e.Finish
         FROM NationalContingentEntries e
         JOIN MasterList ml ON ml.ID = e.BowlerId
         WHERE e.SeasonCode = @seasonCode
@@ -291,6 +297,8 @@ function buildDefaultGroup(config: GroupConfig, candidateMap: Map<string, Aggreg
     division: config.division,
     gender: config.gender,
     teamIncludesSingles: config.teamIncludesSingles,
+    singlesFinish: null,
+    teamFinish: null,
     singles: singlesCandidate ? toSlot('Singles', 1, singlesCandidate, scoreForCount(singlesCandidate, config.singlesEventCount)) : emptySlot('Singles', 1),
     coach: emptySlot('Coach', 1),
     team,
@@ -312,6 +320,11 @@ function applySavedGroup(
   const singlesRow = savedGroupRows.find((row) => row.EntryType === 'Singles' && row.Position === 1);
   const singlesCandidate = singlesRow ? candidateById.get(singlesRow.BowlerId) : null;
   const coachRow = savedGroupRows.find((row) => row.EntryType === 'Coach' && row.Position === 1);
+  const teamFinish = (
+    savedGroupRows.find((row) => row.EntryType === 'Team' && !!row.Finish)?.Finish
+    || coachRow?.Finish
+    || null
+  );
 
   const teamRows = savedGroupRows
     .filter((row) => row.EntryType === 'Team')
@@ -353,6 +366,8 @@ function applySavedGroup(
 
   return {
     ...defaults,
+    singlesFinish: singlesRow?.Finish || null,
+    teamFinish,
     singles: config.teamIncludesSingles
       ? team[0]
         ? {

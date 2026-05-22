@@ -76,7 +76,8 @@ standard, add/update a note here.
   contingent pages.
 - Nationals contingents are stored in `NationalContingentEntries`; the admin UI
   falls back to computed defaults from season tournament results when no saved
-  entries exist.
+  entries exist. Saved contingent rows may also include optional finish values
+  for singles and team results.
 
 ## Permissions (Auth0)
 - `edit:tournament` (results upload/edit)

@@ -11,6 +11,7 @@ const sqlInput = input.generic({
       e.Gender,
       e.EntryType,
       e.Position,
+      e.Finish,
       case
         when e.GroupKey = 'tournament-men' then 'Tournament Men'
         when e.GroupKey = 'tournament-women' then 'Tournament Women'

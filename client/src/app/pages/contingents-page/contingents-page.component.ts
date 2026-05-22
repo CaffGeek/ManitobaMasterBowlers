@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ContingentCandidateRecord,
+  ContingentFinish,
   ContingentGroupRecord,
   ContingentResponseRecord,
   ContingentSlotRecord,
@@ -28,6 +29,16 @@ type CoachSeasonBowlerRecord = {
   standalone: false,
 })
 export class ContingentsPageComponent implements OnInit {
+  readonly finishOptions: { value: ContingentFinish; label: string }[] = [
+    { value: 1, label: 'Gold' },
+    { value: 2, label: 'Silver' },
+    { value: 3, label: 'Bronze' },
+    { value: 4, label: '4th' },
+    { value: 5, label: '5th' },
+    { value: 6, label: '6th' },
+    { value: 7, label: '7th' },
+    { value: 8, label: '8th' },
+  ];
   seasons: SeasonRecord[] = [];
   selectedSeason = '';
   private loadedSeason = '';
@@ -266,6 +277,7 @@ export class ContingentsPageComponent implements OnInit {
           entryType: 'Singles',
           position: 1,
           bowlerId: singlesBowlerId,
+          finish: group.singlesFinish,
         });
       }
 
@@ -277,6 +289,7 @@ export class ContingentsPageComponent implements OnInit {
           entryType: 'Coach',
           position: 1,
           bowlerId: group.coach.bowlerId,
+          finish: group.teamFinish,
         });
       }
 
@@ -290,6 +303,7 @@ export class ContingentsPageComponent implements OnInit {
             entryType: 'Team',
             position: slot.position,
             bowlerId: slot.bowlerId,
+            finish: group.teamFinish,
           });
         });
     });
@@ -334,6 +348,8 @@ export class ContingentsPageComponent implements OnInit {
   private cloneGroups(groups: ContingentGroupRecord[]): ContingentGroupRecord[] {
     return (groups || []).map((group) => ({
       ...group,
+      singlesFinish: group.singlesFinish || null,
+      teamFinish: group.teamFinish || null,
       singles: group.singles ? { ...group.singles } : null,
       coach: group.coach
         ? { ...group.coach }

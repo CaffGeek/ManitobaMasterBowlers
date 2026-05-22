@@ -36,6 +36,21 @@
   margin-top: 0;
 }
 
+.finish-marker {
+  margin-left: 0.35rem;
+  font-size: 0.95em;
+}
+
+.finish-marker.inline {
+  margin-left: 0.25rem;
+}
+
+.role-marker {
+  margin-left: 0.4rem;
+  font-size: 0.9em;
+  color: #495057;
+}
+
 .bowler-list {
   display: grid;
   gap: 0.5rem;

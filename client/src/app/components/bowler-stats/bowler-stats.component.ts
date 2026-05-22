@@ -5,6 +5,14 @@ import { NationalAppearanceRecord } from '@models/NationalAppearanceRecord';
 import { ApiService } from '@services/api.service';
 import { combineLatest } from 'rxjs';
 
+type NationalAppearanceDisplayRecord = {
+  SeasonCode: string;
+  SeasonDesc: string | null;
+  label: string;
+};
+
+type NationalAppearanceRole = 'Singles' | 'Team' | 'Coach';
+
 @Component({
   selector: 'app-bowler-stats',
   templateUrl: './bowler-stats.component.html',
@@ -83,7 +91,21 @@ export class BowlerStatsComponent implements OnInit {
     return appearance.GroupLabel;
   }
 
-  nationalAppearanceSeasonLabel(appearance: NationalAppearanceRecord): string {
+  nationalFinishMarker(finish: NationalAppearanceRecord['Finish'] | string): string {
+    const normalized = this.normalizeFinish(finish);
+    switch (normalized) {
+      case 1:
+        return '🥇';
+      case 2:
+        return '🥈';
+      case 3:
+        return '🥉';
+      default:
+        return normalized ? `${normalized}${this.ordinalSuffix(normalized)}` : '';
+    }
+  }
+
+  nationalAppearanceSeasonLabel(appearance: { SeasonCode: string; SeasonDesc: string | null }): string {
     const seasonDesc = appearance.SeasonDesc?.trim();
     if (!seasonDesc) {
       return appearance.SeasonCode;
@@ -117,25 +139,17 @@ export class BowlerStatsComponent implements OnInit {
   }
 
   get nationalAppearanceCount(): number {
-    return new Set(
-      this.nationalAppearances.map((appearance) => this.nationalAppearanceGroupKey(appearance))
-    ).size;
+    return this.listedNationalAppearances.length;
   }
 
-  get listedNationalAppearances(): NationalAppearanceRecord[] {
-    const singlesKeys = new Set(
-      this.nationalAppearances
-        .filter((appearance) => appearance.EntryType === 'Singles')
-        .map((appearance) => this.nationalAppearanceGroupKey(appearance))
-    );
+  get listedNationalAppearances(): NationalAppearanceDisplayRecord[] {
+    const grouped = new Map<string, NationalAppearanceRecord[]>();
+    for (const appearance of this.nationalAppearances) {
+      const key = this.nationalAppearanceGroupKey(appearance);
+      grouped.set(key, [...(grouped.get(key) || []), appearance]);
+    }
 
-    return this.nationalAppearances.filter((appearance) => {
-      if (appearance.EntryType !== 'Team') {
-        return true;
-      }
-
-      return !singlesKeys.has(this.nationalAppearanceGroupKey(appearance));
-    });
+    return Array.from(grouped.values()).map((group) => this.buildNationalAppearanceDisplay(group));
   }
 
   onLeagueAverageChange() {
@@ -186,5 +200,64 @@ export class BowlerStatsComponent implements OnInit {
 
   private nationalAppearanceGroupKey(appearance: NationalAppearanceRecord): string {
     return `${appearance.SeasonCode}|${appearance.GroupKey}`;
+  }
+
+  private buildNationalAppearanceDisplay(group: NationalAppearanceRecord[]): NationalAppearanceDisplayRecord {
+    const roleOrder: NationalAppearanceRole[] = ['Singles', 'Team', 'Coach'];
+    const byRole = new Map<NationalAppearanceRole, NationalAppearanceRecord>();
+
+    for (const role of roleOrder) {
+      const match = group.find((appearance) => appearance.EntryType === role);
+      if (match) {
+        byRole.set(role, match);
+      }
+    }
+
+    const base = byRole.get('Singles') || byRole.get('Team') || byRole.get('Coach') || group[0];
+    const labels = roleOrder
+      .map((role) => {
+        const appearance = byRole.get(role);
+        return appearance ? `${role}${this.finishSuffix(appearance.Finish)}` : null;
+      })
+      .filter((label): label is string => !!label);
+
+    return {
+      SeasonCode: base.SeasonCode,
+      SeasonDesc: base.SeasonDesc,
+      label: labels.length
+        ? `${base.GroupLabel} - ${labels.join(', ')}`
+        : this.nationalAppearanceLabel(base),
+    };
+  }
+
+  private finishSuffix(finish: NationalAppearanceRecord['Finish']): string {
+    const marker = this.nationalFinishMarker(finish);
+    return marker ? ` ${marker}` : '';
+  }
+
+  private normalizeFinish(finish: NationalAppearanceRecord['Finish'] | string | null | undefined): NationalAppearanceRecord['Finish'] {
+    const numeric = Number(finish);
+    if (!Number.isInteger(numeric) || numeric < 1 || numeric > 8) {
+      return null;
+    }
+
+    return numeric as NationalAppearanceRecord['Finish'];
+  }
+
+  private ordinalSuffix(value: number): string {
+    if (value % 100 >= 11 && value % 100 <= 13) {
+      return 'th';
+    }
+
+    switch (value % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
   }
 }

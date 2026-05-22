@@ -1,4 +1,5 @@
 export type ContingentEntryType = 'Singles' | 'Team' | 'Coach';
+export type ContingentFinish = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export interface ContingentCandidateRecord {
   bowlerId: number;
@@ -28,6 +29,8 @@ export interface ContingentGroupRecord {
   division: string;
   gender: string | null;
   teamIncludesSingles: boolean;
+  singlesFinish: ContingentFinish | null;
+  teamFinish: ContingentFinish | null;
   singles: ContingentSlotRecord | null;
   coach: ContingentSlotRecord | null;
   team: ContingentSlotRecord[];
@@ -48,4 +51,5 @@ export interface SaveContingentEntryRecord {
   entryType: ContingentEntryType;
   position: number;
   bowlerId: number;
+  finish: ContingentFinish | null;
 }

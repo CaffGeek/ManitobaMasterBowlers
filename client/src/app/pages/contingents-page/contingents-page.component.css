@@ -36,6 +36,24 @@
   margin-top: 0;
 }
 
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.group-finish {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.group-finish label {
+  font-size: 0.9rem;
+  color: #495057;
+}
+
 .group-note {
   font-size: 0.9rem;
   color: #6c757d;
@@ -74,5 +92,10 @@
 
   .slot-row {
     grid-template-columns: 1fr;
+  }
+
+  .group-header {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

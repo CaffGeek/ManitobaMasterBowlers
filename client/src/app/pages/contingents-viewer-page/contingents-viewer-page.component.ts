@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  ContingentFinish,
   ContingentGroupRecord,
   ContingentResponseRecord,
   ContingentSlotRecord,
@@ -74,6 +75,29 @@ export class ContingentsViewerPageComponent implements OnInit {
     return this.groupByKey(key)?.singles || undefined;
   }
 
+  finishMarker(finish: ContingentFinish | string | null): string {
+    const normalized = this.normalizeFinish(finish);
+    switch (normalized) {
+      case 1:
+        return '🥇';
+      case 2:
+        return '🥈';
+      case 3:
+        return '🥉';
+      default:
+        return normalized ? `${normalized}${this.ordinalSuffix(normalized)}` : '';
+    }
+  }
+
+  singlesRoleLabel(group: ContingentGroupRecord, slot: ContingentSlotRecord): string {
+    if (!group.teamIncludesSingles || slot.position !== 1) {
+      return '';
+    }
+
+    const finish = this.finishMarker(group.singlesFinish);
+    return finish ? `Singles ${finish}` : 'Singles';
+  }
+
   sortedFilledSlots(slots: ContingentSlotRecord[]): ContingentSlotRecord[] {
     return [...slots]
       .filter((slot) => !!slot.bowlerId && !!slot.bowler)
@@ -131,10 +155,38 @@ export class ContingentsViewerPageComponent implements OnInit {
   private cloneGroups(groups: ContingentGroupRecord[]): ContingentGroupRecord[] {
     return (groups || []).map((group) => ({
       ...group,
+      singlesFinish: this.normalizeFinish(group.singlesFinish),
+      teamFinish: this.normalizeFinish(group.teamFinish),
       singles: group.singles ? { ...group.singles } : null,
       coach: group.coach ? { ...group.coach } : null,
       team: (group.team || []).map((slot) => ({ ...slot })),
       candidates: (group.candidates || []).map((candidate) => ({ ...candidate })),
     }));
+  }
+
+  private normalizeFinish(finish: ContingentFinish | string | null | undefined): ContingentFinish | null {
+    const numeric = Number(finish);
+    if (!Number.isInteger(numeric) || numeric < 1 || numeric > 8) {
+      return null;
+    }
+
+    return numeric as ContingentFinish;
+  }
+
+  private ordinalSuffix(value: number): string {
+    if (value % 100 >= 11 && value % 100 <= 13) {
+      return 'th';
+    }
+
+    switch (value % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
   }
 }

@@ -38,6 +38,9 @@
         >
           {{ tournamentSinglesByKey('tournament-women')?.bowler }}
         </a>
+        <span class="finish-marker" *ngIf="finishMarker(tournamentWomen.singlesFinish)">
+          {{ finishMarker(tournamentWomen.singlesFinish) }}
+        </span>
       </section>
 
       <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMen">
@@ -49,10 +52,18 @@
         >
           {{ tournamentSinglesByKey('tournament-men')?.bowler }}
         </a>
+        <span class="finish-marker" *ngIf="finishMarker(tournamentMen.singlesFinish)">
+          {{ finishMarker(tournamentMen.singlesFinish) }}
+        </span>
       </section>
 
       <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomenTeam">
-        <h2>Tournament Women</h2>
+        <h2>
+          Tournament Women
+          <span class="finish-marker" *ngIf="finishMarker(tournamentWomenTeam.teamFinish)">
+            {{ finishMarker(tournamentWomenTeam.teamFinish) }}
+          </span>
+        </h2>
         <div class="bowler-list">
           <a
             class="bowler-link"
@@ -71,7 +82,12 @@
       </section>
 
       <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMenTeam">
-        <h2>Tournament Men</h2>
+        <h2>
+          Tournament Men
+          <span class="finish-marker" *ngIf="finishMarker(tournamentMenTeam.teamFinish)">
+            {{ finishMarker(tournamentMenTeam.teamFinish) }}
+          </span>
+        </h2>
         <div class="bowler-list">
           <a
             class="bowler-link"
@@ -90,7 +106,12 @@
       </section>
 
       <section class="contingent-group" *ngIf="groupByKey('teaching-women') as teachingWomen">
-        <h2>Teaching Women</h2>
+        <h2>
+          Teaching Women
+          <span class="finish-marker" *ngIf="finishMarker(teachingWomen.teamFinish)">
+            {{ finishMarker(teachingWomen.teamFinish) }}
+          </span>
+        </h2>
         <div class="bowler-list">
           <a
             class="bowler-link"
@@ -98,6 +119,9 @@
             [routerLink]="['/bowlers', slot.bowlerId]"
           >
             {{ slot.bowler }}
+            <span class="role-marker" *ngIf="slot.position === 1">
+              {{ singlesRoleLabel(teachingWomen, slot) }}
+            </span>
           </a>
         </div>
         <p class="coach-row" *ngIf="teachingWomen.coach?.bowlerId">
@@ -109,7 +133,12 @@
       </section>
 
       <section class="contingent-group" *ngIf="groupByKey('teaching-men') as teachingMen">
-        <h2>Teaching Men</h2>
+        <h2>
+          Teaching Men
+          <span class="finish-marker" *ngIf="finishMarker(teachingMen.teamFinish)">
+            {{ finishMarker(teachingMen.teamFinish) }}
+          </span>
+        </h2>
         <div class="bowler-list">
           <a
             class="bowler-link"
@@ -117,6 +146,9 @@
             [routerLink]="['/bowlers', slot.bowlerId]"
           >
             {{ slot.bowler }}
+            <span class="role-marker" *ngIf="slot.position === 1">
+              {{ singlesRoleLabel(teachingMen, slot) }}
+            </span>
           </a>
         </div>
         <p class="coach-row" *ngIf="teachingMen.coach?.bowlerId">
@@ -128,7 +160,12 @@
       </section>
 
       <section class="contingent-group seniors-group" *ngIf="groupByKey('senior-mixed') as seniorMixed">
-        <h2>Seniors</h2>
+        <h2>
+          Seniors
+          <span class="finish-marker" *ngIf="finishMarker(seniorMixed.teamFinish)">
+            {{ finishMarker(seniorMixed.teamFinish) }}
+          </span>
+        </h2>
         <div class="bowler-list">
           <a
             class="bowler-link"
@@ -136,6 +173,9 @@
             [routerLink]="['/bowlers', slot.bowlerId]"
           >
             {{ slot.bowler }}
+            <span class="role-marker" *ngIf="slot.position === 1">
+              {{ singlesRoleLabel(seniorMixed, slot) }}
+            </span>
           </a>
         </div>
         <p class="coach-row" *ngIf="seniorMixed.coach?.bowlerId">
