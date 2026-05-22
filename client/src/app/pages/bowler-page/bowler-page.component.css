@@ -6,6 +6,18 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    width: 100%;
+}
+
+.bowler-title-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.bowler-title-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .bowler-title h1 {
@@ -13,7 +25,9 @@
 }
 
 .bowler-title-edit {
-    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .bowler-name-input {
@@ -30,4 +44,36 @@
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.bowler-medals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: auto;
+}
+
+.bowler-medal-link {
+    font-size: 1.1rem;
+    line-height: 1;
+    text-decoration: none;
+}
+
+@media (max-width: 720px) {
+    .bowler-title {
+        flex-wrap: wrap;
+    }
+
+    .bowler-title-heading,
+    .bowler-title-edit {
+        flex-wrap: wrap;
+    }
+
+    .bowler-medals {
+        width: 100%;
+        justify-content: flex-start;
+        margin-left: 0;
+    }
 }

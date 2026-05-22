@@ -1,40 +1,56 @@
 <mat-card id="card">
     <mat-card-header>
         <div class="bowler-title">
-            <h1 *ngIf="!isEditingName">{{ data?.Name }}</h1>
-            <div *ngIf="isEditingName" class="bowler-title-edit">
-                <input
-                    type="text"
-                    [(ngModel)]="editName"
-                    class="bowler-name-input"
-                    aria-label="Edit bowler name"
-                />
+            <div class="bowler-title-main">
+                <div class="bowler-title-heading" *ngIf="!isEditingName">
+                    <h1>{{ data?.Name }}</h1>
+                    <div class="bowler-title-actions" *ngIf="canEditBowler$ | async">
+                        <app-action-icon-button
+                            [icon]="faPen"
+                            variant="edit"
+                            ariaLabel="Edit bowler name"
+                            title="Edit name"
+                            (action)="startEditName()"
+                        ></app-action-icon-button>
+                    </div>
+                </div>
+                <div *ngIf="isEditingName" class="bowler-title-edit">
+                    <input
+                        type="text"
+                        [(ngModel)]="editName"
+                        class="bowler-name-input"
+                        aria-label="Edit bowler name"
+                    />
+                    <div class="bowler-title-actions" *ngIf="canEditBowler$ | async">
+                        <app-action-icon-button
+                            [icon]="faCheck"
+                            variant="save"
+                            ariaLabel="Save bowler name"
+                            title="Save"
+                            (action)="saveName()"
+                        ></app-action-icon-button>
+                        <app-action-icon-button
+                            [icon]="faXmark"
+                            variant="cancel"
+                            ariaLabel="Cancel edit"
+                            title="Cancel"
+                            (action)="cancelEditName()"
+                        ></app-action-icon-button>
+                    </div>
+                </div>
             </div>
-            <div class="bowler-title-actions" *ngIf="canEditBowler$ | async">
-                <app-action-icon-button
-                    *ngIf="!isEditingName"
-                    [icon]="faPen"
-                    variant="edit"
-                    ariaLabel="Edit bowler name"
-                    title="Edit name"
-                    (action)="startEditName()"
-                ></app-action-icon-button>
-                <app-action-icon-button
-                    *ngIf="isEditingName"
-                    [icon]="faCheck"
-                    variant="save"
-                    ariaLabel="Save bowler name"
-                    title="Save"
-                    (action)="saveName()"
-                ></app-action-icon-button>
-                <app-action-icon-button
-                    *ngIf="isEditingName"
-                    [icon]="faXmark"
-                    variant="cancel"
-                    ariaLabel="Cancel edit"
-                    title="Cancel"
-                    (action)="cancelEditName()"
-                ></app-action-icon-button>
+            <div class="bowler-medals" *ngIf="medalRows.length > 0">
+                <ng-container *ngFor="let row of medalRows">
+                    <a
+                        class="bowler-medal-link"
+                        *ngFor="let medal of row.links"
+                        [routerLink]="['/contingents', medal.seasonCode]"
+                        [attr.title]="medal.title"
+                        [attr.aria-label]="medal.title"
+                    >
+                        {{ medal.icon }}
+                    </a>
+                </ng-container>
             </div>
         </div>
     </mat-card-header>
