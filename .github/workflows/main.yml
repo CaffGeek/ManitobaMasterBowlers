@@ -13,6 +13,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect API changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            api:
+              - 'api/**'
+
   client-azure-webapp:
     runs-on: ubuntu-latest
     defaults:
@@ -76,7 +94,8 @@ jobs:
           package: client/dist/beta
 
   api-azure-functions:
-    needs: client-azure-webapp
+    needs: [detect-changes, client-azure-webapp]
+    if: needs.detect-changes.outputs.api == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
