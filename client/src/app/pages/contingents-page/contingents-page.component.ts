@@ -312,7 +312,7 @@ export class ContingentsPageComponent implements OnInit {
 
       for (const slot of group.team) {
         if (!slot.bowlerId) {
-          return `Select a bowler for every ${group.label} team slot before saving.`;
+          continue;
         }
 
         const isSinglesDuplicate = group.singles?.bowlerId === slot.bowlerId;
@@ -325,14 +325,6 @@ export class ContingentsPageComponent implements OnInit {
         }
 
         seen.add(slot.bowlerId);
-      }
-
-      if (!group.teamIncludesSingles && group.singles && !group.singles.bowlerId) {
-        return `Select a singles representative for ${group.label}.`;
-      }
-
-      if (group.teamIncludesSingles && !group.team[0]?.bowlerId) {
-        return `Select qualifier 1 for ${group.label}.`;
       }
     }
 
