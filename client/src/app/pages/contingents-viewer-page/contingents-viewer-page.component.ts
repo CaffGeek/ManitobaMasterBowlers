@@ -15,7 +15,7 @@ import { combineLatest, forkJoin } from 'rxjs';
 type SummaryColumn = {
   key: string;
   label: string;
-  type: 'singles' | 'team';
+  type: 'singles' | 'team' | 'combined-singles';
 };
 
 type SummaryCellLine = {
@@ -52,8 +52,7 @@ export class ContingentsViewerPageComponent implements OnInit {
   summaryRows: SummaryRow[] = [];
   canEditTournament$ = this.permissions.checkPermission(PERMISSION.EDIT_TOURNAMENT);
   readonly summaryColumns: SummaryColumn[] = [
-    { key: 'tournament-women', label: 'Tour Singles W', type: 'singles' },
-    { key: 'tournament-men', label: 'Tour Singles M', type: 'singles' },
+    { key: 'tournament-singles', label: 'Singles', type: 'combined-singles' },
     { key: 'tournament-women', label: 'Tour Women', type: 'team' },
     { key: 'tournament-men', label: 'Tour Men', type: 'team' },
     { key: 'teaching-women', label: 'Teach Women', type: 'team' },
@@ -248,6 +247,36 @@ export class ContingentsViewerPageComponent implements OnInit {
     const cells: Record<string, SummaryCell> = {};
 
     this.summaryColumns.forEach((column) => {
+      if (column.type === 'combined-singles') {
+        const singlesLines: SummaryCellLine[] = [];
+        const tournamentWomen = byKey.get('tournament-women');
+        const tournamentMen = byKey.get('tournament-men');
+
+        if (tournamentWomen?.singles?.bowler) {
+          const finish = this.finishMarker(tournamentWomen.singlesFinish);
+          singlesLines.push({
+            label: tournamentWomen.singles.bowler,
+            bowlerId: tournamentWomen.singles.bowlerId ?? null,
+            roleLabel: finish || undefined,
+          });
+        }
+
+        if (tournamentMen?.singles?.bowler) {
+          const finish = this.finishMarker(tournamentMen.singlesFinish);
+          singlesLines.push({
+            label: tournamentMen.singles.bowler,
+            bowlerId: tournamentMen.singles.bowlerId ?? null,
+            roleLabel: finish || undefined,
+          });
+        }
+
+        cells[this.summaryCellKey(column)] = {
+          lines: singlesLines,
+          finish: '',
+        };
+        return;
+      }
+
       const group = byKey.get(column.key);
       if (!group) {
         cells[this.summaryCellKey(column)] = { lines: [], finish: '' };

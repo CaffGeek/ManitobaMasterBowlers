@@ -200,8 +200,7 @@
               <th class="season-col">Season</th>
               <th *ngFor="let column of summaryColumns">
                 <ng-container [ngSwitch]="column.key + ':' + column.type">
-                  <ng-container *ngSwitchCase="'tournament-women:singles'">Singles<br />Women</ng-container>
-                  <ng-container *ngSwitchCase="'tournament-men:singles'">Singles<br />Men</ng-container>
+                  <ng-container *ngSwitchCase="'tournament-singles:combined-singles'">Tournament<br />Singles</ng-container>
                   <ng-container *ngSwitchCase="'tournament-women:team'">Tournament<br />Women</ng-container>
                   <ng-container *ngSwitchCase="'tournament-men:team'">Tournament<br />Men</ng-container>
                   <ng-container *ngSwitchCase="'teaching-women:team'">Teaching<br />Women</ng-container>
