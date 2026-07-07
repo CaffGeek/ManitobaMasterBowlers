@@ -74,6 +74,74 @@
   color: #495057;
 }
 
+.contingents-summary-wrapper {
+  overflow-x: auto;
+}
+
+.contingents-summary-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+}
+
+.contingents-summary-table th,
+.contingents-summary-table td {
+  padding: 0.85rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: top;
+  text-align: left;
+}
+
+.contingents-summary-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  font-size: 0.88rem;
+  line-height: 1.15;
+}
+
+.contingents-summary-table .season-col {
+  min-width: 7.5rem;
+  white-space: nowrap;
+}
+
+.summary-cell {
+  min-width: 8.25rem;
+}
+
+.summary-lines {
+  display: grid;
+  gap: 0.15rem;
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+.summary-lines .bowler-link,
+.summary-lines .role-marker {
+  font-size: inherit;
+}
+
+.summary-finish {
+  margin-top: 0.2rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.summary-finish-top {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
+.contingents-summary-table .role-marker {
+  margin-left: 0.2rem;
+  font-size: 0.78rem;
+}
+
+.summary-empty-cell {
+  color: #6c757d;
+}
+
 @media (min-width: 960px) {
   .seniors-group {
     grid-column: 1 / -1;
@@ -83,5 +151,22 @@
 @media (max-width: 720px) {
   .contingents-layout {
     grid-template-columns: 1fr;
+  }
+
+  .summary-lines {
+    font-size: 0.72rem;
+  }
+
+  .contingents-summary-table thead th {
+    font-size: 0.8rem;
+  }
+
+  .contingents-summary-table th,
+  .contingents-summary-table td {
+    padding: 0.55rem 0.4rem;
+  }
+
+  .summary-cell {
+    min-width: 7rem;
   }
 }

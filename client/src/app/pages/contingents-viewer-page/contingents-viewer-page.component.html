@@ -6,12 +6,13 @@
     <div class="contingents-toolbar">
       <label for="seasonSelect">Season</label>
       <select id="seasonSelect" [(ngModel)]="selectedSeason" (change)="onSeasonChange()">
+        <option value="">Summary</option>
         <option *ngFor="let season of seasons" [value]="season.SeasonCode">
           {{ season.SeasonDesc || season.SeasonCode }}
         </option>
       </select>
       <button
-        *ngIf="canEditTournament$ | async"
+        *ngIf="!isSummaryMode && (canEditTournament$ | async)"
         type="button"
         class="btn btn-outline-primary"
         [routerLink]="['/contingents', selectedSeason, 'edit']"
@@ -20,171 +21,227 @@
       </button>
     </div>
 
-    <p class="contingents-note" *ngIf="!hasSavedContingent">
-      No saved contingent entries found. Defaults shown are based on current qualifying rules.
-    </p>
+    <ng-container *ngIf="!isSummaryMode; else summaryMode">
+      <p class="contingents-note" *ngIf="!hasSavedContingent">
+        No saved contingent entries found. Defaults shown are based on current qualifying rules.
+      </p>
 
-    <app-content-block [key]="contentBlockKey"></app-content-block>
+      <app-content-block [key]="contentBlockKey"></app-content-block>
 
-    <div class="contingents-loading" *ngIf="isLoading">Loading contingents...</div>
+      <div class="contingents-loading" *ngIf="isLoading">Loading contingents...</div>
 
-    <div class="contingents-layout" *ngIf="!isLoading">
-      <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomen">
-        <h2>Tournament Women Single</h2>
-        <a
-          *ngIf="tournamentSinglesByKey('tournament-women')?.bowlerId"
-          class="bowler-link"
-          [routerLink]="['/bowlers', tournamentSinglesByKey('tournament-women')?.bowlerId]"
-        >
-          {{ tournamentSinglesByKey('tournament-women')?.bowler }}
-        </a>
-        <span class="finish-marker" *ngIf="finishMarker(tournamentWomen.singlesFinish)">
-          {{ finishMarker(tournamentWomen.singlesFinish) }}
-        </span>
-      </section>
-
-      <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMen">
-        <h2>Tournament Men Single</h2>
-        <a
-          *ngIf="tournamentSinglesByKey('tournament-men')?.bowlerId"
-          class="bowler-link"
-          [routerLink]="['/bowlers', tournamentSinglesByKey('tournament-men')?.bowlerId]"
-        >
-          {{ tournamentSinglesByKey('tournament-men')?.bowler }}
-        </a>
-        <span class="finish-marker" *ngIf="finishMarker(tournamentMen.singlesFinish)">
-          {{ finishMarker(tournamentMen.singlesFinish) }}
-        </span>
-      </section>
-
-      <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomenTeam">
-        <h2>
-          Tournament Women
-          <span class="finish-marker" *ngIf="finishMarker(tournamentWomenTeam.teamFinish)">
-            {{ finishMarker(tournamentWomenTeam.teamFinish) }}
-          </span>
-        </h2>
-        <div class="bowler-list">
+      <div class="contingents-layout" *ngIf="!isLoading">
+        <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomen">
+          <h2>Tournament Women Single</h2>
           <a
+            *ngIf="tournamentSinglesByKey('tournament-women')?.bowlerId"
             class="bowler-link"
-            *ngFor="let slot of sortedFilledSlots(tournamentWomenTeam.team)"
-            [routerLink]="['/bowlers', slot.bowlerId]"
+            [routerLink]="['/bowlers', tournamentSinglesByKey('tournament-women')?.bowlerId]"
           >
-            {{ slot.bowler }}
+            {{ tournamentSinglesByKey('tournament-women')?.bowler }}
           </a>
-        </div>
-        <p class="coach-row" *ngIf="tournamentWomenTeam.coach?.bowlerId">
-          Coach:
-          <a class="bowler-link" [routerLink]="['/bowlers', tournamentWomenTeam.coach?.bowlerId]">
-            {{ tournamentWomenTeam.coach?.bowler }}
-          </a>
-        </p>
-      </section>
-
-      <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMenTeam">
-        <h2>
-          Tournament Men
-          <span class="finish-marker" *ngIf="finishMarker(tournamentMenTeam.teamFinish)">
-            {{ finishMarker(tournamentMenTeam.teamFinish) }}
+          <span class="finish-marker" *ngIf="finishMarker(tournamentWomen.singlesFinish)">
+            {{ finishMarker(tournamentWomen.singlesFinish) }}
           </span>
-        </h2>
-        <div class="bowler-list">
-          <a
-            class="bowler-link"
-            *ngFor="let slot of sortedFilledSlots(tournamentMenTeam.team)"
-            [routerLink]="['/bowlers', slot.bowlerId]"
-          >
-            {{ slot.bowler }}
-          </a>
-        </div>
-        <p class="coach-row" *ngIf="tournamentMenTeam.coach?.bowlerId">
-          Coach:
-          <a class="bowler-link" [routerLink]="['/bowlers', tournamentMenTeam.coach?.bowlerId]">
-            {{ tournamentMenTeam.coach?.bowler }}
-          </a>
-        </p>
-      </section>
+        </section>
 
-      <section class="contingent-group" *ngIf="groupByKey('teaching-women') as teachingWomen">
-        <h2>
-          Teaching Women
-          <span class="finish-marker" *ngIf="finishMarker(teachingWomen.teamFinish)">
-            {{ finishMarker(teachingWomen.teamFinish) }}
-          </span>
-        </h2>
-        <div class="bowler-list">
+        <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMen">
+          <h2>Tournament Men Single</h2>
           <a
+            *ngIf="tournamentSinglesByKey('tournament-men')?.bowlerId"
             class="bowler-link"
-            *ngFor="let slot of sortedFilledSlots(teachingWomen.team)"
-            [routerLink]="['/bowlers', slot.bowlerId]"
+            [routerLink]="['/bowlers', tournamentSinglesByKey('tournament-men')?.bowlerId]"
           >
-            {{ slot.bowler }}
-            <span class="role-marker" *ngIf="slot.position === 1">
-              {{ singlesRoleLabel(teachingWomen, slot) }}
+            {{ tournamentSinglesByKey('tournament-men')?.bowler }}
+          </a>
+          <span class="finish-marker" *ngIf="finishMarker(tournamentMen.singlesFinish)">
+            {{ finishMarker(tournamentMen.singlesFinish) }}
+          </span>
+        </section>
+
+        <section class="contingent-group" *ngIf="groupByKey('tournament-women') as tournamentWomenTeam">
+          <h2>
+            Tournament Women
+            <span class="finish-marker" *ngIf="finishMarker(tournamentWomenTeam.teamFinish)">
+              {{ finishMarker(tournamentWomenTeam.teamFinish) }}
             </span>
-          </a>
-        </div>
-        <p class="coach-row" *ngIf="teachingWomen.coach?.bowlerId">
-          Coach:
-          <a class="bowler-link" [routerLink]="['/bowlers', teachingWomen.coach?.bowlerId]">
-            {{ teachingWomen.coach?.bowler }}
-          </a>
-        </p>
-      </section>
+          </h2>
+          <div class="bowler-list">
+            <a
+              class="bowler-link"
+              *ngFor="let slot of sortedFilledSlots(tournamentWomenTeam.team)"
+              [routerLink]="['/bowlers', slot.bowlerId]"
+            >
+              {{ slot.bowler }}
+            </a>
+          </div>
+          <p class="coach-row" *ngIf="tournamentWomenTeam.coach?.bowlerId">
+            Coach:
+            <a class="bowler-link" [routerLink]="['/bowlers', tournamentWomenTeam.coach?.bowlerId]">
+              {{ tournamentWomenTeam.coach?.bowler }}
+            </a>
+          </p>
+        </section>
 
-      <section class="contingent-group" *ngIf="groupByKey('teaching-men') as teachingMen">
-        <h2>
-          Teaching Men
-          <span class="finish-marker" *ngIf="finishMarker(teachingMen.teamFinish)">
-            {{ finishMarker(teachingMen.teamFinish) }}
-          </span>
-        </h2>
-        <div class="bowler-list">
-          <a
-            class="bowler-link"
-            *ngFor="let slot of sortedFilledSlots(teachingMen.team)"
-            [routerLink]="['/bowlers', slot.bowlerId]"
-          >
-            {{ slot.bowler }}
-            <span class="role-marker" *ngIf="slot.position === 1">
-              {{ singlesRoleLabel(teachingMen, slot) }}
+        <section class="contingent-group" *ngIf="groupByKey('tournament-men') as tournamentMenTeam">
+          <h2>
+            Tournament Men
+            <span class="finish-marker" *ngIf="finishMarker(tournamentMenTeam.teamFinish)">
+              {{ finishMarker(tournamentMenTeam.teamFinish) }}
             </span>
-          </a>
-        </div>
-        <p class="coach-row" *ngIf="teachingMen.coach?.bowlerId">
-          Coach:
-          <a class="bowler-link" [routerLink]="['/bowlers', teachingMen.coach?.bowlerId]">
-            {{ teachingMen.coach?.bowler }}
-          </a>
-        </p>
-      </section>
+          </h2>
+          <div class="bowler-list">
+            <a
+              class="bowler-link"
+              *ngFor="let slot of sortedFilledSlots(tournamentMenTeam.team)"
+              [routerLink]="['/bowlers', slot.bowlerId]"
+            >
+              {{ slot.bowler }}
+            </a>
+          </div>
+          <p class="coach-row" *ngIf="tournamentMenTeam.coach?.bowlerId">
+            Coach:
+            <a class="bowler-link" [routerLink]="['/bowlers', tournamentMenTeam.coach?.bowlerId]">
+              {{ tournamentMenTeam.coach?.bowler }}
+            </a>
+          </p>
+        </section>
 
-      <section class="contingent-group seniors-group" *ngIf="groupByKey('senior-mixed') as seniorMixed">
-        <h2>
-          Seniors
-          <span class="finish-marker" *ngIf="finishMarker(seniorMixed.teamFinish)">
-            {{ finishMarker(seniorMixed.teamFinish) }}
-          </span>
-        </h2>
-        <div class="bowler-list">
-          <a
-            class="bowler-link"
-            *ngFor="let slot of sortedFilledSlots(seniorMixed.team)"
-            [routerLink]="['/bowlers', slot.bowlerId]"
-          >
-            {{ slot.bowler }}
-            <span class="role-marker" *ngIf="slot.position === 1">
-              {{ singlesRoleLabel(seniorMixed, slot) }}
+        <section class="contingent-group" *ngIf="groupByKey('teaching-women') as teachingWomen">
+          <h2>
+            Teaching Women
+            <span class="finish-marker" *ngIf="finishMarker(teachingWomen.teamFinish)">
+              {{ finishMarker(teachingWomen.teamFinish) }}
             </span>
-          </a>
-        </div>
-        <p class="coach-row" *ngIf="seniorMixed.coach?.bowlerId">
-          Coach:
-          <a class="bowler-link" [routerLink]="['/bowlers', seniorMixed.coach?.bowlerId]">
-            {{ seniorMixed.coach?.bowler }}
-          </a>
-        </p>
-      </section>
-    </div>
+          </h2>
+          <div class="bowler-list">
+            <a
+              class="bowler-link"
+              *ngFor="let slot of sortedFilledSlots(teachingWomen.team)"
+              [routerLink]="['/bowlers', slot.bowlerId]"
+            >
+              {{ slot.bowler }}
+              <span class="role-marker" *ngIf="slot.position === 1">
+                {{ singlesRoleLabel(teachingWomen, slot) }}
+              </span>
+            </a>
+          </div>
+          <p class="coach-row" *ngIf="teachingWomen.coach?.bowlerId">
+            Coach:
+            <a class="bowler-link" [routerLink]="['/bowlers', teachingWomen.coach?.bowlerId]">
+              {{ teachingWomen.coach?.bowler }}
+            </a>
+          </p>
+        </section>
+
+        <section class="contingent-group" *ngIf="groupByKey('teaching-men') as teachingMen">
+          <h2>
+            Teaching Men
+            <span class="finish-marker" *ngIf="finishMarker(teachingMen.teamFinish)">
+              {{ finishMarker(teachingMen.teamFinish) }}
+            </span>
+          </h2>
+          <div class="bowler-list">
+            <a
+              class="bowler-link"
+              *ngFor="let slot of sortedFilledSlots(teachingMen.team)"
+              [routerLink]="['/bowlers', slot.bowlerId]"
+            >
+              {{ slot.bowler }}
+              <span class="role-marker" *ngIf="slot.position === 1">
+                {{ singlesRoleLabel(teachingMen, slot) }}
+              </span>
+            </a>
+          </div>
+          <p class="coach-row" *ngIf="teachingMen.coach?.bowlerId">
+            Coach:
+            <a class="bowler-link" [routerLink]="['/bowlers', teachingMen.coach?.bowlerId]">
+              {{ teachingMen.coach?.bowler }}
+            </a>
+          </p>
+        </section>
+
+        <section class="contingent-group seniors-group" *ngIf="groupByKey('senior-mixed') as seniorMixed">
+          <h2>
+            Seniors
+            <span class="finish-marker" *ngIf="finishMarker(seniorMixed.teamFinish)">
+              {{ finishMarker(seniorMixed.teamFinish) }}
+            </span>
+          </h2>
+          <div class="bowler-list">
+            <a
+              class="bowler-link"
+              *ngFor="let slot of sortedFilledSlots(seniorMixed.team)"
+              [routerLink]="['/bowlers', slot.bowlerId]"
+            >
+              {{ slot.bowler }}
+              <span class="role-marker" *ngIf="slot.position === 1">
+                {{ singlesRoleLabel(seniorMixed, slot) }}
+              </span>
+            </a>
+          </div>
+          <p class="coach-row" *ngIf="seniorMixed.coach?.bowlerId">
+            Coach:
+            <a class="bowler-link" [routerLink]="['/bowlers', seniorMixed.coach?.bowlerId]">
+              {{ seniorMixed.coach?.bowler }}
+            </a>
+          </p>
+        </section>
+      </div>
+    </ng-container>
+
+    <ng-template #summaryMode>
+      <div class="contingents-loading" *ngIf="isLoading">Loading contingents summary...</div>
+
+      <div class="contingents-summary-wrapper" *ngIf="!isLoading">
+        <table class="contingents-summary-table" *ngIf="summaryRows.length; else noSummaryRows">
+          <thead>
+            <tr>
+              <th class="season-col">Season</th>
+              <th *ngFor="let column of summaryColumns">
+                <ng-container [ngSwitch]="column.key + ':' + column.type">
+                  <ng-container *ngSwitchCase="'tournament-women:singles'">Singles<br />Women</ng-container>
+                  <ng-container *ngSwitchCase="'tournament-men:singles'">Singles<br />Men</ng-container>
+                  <ng-container *ngSwitchCase="'tournament-women:team'">Tournament<br />Women</ng-container>
+                  <ng-container *ngSwitchCase="'tournament-men:team'">Tournament<br />Men</ng-container>
+                  <ng-container *ngSwitchCase="'teaching-women:team'">Teaching<br />Women</ng-container>
+                  <ng-container *ngSwitchCase="'teaching-men:team'">Teaching<br />Men</ng-container>
+                  <ng-container *ngSwitchCase="'senior-mixed:team'">Senior<br />Mixed</ng-container>
+                  <ng-container *ngSwitchDefault>{{ column.label }}</ng-container>
+                </ng-container>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of summaryRows">
+              <th class="season-col">
+                <a [routerLink]="['/contingents', row.seasonCode]">{{ row.seasonLabel }}</a>
+              </th>
+              <td *ngFor="let column of summaryColumns">
+                <div class="summary-cell" *ngIf="summaryCell(row, column) as cell">
+                  <div class="summary-finish summary-finish-top" *ngIf="cell.finish">
+                    {{ cell.finish }}
+                  </div>
+                  <div class="summary-lines" *ngIf="cell.lines.length; else emptyCell">
+                    <div *ngFor="let line of cell.lines">
+                      <a *ngIf="line.bowlerId; else summaryPlainLine" class="bowler-link" [routerLink]="['/bowlers', line.bowlerId]">{{ line.label }}</a>
+                      <ng-template #summaryPlainLine>{{ line.label }}</ng-template>
+                      <span class="role-marker" *ngIf="line.roleLabel">{{ line.roleLabel }}</span>
+                    </div>
+                  </div>
+                  <ng-template #emptyCell>
+                    <span class="summary-empty-cell">-</span>
+                  </ng-template>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <ng-template #noSummaryRows>
+          <p class="contingents-note">No contingent seasons found.</p>
+        </ng-template>
+      </div>
+    </ng-template>
   </mat-card-content>
 </mat-card>
