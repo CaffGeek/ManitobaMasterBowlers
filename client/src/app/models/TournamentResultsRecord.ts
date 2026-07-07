@@ -5,6 +5,9 @@ export class TournamentResultsRecord extends TournamentUploadRecord {
     Id: number;
     TournamentId: number;
     BowlerId: number;
+    EffectiveBowlerId?: number;
+    EffectiveBowler?: string;
+    EffectiveGender?: string;
     IgnoreForAverage: boolean;
     WonStars: boolean;
 

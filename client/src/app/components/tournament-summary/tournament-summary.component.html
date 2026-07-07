@@ -15,7 +15,11 @@
     </div>
   </mat-card-header>
   <mat-card-content>
-    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+    <div class="summary-empty" *ngIf="!tournaments?.length">
+      No tournaments to display for this season.
+    </div>
+
+    <table *ngIf="tournaments?.length" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="Pos">
         <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element; let i = index;">{{i + 1}}</td>

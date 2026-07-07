@@ -78,6 +78,10 @@ standard, add/update a note here.
   falls back to computed defaults from season tournament results when no saved
   entries exist. Saved contingent rows may also include optional finish values
   for singles and team results.
+- Bowlers may carry a nullable `CanonicalBowlerId` on `MasterList`; rollup
+  queries that combine bowler history should resolve to the effective id
+  `COALESCE(CanonicalBowlerId, ID)` instead of rewriting historical foreign
+  keys in-place.
 
 ## Permissions (Auth0)
 - `edit:tournament` (results upload/edit)

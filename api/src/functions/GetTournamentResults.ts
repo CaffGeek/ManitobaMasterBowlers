@@ -8,6 +8,9 @@ const sqlInput = input.generic({
             t.BowlerId,
             b.Name as Bowler,
             b.Gender as Gender,
+            coalesce(b.CanonicalBowlerId, b.ID) as EffectiveBowlerId,
+            canonical.Name as EffectiveBowler,
+            canonical.Gender as EffectiveGender,
             t.Game1,
             t.Game2,
             t.Game3,
@@ -22,6 +25,8 @@ const sqlInput = input.generic({
         from TournamentResults t
         join MasterList as b
             on t.BowlerId = b.ID
+        join MasterList as canonical
+            on canonical.ID = coalesce(b.CanonicalBowlerId, b.ID)
         where t.TournamentId = @id or t.TournamentId = ISNULL(@id, t.TournamentId)`,
     parameters: '@id={id}',
     commandType: 'Text',

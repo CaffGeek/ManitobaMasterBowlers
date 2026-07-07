@@ -3,4 +3,7 @@ export class BowlerRecord {
     Name: string;
     Gender: string;
     EmailAddress: string;
+    CanonicalBowlerId?: number | null;
+    EffectiveBowlerId?: number;
+    CanonicalBowlerName?: string | null;
 }

@@ -70,6 +70,11 @@ export class ApiService {
       .pipe(tap(() => this.clearCache('bowlers')));
   }
 
+  updateBowlerCanonical(id: number, canonicalBowlerId: number | null): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}bowlers/${id}`, { canonicalBowlerId })
+      .pipe(tap(() => this.clearCache('bowlers')));
+  }
+
   deleteBowlerSeason(season: string, bowlerId: number): Observable<unknown> {
     return this.http.delete(`${environment.apiUri}bowlerseasons/${season}/${bowlerId}`)
       .pipe(tap(() => this.clearCache(`bowlerseasons/${season}`)));

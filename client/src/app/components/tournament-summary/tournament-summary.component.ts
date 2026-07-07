@@ -88,6 +88,16 @@ export class TournamentSummaryComponent implements OnChanges {
         
       this.tournaments.sort((x, y) => x.TournamentNumber - y.TournamentNumber);
       this.displayedColumns = this.buildDisplayedColumns(this.tournaments.length);
+      this.playedTournamentCount = 0;
+      this.tournamentSummary = [];
+      this.dataSource.data = [];
+
+      if (!this.tournaments.length) {
+        this.bestCount = this.defaultSelectableBestCount;
+        this.resort(true);
+        this.initialSortApplied = true;
+        return;
+      }
 
       const records = [];
       forkJoin([
@@ -106,16 +116,19 @@ export class TournamentSummaryComponent implements OnChanges {
           results
             //.filter(x => !this.genderFilter || x.Gender.localeCompare(this.genderFilter, undefined, {sensitivity: 'base'}) === 0)
             .forEach((x) => {
-            const existingRecord = records.find(z => z.BowlerId === x.BowlerId);
+            const effectiveBowlerId = x.EffectiveBowlerId || x.BowlerId;
+            const effectiveBowler = x.EffectiveBowler || x.Bowler;
+            const effectiveGender = x.EffectiveGender || x.Gender;
+            const existingRecord = records.find(z => z.BowlerId === effectiveBowlerId);
             if (existingRecord) {
               existingRecord[`Scratch${tournament.TournamentNumber}`] = x.scratch();
               existingRecord[`POA${tournament.TournamentNumber}`] = x.poa();
             } else {
               records.push(Object.assign(new SeasonSummaryRecord(), {
-                ...records[x.BowlerId],
-                BowlerId: x.BowlerId,
-                Bowler: x.Bowler,
-                Gender: x.Gender,
+                ...records[effectiveBowlerId],
+                BowlerId: effectiveBowlerId,
+                Bowler: effectiveBowler,
+                Gender: effectiveGender,
                 [`Scratch${tournament.TournamentNumber}`]: x.scratch(),
                 [`POA${tournament.TournamentNumber}`]: x.poa(),
               }).ensureTypes());

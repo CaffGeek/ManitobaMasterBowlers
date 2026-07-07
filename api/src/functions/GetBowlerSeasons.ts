@@ -7,12 +7,16 @@ const sqlInput = input.generic({
       ms.BowlerId,
       ml.Name,
       ml.Gender,
+      ml.CanonicalBowlerId,
+      coalesce(ml.CanonicalBowlerId, ml.ID) as EffectiveBowlerId,
+      canonical.Name as CanonicalBowlerName,
       ms.SeasonYear,
       ms.TournamentFlag,
       ms.TeachingFlag,
       ms.SeniorFlag
     from MasterSeasonList ms
     join MasterList ml on ml.ID = ms.BowlerId
+    left join MasterList canonical on canonical.ID = ml.CanonicalBowlerId
     where ms.SeasonYear = @season
   `,
   parameters: '@season={season}',

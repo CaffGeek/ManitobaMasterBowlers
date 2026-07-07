@@ -1,4 +1,5 @@
 import { app, input, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { requestedEffectiveBowlerIdSql } from "./sql-effective-bowler";
 
 const sqlInput = input.generic({
   type: 'sql',
@@ -22,7 +23,8 @@ const sqlInput = input.generic({
       end as GroupLabel
     from NationalContingentEntries e
     left join SeasonTable s on s.SeasonCode = e.SeasonCode
-    where e.BowlerId = @id
+    join MasterList ml on ml.ID = e.BowlerId
+    where coalesce(ml.CanonicalBowlerId, ml.ID) = ${requestedEffectiveBowlerIdSql('@id')}
     order by e.SeasonCode desc,
       case e.EntryType
         when 'Coach' then 3

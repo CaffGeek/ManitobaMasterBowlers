@@ -4,8 +4,8 @@ const sqlInput = input.generic({
   type: 'sql',
   commandText: `
     select
-      r.BowlerId,
-      m.Name as Bowler,
+      coalesce(m.CanonicalBowlerId, m.ID) as BowlerId,
+      canonical.Name as Bowler,
       t.SeasonCode,
       s.SeasonDesc,
       t.Division,
@@ -15,6 +15,7 @@ const sqlInput = input.generic({
       t.TournamentDetails
     from TournamentResults r
     join MasterList m on m.ID = r.BowlerId
+    join MasterList canonical on canonical.ID = coalesce(m.CanonicalBowlerId, m.ID)
     join TournamentTable t on t.Id = r.TournamentId
     join SeasonTable s on s.SeasonCode = t.SeasonCode
     where r.WonStars = 1

@@ -1,4 +1,5 @@
 import { app, input, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { requestedEffectiveBowlerIdSql } from "./sql-effective-bowler";
 
 const sqlInput = input.generic({
     type: 'sql',
@@ -24,7 +25,9 @@ const sqlInput = input.generic({
             from TournamentTable as t
             join TournamentResults as r
                 on t.id = r.TournamentId
-            where r.BowlerId = @id`,
+            join MasterList as m
+                on m.ID = r.BowlerId
+            where coalesce(m.CanonicalBowlerId, m.ID) = ${requestedEffectiveBowlerIdSql('@id')}`,
     parameters: '@id={id}',
     commandType: 'Text',
     connectionStringSetting: 'SqlConnectionString'

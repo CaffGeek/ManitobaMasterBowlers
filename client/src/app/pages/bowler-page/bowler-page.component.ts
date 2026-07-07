@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faPen, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { BowlerRecord } from '@models/BowlerRecord';
 import { NationalAppearanceRecord } from '@models/NationalAppearanceRecord';
 import { ApiService } from '@services/api.service';
 import { PERMISSION, PermissionService } from '@services/permission.service';
-import { Observable, combineLatest } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, combineLatest, filter, map, switchMap, takeUntil } from 'rxjs';
 
 type MedalLink = {
   icon: string;
@@ -24,13 +25,14 @@ type MedalRow = {
   styleUrls: ['./bowler-page.component.css'],
   standalone: false,
 })
-export class BowlerPageComponent implements OnInit {
-  @Input() bowler: number;
+export class BowlerPageComponent implements OnInit, OnDestroy {
   data: BowlerRecord;
   canEditBowler$: Observable<boolean>;
   isEditingName = false;
   editName = '';
   medalRows: MedalRow[] = [];
+  private bowler = 0;
+  private destroy$ = new Subject<void>();
 
   faPen = faPen;
   faCheck = faCheck;
@@ -39,19 +41,44 @@ export class BowlerPageComponent implements OnInit {
   constructor(
     private api: ApiService,
     private permissions: PermissionService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
   ngOnInit(): void {
     this.canEditBowler$ = this.permissions.checkPermission(PERMISSION.EDIT_BOWLER);
-    combineLatest([
-      this.api.bowlers$(),
-      this.api.nationalAppearances$(this.bowler),
-    ]).subscribe(([bowlers, appearances]) => {
-      this.data = bowlers
-        .filter(x => x.ID == this.bowler)?.[0] || new BowlerRecord();
-      this.medalRows = this.buildMedalRows(appearances || []);
-    });
+
+    this.route.paramMap
+      .pipe(
+        map((params) => Number(params.get('bowler'))),
+        filter((bowlerId) => !!bowlerId),
+        switchMap((bowlerId) => {
+          this.bowler = bowlerId;
+          return combineLatest([
+            this.api.bowlers$(),
+            this.api.nationalAppearances$(bowlerId),
+          ]);
+        }),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(([bowlers, appearances]) => {
+        const requestedBowler = bowlers.find((x) => x.ID == this.bowler) || new BowlerRecord();
+        const effectiveBowlerId = requestedBowler.EffectiveBowlerId || requestedBowler.ID;
+
+        if (effectiveBowlerId && effectiveBowlerId !== this.bowler) {
+          this.router.navigate(['/bowlers', effectiveBowlerId], { replaceUrl: true });
+          return;
+        }
+
+        this.data = requestedBowler;
+        this.medalRows = this.buildMedalRows(appearances || []);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   startEditName() {

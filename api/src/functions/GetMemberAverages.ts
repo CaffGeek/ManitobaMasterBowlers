@@ -1,4 +1,5 @@
 import { app, input, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { requestedEffectiveBowlerIdSql } from "./sql-effective-bowler";
 
 const baseQuery = `
   with seasons as (
@@ -11,8 +12,8 @@ const baseQuery = `
   ),
   ranked as (
     select
-      b.Id as BowlerId,
-      b.Name,
+      coalesce(b.CanonicalBowlerId, b.Id) as BowlerId,
+      canonical.Name as Name,
       tt.SeasonCode,
       tt.Division,
       tt.TournamentNumber,
@@ -26,11 +27,15 @@ const baseQuery = `
         when tr.Game7 is null then 6
         else 8
       end as games,
-      row_number() over (partition by b.Id order by cast(tt.TournamentDetails as date) desc) as rownum
+      row_number() over (
+        partition by coalesce(b.CanonicalBowlerId, b.Id)
+        order by cast(tt.TournamentDetails as date) desc
+      ) as rownum
     from seasons s
     join TournamentTable tt on s.SeasonCode = tt.SeasonCode
     join TournamentResults tr on tr.TournamentId = tt.Id
     join MasterList b on tr.BowlerId = b.Id
+    join MasterList canonical on canonical.ID = coalesce(b.CanonicalBowlerId, b.Id)
     where tr.IgnoreForAverage = 0
     {{BOWLER_FILTER}}
   ),
@@ -45,17 +50,27 @@ const baseQuery = `
     from ranked
     where rownum <= 10
     group by BowlerId, Name
+  ),
+  seasonFlags as (
+    select
+      coalesce(ml.CanonicalBowlerId, ml.ID) as BowlerId,
+      max(isnull(msl.TeachingFlag, 0)) as TeachingFlag,
+      max(isnull(msl.SeniorFlag, 0)) as SeniorFlag,
+      max(isnull(msl.TournamentFlag, 0)) as TournamentFlag
+    from MasterSeasonList msl
+    join MasterList ml on ml.ID = msl.BowlerId
+    cross join currentSeason cs
+    where msl.SeasonYear = cs.SeasonCode
+    group by coalesce(ml.CanonicalBowlerId, ml.ID)
   )
   select
     s.*,
-    isnull(msl.TeachingFlag, 0) as TeachingFlag,
-    isnull(msl.SeniorFlag, 0) as SeniorFlag,
-    isnull(msl.TournamentFlag, 0) as TournamentFlag
+    isnull(sf.TeachingFlag, 0) as TeachingFlag,
+    isnull(sf.SeniorFlag, 0) as SeniorFlag,
+    isnull(sf.TournamentFlag, 0) as TournamentFlag
   from summary s
-  cross join currentSeason cs
-  left join MasterSeasonList msl
-    on s.BowlerId = msl.BowlerId
-    and msl.SeasonYear = cs.SeasonCode
+  left join seasonFlags sf
+    on s.BowlerId = sf.BowlerId
   order by s.Name asc
 `;
 
@@ -68,7 +83,7 @@ const sqlAll = input.generic({
 
 const sqlByBowler = input.generic({
   type: 'sql',
-  commandText: baseQuery.replace('{{BOWLER_FILTER}}', 'and b.Id = @bowlerId'),
+  commandText: baseQuery.replace('{{BOWLER_FILTER}}', `and coalesce(b.CanonicalBowlerId, b.Id) = ${requestedEffectiveBowlerIdSql('@bowlerId')}`),
   parameters: '@bowlerId={bowlerId}',
   commandType: 'Text',
   connectionStringSetting: 'SqlConnectionString'
