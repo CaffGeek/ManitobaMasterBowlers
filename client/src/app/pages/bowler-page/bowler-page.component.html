@@ -12,6 +12,13 @@
                             title="Edit name"
                             (action)="startEditName()"
                         ></app-action-icon-button>
+                        <app-action-icon-button
+                            [icon]="faPeopleGroup"
+                            variant="edit"
+                            ariaLabel="Link duplicate or canonical"
+                            title="Link duplicate / canonical"
+                            (action)="openCanonicalLink()"
+                        ></app-action-icon-button>
                     </div>
                 </div>
                 <div *ngIf="isEditingName" class="bowler-title-edit">

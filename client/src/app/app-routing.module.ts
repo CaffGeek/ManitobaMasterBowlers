@@ -29,6 +29,7 @@ import { AnnouncementsPageComponent } from '@pages/announcements-page/announceme
 import { MemberAveragesPageComponent } from '@pages/member-averages-page/member-averages-page.component';
 import { ContingentsPageComponent } from '@pages/contingents-page/contingents-page.component';
 import { ContingentsViewerPageComponent } from '@pages/contingents-viewer-page/contingents-viewer-page.component';
+import { CanonicalBowlersPageComponent } from '@pages/canonical-bowlers-page/canonical-bowlers-page.component';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -176,6 +177,12 @@ const routes: Routes = [
   {
     path: 'bowlers',
     component: BowlerListPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_BOWLER },
+  },
+  {
+    path: 'bowlers/canonical',
+    component: CanonicalBowlersPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
     data: { requiredPermission: PERMISSION.EDIT_BOWLER },
   },

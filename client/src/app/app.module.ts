@@ -56,6 +56,7 @@ import { AnnouncementsPageComponent } from './pages/announcements-page/announcem
 import { MemberAveragesPageComponent } from './pages/member-averages-page/member-averages-page.component';
 import { ContingentsPageComponent } from '@pages/contingents-page/contingents-page.component';
 import { ContingentsViewerPageComponent } from '@pages/contingents-viewer-page/contingents-viewer-page.component';
+import { CanonicalBowlersPageComponent } from '@pages/canonical-bowlers-page/canonical-bowlers-page.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ActionIconButtonComponent } from './components/action-icon-button/action-icon-button.component';
 import { BooleanFlagComponent } from './components/boolean-flag/boolean-flag.component';
@@ -106,6 +107,7 @@ import { ApiRetryInterceptor } from './interceptors/api-retry.interceptor';
     MemberAveragesPageComponent,
     ContingentsPageComponent,
     ContingentsViewerPageComponent,
+    CanonicalBowlersPageComponent,
     ConfirmDialogComponent,
     ActionIconButtonComponent,
     BooleanFlagComponent,

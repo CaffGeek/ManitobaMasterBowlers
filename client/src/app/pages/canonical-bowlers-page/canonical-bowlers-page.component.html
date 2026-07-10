@@ -1,0 +1,96 @@
+<mat-card class="canonical-bowlers-card">
+  <mat-card-header>
+    <h1>Canonical Bowlers</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="canonical-note">
+      Use this page to link duplicate bowler records to one canonical profile. Multiple aliases can point at the
+      same canonical bowler, but canonical targets must stay top-level.
+    </p>
+
+    <div class="canonical-add">
+      <h2>Add mapping</h2>
+      <div class="canonical-add-row">
+        <div class="canonical-field">
+          <label for="aliasBowler">Alias bowler</label>
+          <input
+            id="aliasBowler"
+            type="text"
+            list="aliasBowlerList"
+            [(ngModel)]="aliasInput"
+            placeholder="Name (#ID)"
+            [disabled]="isSaving"
+          />
+        </div>
+
+        <div class="canonical-field">
+          <label for="canonicalBowler">Canonical bowler</label>
+          <input
+            id="canonicalBowler"
+            type="text"
+            list="canonicalBowlerList"
+            [(ngModel)]="canonicalInput"
+            placeholder="Name (#ID)"
+            [disabled]="isSaving"
+          />
+        </div>
+
+        <button class="btn btn-primary" type="button" (click)="saveMapping()" [disabled]="isSaving">
+          Save mapping
+        </button>
+      </div>
+
+      <datalist id="aliasBowlerList">
+        <option *ngFor="let bowler of aliasCandidates" [value]="bowlerOptionLabel(bowler)"></option>
+      </datalist>
+
+      <datalist id="canonicalBowlerList">
+        <option *ngFor="let bowler of canonicalCandidates" [value]="bowlerOptionLabel(bowler)"></option>
+      </datalist>
+    </div>
+
+    <div class="canonical-loading" *ngIf="isLoading">Loading canonical mappings...</div>
+
+    <div class="canonical-empty" *ngIf="!isLoading && !canonicalGroups.length">
+      No canonical mappings have been set yet.
+    </div>
+
+    <div class="canonical-groups" *ngIf="!isLoading && canonicalGroups.length">
+      <section class="canonical-group" *ngFor="let group of canonicalGroups">
+        <div class="canonical-group-header">
+          <div>
+            <h2>
+              <a [routerLink]="['/bowlers', group.canonical.ID]">{{ group.canonical.Name }}</a>
+              <span class="bowler-id">#{{ group.canonical.ID }}</span>
+            </h2>
+            <div class="canonical-subtitle">{{ group.aliases.length }} alias{{ group.aliases.length === 1 ? '' : 'es' }}</div>
+          </div>
+        </div>
+
+        <table class="canonical-table">
+          <thead>
+            <tr>
+              <th>Alias</th>
+              <th>Currently points to</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let alias of group.aliases">
+              <td>
+                <a [routerLink]="['/bowlers', alias.ID]">{{ alias.Name }}</a>
+                <span class="bowler-id">#{{ alias.ID }}</span>
+              </td>
+              <td>{{ currentCanonicalLabel(alias) }}</td>
+              <td class="actions-col">
+                <button class="btn btn-outline-secondary btn-sm" type="button" (click)="clearMapping(alias)" [disabled]="isSaving">
+                  Clear
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </mat-card-content>
+</mat-card>

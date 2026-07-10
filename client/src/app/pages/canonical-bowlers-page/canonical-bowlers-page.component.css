@@ -1,0 +1,109 @@
+.canonical-bowlers-card {
+  margin: 1rem;
+}
+
+.canonical-note {
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.canonical-add {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  background: #fffef7;
+}
+
+.canonical-add h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.15rem;
+}
+
+.canonical-add-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.canonical-field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 260px;
+  flex: 1 1 260px;
+}
+
+.canonical-field label {
+  font-weight: 600;
+}
+
+.canonical-loading,
+.canonical-empty {
+  color: #666;
+  font-style: italic;
+}
+
+.canonical-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.canonical-group {
+  border: 1px solid #d9dee3;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.canonical-group-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.canonical-subtitle {
+  margin-top: 0.2rem;
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.bowler-id {
+  margin-left: 0.35rem;
+  color: #6c757d;
+  font-size: 0.9em;
+}
+
+.canonical-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.85rem;
+}
+
+.canonical-table th,
+.canonical-table td {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+}
+
+.canonical-table th {
+  text-align: left;
+  font-weight: 600;
+}
+
+.actions-col {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .canonical-add-row {
+    align-items: stretch;
+  }
+
+  .actions-col {
+    text-align: left;
+  }
+}

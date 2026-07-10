@@ -18,7 +18,7 @@ const baseQuery = `
       tt.Division,
       tt.TournamentNumber,
       tt.TournamentLocation,
-      cast(tt.TournamentDetails as date) as TournamentDate,
+      try_cast(tt.TournamentDetails as date) as TournamentDate,
       case
         when tr.Game7 is null then tr.Game1 + tr.Game2 + tr.Game3 + tr.Game4 + tr.Game5 + tr.Game6
         else tr.Game1 + tr.Game2 + tr.Game3 + tr.Game4 + tr.Game5 + tr.Game6 + tr.Game7 + tr.Game8
@@ -29,7 +29,11 @@ const baseQuery = `
       end as games,
       row_number() over (
         partition by coalesce(b.CanonicalBowlerId, b.Id)
-        order by cast(tt.TournamentDetails as date) desc
+        order by
+          try_cast(tt.TournamentDetails as date) desc,
+          tt.SeasonCode desc,
+          tt.TournamentNumber desc,
+          tt.Id desc
       ) as rownum
     from seasons s
     join TournamentTable tt on s.SeasonCode = tt.SeasonCode

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { faPen, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faCheck, faXmark, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import { BowlerRecord } from '@models/BowlerRecord';
 import { NationalAppearanceRecord } from '@models/NationalAppearanceRecord';
 import { ApiService } from '@services/api.service';
@@ -37,6 +37,7 @@ export class BowlerPageComponent implements OnInit, OnDestroy {
   faPen = faPen;
   faCheck = faCheck;
   faXmark = faXmark;
+  faPeopleGroup = faPeopleGroup;
 
   constructor(
     private api: ApiService,
@@ -100,6 +101,28 @@ export class BowlerPageComponent implements OnInit, OnDestroy {
     this.api.updateBowlerName(this.data.ID, name).subscribe(() => {
       this.data.Name = name;
       this.isEditingName = false;
+    });
+  }
+
+  canonicalLinkCommands(): any[] {
+    return ['/bowlers/canonical'];
+  }
+
+  canonicalLinkQueryParams(): Record<string, string | number> {
+    const params: Record<string, string | number> = {
+      aliasId: this.data?.ID,
+    };
+
+    if (this.data?.CanonicalBowlerId) {
+      params.canonicalId = this.data.CanonicalBowlerId;
+    }
+
+    return params;
+  }
+
+  openCanonicalLink() {
+    this.router.navigate(this.canonicalLinkCommands(), {
+      queryParams: this.canonicalLinkQueryParams(),
     });
   }
 
