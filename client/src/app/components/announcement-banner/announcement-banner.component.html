@@ -1,4 +1,4 @@
-<div class="announcement-banner" *ngIf="activeAnnouncements.length > 0">
+<div class="announcement-banner" *ngIf="activeAnnouncements.length > 0 && !isDismissed">
   <button
     class="announcement-banner__nav"
     (click)="prev()"
@@ -15,5 +15,14 @@
     *ngIf="activeAnnouncements.length > 1"
   >
     ›
+  </button>
+  <button
+    type="button"
+    class="announcement-banner__dismiss"
+    (click)="dismiss()"
+    aria-label="Dismiss announcements for this session"
+    title="Dismiss announcements"
+  >
+    &times;
   </button>
 </div>

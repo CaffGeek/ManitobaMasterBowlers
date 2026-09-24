@@ -13,6 +13,11 @@ footer {
     gap: 12px;
 }
 
+.footer-copyright {
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
 .footer-social {
     display: inline-flex;
     align-items: center;
@@ -86,4 +91,29 @@ footer {
 
 .footer-link[aria-label="YouTube"]:hover {
     background: #ff3333;
+}
+
+@media (max-width: 600px) {
+    footer {
+        gap: 6px;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    .footer-copyright {
+        font-size: 0.65rem;
+    }
+
+    .footer-social,
+    .footer-link--icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .footer-social svg,
+    .footer-link--icon svg,
+    .footer-icon-img {
+        width: 15px;
+        height: 15px;
+    }
 }

@@ -34,3 +34,25 @@
 .announcement-banner__nav:hover {
   background: #f6d04c;
 }
+
+.announcement-banner__dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #665611;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.announcement-banner__dismiss:hover {
+  border-color: #c9b15b;
+  background: #ffed9d;
+}

@@ -12,11 +12,15 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class AnnouncementBannerComponent implements OnInit, OnDestroy {
   activeAnnouncements: AnnouncementRecord[] = [];
   activeIndex = 0;
+  isDismissed = false;
   private rotationId?: number;
+  private readonly dismissedStorageKey = 'announcement-banner-dismissed';
 
   constructor(private api: ApiService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
+    this.isDismissed = this.isDismissedForSession();
+
     this.api.announcements$().subscribe((announcements) => {
       const now = new Date();
       this.activeAnnouncements = (announcements || [])
@@ -56,14 +60,36 @@ export class AnnouncementBannerComponent implements OnInit, OnDestroy {
     this.activeIndex = (this.activeIndex - 1 + this.activeAnnouncements.length) % this.activeAnnouncements.length;
   }
 
+  dismiss(): void {
+    this.isDismissed = true;
+    if (this.rotationId) {
+      window.clearInterval(this.rotationId);
+      this.rotationId = undefined;
+    }
+
+    try {
+      window.sessionStorage.setItem(this.dismissedStorageKey, 'true');
+    } catch {
+      // The in-memory state still dismisses the banner when storage is unavailable.
+    }
+  }
+
   private resetRotation(): void {
     if (this.rotationId) {
       window.clearInterval(this.rotationId);
     }
-    if (this.activeAnnouncements.length < 2) {
+    if (this.isDismissed || this.activeAnnouncements.length < 2) {
       return;
     }
     this.rotationId = window.setInterval(() => this.next(), 8000);
+  }
+
+  private isDismissedForSession(): boolean {
+    try {
+      return window.sessionStorage.getItem(this.dismissedStorageKey) === 'true';
+    } catch {
+      return false;
+    }
   }
 
   private isActive(item: AnnouncementRecord, now: Date): boolean {
