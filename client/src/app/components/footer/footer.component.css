@@ -1,21 +1,30 @@
 footer {
-    min-height: 50px !important;
-    height: 50px !important;
+    min-height: 76px !important;
+    height: 76px !important;
     position:fixed;
     bottom:0px;
     width:100%;
-    background: #121212;
-    color: #fff7d6;
+    background: #f8f9fa !important;
+    color: #1b1b1b;
     border-top: 2px solid #f6c400;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 3px;
 }
 
 .footer-copyright {
     font-size: 0.8rem;
+    color: #1b1b1b;
     white-space: nowrap;
+}
+
+.footer-social-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .footer-social {
@@ -95,13 +104,12 @@ footer {
 
 @media (max-width: 600px) {
     footer {
-        gap: 6px;
         padding-left: 4px !important;
         padding-right: 4px !important;
     }
 
     .footer-copyright {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
     }
 
     .footer-social,
