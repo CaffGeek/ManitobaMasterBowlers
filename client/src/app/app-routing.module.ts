@@ -30,6 +30,7 @@ import { MemberAveragesPageComponent } from '@pages/member-averages-page/member-
 import { ContingentsPageComponent } from '@pages/contingents-page/contingents-page.component';
 import { ContingentsViewerPageComponent } from '@pages/contingents-viewer-page/contingents-viewer-page.component';
 import { CanonicalBowlersPageComponent } from '@pages/canonical-bowlers-page/canonical-bowlers-page.component';
+import { SponsorsPageComponent } from '@pages/sponsors-page/sponsors-page.component';
 
 const aspxMatcher = (segments: UrlSegment[]): UrlMatchResult | null => {
   if (segments.length !== 1) {
@@ -89,6 +90,12 @@ const routes: Routes = [
     component: AnnouncementsPageComponent,
     canActivate: [AuthGuard, PermissionGuard],
     data: { requiredPermission: PERMISSION.EDIT_ANNOUNCEMENTS },
+  },
+  {
+    path: 'sponsors',
+    component: SponsorsPageComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { requiredPermission: PERMISSION.EDIT_CONTENT },
   },
   {
     path: 'contingents',

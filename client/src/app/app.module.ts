@@ -52,6 +52,8 @@ import { ScheduleEditPageComponent } from './pages/schedule-edit-page/schedule-e
 import { WinnersPageComponent } from './pages/winners-page/winners-page.component';
 import { MediaPageComponent } from './pages/media-page/media-page.component';
 import { AnnouncementBannerComponent } from './components/announcement-banner/announcement-banner.component';
+import { SponsorAdSlotComponent } from './components/sponsor-ad-slot/sponsor-ad-slot.component';
+import { SponsorsPageComponent } from './pages/sponsors-page/sponsors-page.component';
 import { AnnouncementsPageComponent } from './pages/announcements-page/announcements-page.component';
 import { MemberAveragesPageComponent } from './pages/member-averages-page/member-averages-page.component';
 import { ContingentsPageComponent } from '@pages/contingents-page/contingents-page.component';
@@ -103,6 +105,8 @@ import { ApiRetryInterceptor } from './interceptors/api-retry.interceptor';
     WinnersPageComponent,
     MediaPageComponent,
     AnnouncementBannerComponent,
+    SponsorAdSlotComponent,
+    SponsorsPageComponent,
     AnnouncementsPageComponent,
     MemberAveragesPageComponent,
     ContingentsPageComponent,

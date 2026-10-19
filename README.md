@@ -38,6 +38,10 @@
 - Admin route: `/contingents/:season`
 - Saved contingent entries live in SQL table `dbo.NationalContingentEntries`.
 - Apply [api/sql/001-create-national-contingent-entries.sql](/c:/code/ManitobaMasterBowlers/api/sql/001-create-national-contingent-entries.sql) before using the feature in a new environment.
+- Sponsor advertising uses `dbo.Sponsors`, `dbo.SponsorAds`, and
+  `dbo.SponsorAdPlacements`. Apply
+  [api/sql/004-create-sponsor-advertising.sql](/c:/code/ManitobaMasterBowlers/api/sql/004-create-sponsor-advertising.sql)
+  before opening the sponsor administration page at `/sponsors`.
 - If a season has no saved contingent entries yet, the admin page loads computed defaults:
   - Tournament men/women: singles from best `5 of 5`, team from next 5 using best `4 of 5`
   - Teaching men/women: singles from best `5 of 5`, team includes that singles rep plus next 4 using best `4 of 5`

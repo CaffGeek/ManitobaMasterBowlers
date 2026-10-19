@@ -15,6 +15,9 @@ standard, add/update a note here.
 - Local settings: `api/local.settings.json` (do not commit secrets)
 - Local docker compose also runs SQL Server for development; the backend points at
   `ManitobaMastersLocal` when using `infra/local/docker-compose.yml`.
+- The local Azure Functions Node 20 image is based on Debian 11; when installing
+  .NET packages in `infra/local/backend.Dockerfile`, use Microsoft's matching
+  Debian 11 feed. Debian 12 packages are not compatible with that image's `dpkg`.
 - In local docker, `SqlConnectionString` is overridden by compose so the backend
   uses the local docker SQL instance instead of production.
 - Production database backup scripts read from a separate local-only
@@ -53,6 +56,14 @@ standard, add/update a note here.
 - `POST /api/media/upload` — UploadMedia
 - `DELETE /api/media/{name}` — DeleteMedia
 - `GET /api/schedule` — GetSchedule
+- `GET /api/sponsorads?path={route}` — GetSponsorAds (public active ads)
+- `POST /api/sponsorads` — CreateSponsorAd
+- `PUT /api/sponsorads/{id:int}` — UpdateSponsorAd
+- `DELETE /api/sponsorads/{id:int}` — DeleteSponsorAd
+- `GET /api/sponsors` — GetSponsors
+- `POST /api/sponsors` — CreateSponsor
+- `PUT /api/sponsors/{id:int}` — UpdateSponsor
+- `DELETE /api/sponsors/{id:int}` — DeleteSponsor
 - `GET /api/seasons` — GetSeasons
 - `POST /api/seasons` — CreateSeason
 - `GET /api/tournaments` — GetTournaments
@@ -109,6 +120,13 @@ standard, add/update a note here.
 - Public API `GET` calls use a shared retry interceptor for transient cold-start
   failures from Azure Functions. Retries are limited and only apply to API GETs
   with transient statuses (`0`, `500`, `502`, `503`, `504`).
+- Sponsor advertising is managed at `/sponsors` using the existing
+  `edit:content` permission. Ads support trusted rich HTML, optional scheduling,
+  multiple page/location placements, priority, and rotation timing.
+- Sponsor locations are rendered through `app-sponsor-ad-slot` in the app shell:
+  Top, Bottom, Left, Right, and Overlay. Below 1100px, Left and Right placements
+  join the rotating Bottom slot. Overlay dismissal is stored for the browser
+  session only.
 
 ## Current Production URLs
 - Frontend production domain: `https://manitobamasterbowlers.ca`

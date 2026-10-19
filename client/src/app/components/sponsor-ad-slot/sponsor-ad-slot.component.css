@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+:host.is-empty {
+  display: none;
+}
+
+.sponsor-ad {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #e0d6a8;
+  border-radius: 8px;
+  background: #fffdf5;
+  padding: 10px;
+}
+
+.sponsor-ad__label {
+  margin-bottom: 5px;
+  color: #686868;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sponsor-ad__content {
+  overflow-wrap: anywhere;
+}
+
+.sponsor-ad__content ::ng-deep img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.sponsor-ad__content ::ng-deep p:last-child {
+  margin-bottom: 0;
+}
+
+:host.sponsor-slot--top,
+:host.sponsor-slot--bottom {
+  margin: 12px 16px;
+}
+
+:host.sponsor-slot--left,
+:host.sponsor-slot--right {
+  position: sticky;
+  top: 12px;
+  width: 210px;
+  margin: 12px;
+  align-self: start;
+}
+
+:host.sponsor-slot--overlay {
+  position: fixed;
+  right: 16px;
+  bottom: 92px;
+  z-index: 1050;
+  width: min(360px, calc(100vw - 32px));
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.sponsor-ad--overlay {
+  padding-right: 34px;
+}
+
+.sponsor-ad__dismiss {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  border: 0;
+  background: transparent;
+  color: #444;
+  font-size: 1.55rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 1099px) {
+  :host.sponsor-slot--left,
+  :host.sponsor-slot--right {
+    display: none;
+  }
+
+  :host.sponsor-slot--top,
+  :host.sponsor-slot--bottom {
+    margin: 10px 8px;
+  }
+}

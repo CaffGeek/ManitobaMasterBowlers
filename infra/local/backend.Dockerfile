@@ -5,10 +5,12 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot/dist \
 
 WORKDIR /home/site/wwwroot
 
-# Install .NET SDK (needed by the Functions host/extension bundle)
+# Install .NET SDK (needed by the Functions host/extension bundle).
+# This Functions image is Debian 11, so its Microsoft feed must also be Debian 11.
+# Debian 12 packages can require a newer dpkg and fail on control.tar.zst.
 RUN apt-get update \
     && apt-get install -y wget gnupg \
-    && wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
     && apt-get update \

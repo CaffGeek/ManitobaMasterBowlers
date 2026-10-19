@@ -12,6 +12,7 @@ import { BowlerResultsRecord } from '@models/BowlerResultsRecord';
 import { AnnouncementRecord } from '@models/AnnouncementRecord';
 import { ContingentResponseRecord, SaveContingentEntryRecord } from '@models/ContingentRecord';
 import { NationalAppearanceRecord } from '@models/NationalAppearanceRecord';
+import { SponsorAdRecord, SponsorRecord } from '@models/SponsorRecord';
 
 @Injectable({
   providedIn: 'root',
@@ -196,5 +197,37 @@ export class ApiService {
   saveContingents(season: string, entries: SaveContingentEntryRecord[]): Observable<unknown> {
     return this.http.put(`${environment.apiUri}contingents/${season}`, { entries })
       .pipe(tap(() => this.clearCache(`contingents/${season}`)));
+  }
+
+  sponsorAds$(path: string): Observable<SponsorAdRecord[]> {
+    return this.http.get<SponsorAdRecord[]>(`${environment.apiUri}sponsorads?path=${encodeURIComponent(path || '/')}`);
+  }
+
+  sponsors$(): Observable<SponsorRecord[]> {
+    return this.http.get<SponsorRecord[]>(`${environment.apiUri}sponsors`);
+  }
+
+  createSponsor(payload: Partial<SponsorRecord>): Observable<{ Id: number }> {
+    return this.http.post<{ Id: number }>(`${environment.apiUri}sponsors`, payload);
+  }
+
+  updateSponsor(id: number, payload: Partial<SponsorRecord>): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}sponsors/${id}`, payload);
+  }
+
+  deleteSponsor(id: number): Observable<unknown> {
+    return this.http.delete(`${environment.apiUri}sponsors/${id}`);
+  }
+
+  createSponsorAd(payload: Partial<SponsorAdRecord>): Observable<{ Id: number }> {
+    return this.http.post<{ Id: number }>(`${environment.apiUri}sponsorads`, payload);
+  }
+
+  updateSponsorAd(id: number, payload: Partial<SponsorAdRecord>): Observable<unknown> {
+    return this.http.put(`${environment.apiUri}sponsorads/${id}`, payload);
+  }
+
+  deleteSponsorAd(id: number): Observable<unknown> {
+    return this.http.delete(`${environment.apiUri}sponsorads/${id}`);
   }
 }

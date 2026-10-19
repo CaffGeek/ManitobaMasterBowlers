@@ -31,3 +31,4 @@ import './DeleteMedia';
 import './GetContingents';
 import './SaveContingents';
 import './GetNationalAppearances';
+import './SponsorAdvertising';

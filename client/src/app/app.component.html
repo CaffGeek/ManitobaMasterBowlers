@@ -2,9 +2,19 @@
   <app-nav-bar></app-nav-bar>
   <app-announcement-banner></app-announcement-banner>
 
-  <div class="container">
-    <router-outlet></router-outlet>
+  <div class="page-scroll">
+    <app-sponsor-ad-slot location="Top"></app-sponsor-ad-slot>
+    <div class="advertising-layout">
+      <app-sponsor-ad-slot location="Left"></app-sponsor-ad-slot>
+      <main class="container">
+        <router-outlet></router-outlet>
+      </main>
+      <app-sponsor-ad-slot location="Right"></app-sponsor-ad-slot>
+    </div>
+    <app-sponsor-ad-slot location="Bottom"></app-sponsor-ad-slot>
   </div>
+
+  <app-sponsor-ad-slot location="Overlay"></app-sponsor-ad-slot>
 
   <app-footer></app-footer>
 </div>

@@ -1,0 +1,154 @@
+<div class="sponsors-page">
+  <header class="page-header">
+    <div>
+      <h1>Sponsor Advertising</h1>
+      <p>Manage sponsors, scheduled ads, page targeting, and display locations.</p>
+    </div>
+    <button type="button" class="btn btn-success" (click)="newSponsor()">New Sponsor</button>
+  </header>
+
+  <div class="sponsors-layout">
+    <aside class="sponsor-list card-panel">
+      <h2>Sponsors</h2>
+      <button
+        type="button"
+        class="sponsor-list__item"
+        *ngFor="let sponsor of sponsors"
+        [class.is-selected]="sponsor.Id === sponsorModel.Id"
+        (click)="selectSponsor(sponsor)"
+      >
+        <span>{{ sponsor.Name }}</span>
+        <small>{{ sponsor.Ads?.length || 0 }} ad{{ sponsor.Ads?.length === 1 ? '' : 's' }}</small>
+      </button>
+      <p class="empty-message" *ngIf="!sponsors.length">No sponsors have been added.</p>
+    </aside>
+
+    <main class="sponsor-workspace">
+      <section class="card-panel sponsor-form" *ngIf="showSponsorEditor">
+        <h2>{{ sponsorModel.Id ? 'Sponsor Details' : 'New Sponsor' }}</h2>
+        <div class="form-grid">
+          <label>Name <input type="text" [(ngModel)]="sponsorModel.Name" /></label>
+          <label>Website URL <input type="url" [(ngModel)]="sponsorModel.WebsiteUrl" /></label>
+          <label class="full-width">Default logo URL <input type="url" [(ngModel)]="sponsorModel.DefaultLogoUrl" /></label>
+          <label class="full-width">Notes <textarea rows="2" [(ngModel)]="sponsorModel.Notes"></textarea></label>
+          <label class="checkbox-field"><input type="checkbox" [(ngModel)]="sponsorModel.IsActive" /> Active</label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="saveSponsor()">Save Sponsor</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="cancelSponsorEdit()">Cancel</button>
+          <button *ngIf="sponsorModel.Id" type="button" class="btn btn-outline-danger" (click)="deleteSponsor()">Delete</button>
+        </div>
+      </section>
+
+      <ng-container *ngIf="sponsorModel.Id && !showSponsorEditor">
+        <section class="card-panel sponsor-summary">
+          <div class="sponsor-summary__details">
+            <div class="sponsor-summary__title">
+              <h2>{{ sponsorModel.Name }}</h2>
+              <span class="sponsor-state" [class.inactive]="!sponsorModel.IsActive">
+                {{ sponsorModel.IsActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+            <a *ngIf="sponsorModel.WebsiteUrl" [href]="sponsorModel.WebsiteUrl" target="_blank" rel="noopener">
+              {{ sponsorModel.WebsiteUrl }}
+            </a>
+          </div>
+          <div class="sponsor-summary__actions">
+            <button type="button" class="btn btn-outline-secondary" (click)="editSponsor()">Edit Sponsor</button>
+            <button type="button" class="btn btn-success" (click)="newAd()">New Ad</button>
+          </div>
+        </section>
+
+        <div class="ads-workspace">
+          <section class="card-panel ads-panel">
+            <div class="section-heading">
+              <h2>Ads</h2>
+              <span class="ad-count">{{ sponsorModel.Ads?.length || 0 }}</span>
+            </div>
+            <div class="ad-list" *ngIf="sponsorModel.Ads?.length; else noAds">
+              <button
+                type="button"
+                class="ad-row"
+                *ngFor="let ad of sponsorModel.Ads"
+                [class.is-selected]="ad.Id === adModel?.Id"
+                (click)="editAd(ad)"
+              >
+                <span>
+                  <strong>{{ ad.Name }}</strong>
+                  <small *ngFor="let placement of ad.Placements">{{ placementDescription(placement) }}</small>
+                </span>
+                <span class="status" [ngClass]="adStatusClass(ad)">{{ adStatus(ad) }}</span>
+              </button>
+            </div>
+            <ng-template #noAds>
+              <div class="empty-message empty-message--panel">
+                <p>This sponsor has no ads yet.</p>
+                <button type="button" class="btn btn-success btn-sm" (click)="newAd()">Create the first ad</button>
+              </div>
+            </ng-template>
+          </section>
+
+          <section class="card-panel ad-editor" *ngIf="adModel; else selectAdPrompt">
+            <div class="section-heading">
+              <h2>{{ adModel.Id ? 'Edit Ad' : 'New Ad' }}</h2>
+              <button type="button" class="btn btn-link" (click)="cancelAd()">Close</button>
+            </div>
+            <div class="form-grid">
+              <label class="full-width">Internal ad name <input type="text" [(ngModel)]="adModel.Name" /></label>
+              <label>Starts (optional) <input type="datetime-local" [(ngModel)]="adModel.StartDate" /></label>
+              <label>Ends (optional) <input type="datetime-local" [(ngModel)]="adModel.EndDate" /></label>
+              <label>Priority <input type="number" [(ngModel)]="adModel.Priority" /></label>
+              <label>Rotation seconds <input type="number" min="3" max="300" [(ngModel)]="adModel.RotationSeconds" /></label>
+              <label class="checkbox-field full-width"><input type="checkbox" [(ngModel)]="adModel.IsActive" /> Active</label>
+            </div>
+
+            <label class="editor-label">Ad content</label>
+            <editor [apiKey]="editorApiKey" [init]="editorInit" [(ngModel)]="adModel.ContentHtml"></editor>
+
+            <div class="placements-heading">
+              <div>
+                <h3>Placements</h3>
+                <p>An ad can appear in more than one place or page group.</p>
+              </div>
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="addPlacement()">Add Placement</button>
+            </div>
+            <div class="placement-row" *ngFor="let placement of adModel.Placements; let i = index">
+              <label>Location
+                <select [(ngModel)]="placement.Location">
+                  <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+                </select>
+              </label>
+              <label>Pages
+                <select [(ngModel)]="placement.PageMatchType">
+                  <option *ngFor="let type of matchTypes" [value]="type">{{ type }}</option>
+                </select>
+              </label>
+              <label class="page-value">Page value
+                <input
+                  type="text"
+                  [(ngModel)]="placement.PageValue"
+                  [disabled]="placement.PageMatchType === 'All'"
+                  [placeholder]="placement.PageMatchType === 'Sitemap' ? 'cash-calendar' : '/results'"
+                />
+              </label>
+              <label>Order <input type="number" [(ngModel)]="placement.SortOrder" /></label>
+              <button type="button" class="btn btn-outline-danger btn-sm remove-placement" (click)="removePlacement(i)">Remove</button>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="saveAd()">Save Ad</button>
+              <button *ngIf="adModel.Id" type="button" class="btn btn-outline-danger" (click)="deleteAd()">Delete Ad</button>
+            </div>
+          </section>
+          <ng-template #selectAdPrompt>
+            <section class="card-panel ad-selection-prompt">
+              <h2>Select an ad</h2>
+              <p>Choose an ad from the list to edit it, or create a new one.</p>
+              <button type="button" class="btn btn-success" (click)="newAd()">New Ad</button>
+            </section>
+          </ng-template>
+        </div>
+      </ng-container>
+    </main>
+  </div>
+</div>

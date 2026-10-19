@@ -1,0 +1,12 @@
+<section *ngIf="currentAd" class="sponsor-ad" [class.sponsor-ad--overlay]="location === 'Overlay'">
+  <button
+    *ngIf="location === 'Overlay'"
+    type="button"
+    class="sponsor-ad__dismiss"
+    aria-label="Dismiss sponsor message for this session"
+    title="Dismiss for this session"
+    (click)="dismissOverlay()"
+  >×</button>
+  <div class="sponsor-ad__label">Sponsored</div>
+  <div class="sponsor-ad__content" [innerHTML]="currentContent"></div>
+</section>
