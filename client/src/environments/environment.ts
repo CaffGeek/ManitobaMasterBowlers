@@ -46,7 +46,8 @@ export const environment = {
       { uri: `${apiUri}*`, httpMethod: 'DELETE', allowAnonymous: false },
     ]
   },
-  tinymceApiKey
+  tinymceApiKey,
+  googleAnalyticsMeasurementId: '',
 };
 
 /*

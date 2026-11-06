@@ -1,6 +1,13 @@
 import config from '../../auth_config.prod.json';
 
-const { domain, clientId, authorizationParams: { audience }, apiUri, errorPath } = config as {
+const {
+  domain,
+  clientId,
+  authorizationParams: { audience },
+  apiUri,
+  errorPath,
+  googleAnalyticsMeasurementId,
+} = config as {
   domain: string;
   clientId: string;
   authorizationParams: {
@@ -8,6 +15,7 @@ const { domain, clientId, authorizationParams: { audience }, apiUri, errorPath }
   },
   apiUri: string;
   errorPath: string;
+  googleAnalyticsMeasurementId?: string;
 };
 
 let tinymceApiKey = '';
@@ -41,5 +49,6 @@ export const environment = {
       { uri: `${apiUri}*`, httpMethod: 'DELETE', allowAnonymous: false },
     ],
   },
-  tinymceApiKey
+  tinymceApiKey,
+  googleAnalyticsMeasurementId: googleAnalyticsMeasurementId || '',
 };

@@ -8,6 +8,9 @@ standard, add/update a note here.
 - `client/`: Angular app
 - `api/`: Azure Functions (TypeScript)
 - `infra/`: local docker + scripts
+- `FEATURE_BACKLOG.md`: source of truth for planned feature work. When asked
+  what work or features remain, report items not marked `Done` and update the
+  file as feature decisions or statuses change.
 
 ## Build/Run
 - Frontend: `client` (Angular)
@@ -127,6 +130,12 @@ standard, add/update a note here.
   Top, Bottom, Left, Right, and Overlay. Below 1100px, Left and Right placements
   join the rotating Bottom slot. Overlay dismissal is stored for the browser
   session only.
+- Production-only GA4 tracking is initialized by `AnalyticsService`. Its
+  measurement ID comes from `googleAnalyticsMeasurementId` in
+  `client/auth_config.prod.json`; local development remains untracked, and SPA
+  page paths are sent without query strings or fragments. GA4's Enhanced
+  Measurement option for page views on browser history changes must remain off
+  to prevent duplicate SPA page views.
 
 ## Current Production URLs
 - Frontend production domain: `https://manitobamasterbowlers.ca`

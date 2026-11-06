@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AnalyticsService } from '@services/analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Manitoba Master Bowlers';
 
-  constructor() {}
+  constructor(analytics: AnalyticsService) {
+    analytics.initialize();
+  }
 }

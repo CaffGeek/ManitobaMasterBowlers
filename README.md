@@ -42,6 +42,17 @@
   `dbo.SponsorAdPlacements`. Apply
   [api/sql/004-create-sponsor-advertising.sql](/c:/code/ManitobaMasterBowlers/api/sql/004-create-sponsor-advertising.sql)
   before opening the sponsor administration page at `/sponsors`.
+
+## Website analytics
+
+GA4 page-view tracking is enabled only for production builds and only when
+`googleAnalyticsMeasurementId` in `client/auth_config.prod.json` contains a
+valid `G-...` measurement ID. Local development is not tracked. Angular route
+changes are recorded as page views, with query strings and URL fragments
+removed before sending the page path. In the GA4 web stream's Enhanced
+Measurement settings, disable **Page views on browser history change** because
+the Angular service sends those page views itself; leaving both enabled would
+double-count route navigation.
 - If a season has no saved contingent entries yet, the admin page loads computed defaults:
   - Tournament men/women: singles from best `5 of 5`, team from next 5 using best `4 of 5`
   - Teaching men/women: singles from best `5 of 5`, team includes that singles rep plus next 4 using best `4 of 5`
