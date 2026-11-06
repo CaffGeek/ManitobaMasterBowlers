@@ -28,7 +28,9 @@ export class AnalyticsService {
     if (!environment.production || !/^G-[A-Z0-9]+$/i.test(measurementId)) return;
 
     window.dataLayer = window.dataLayer || [];
-    window.gtag = (...args: unknown[]) => window.dataLayer?.push(args);
+    window.gtag = function (..._args: unknown[]): void {
+      window.dataLayer?.push(arguments);
+    };
     window.gtag('js', new Date());
     window.gtag('config', measurementId, { send_page_view: false });
 
