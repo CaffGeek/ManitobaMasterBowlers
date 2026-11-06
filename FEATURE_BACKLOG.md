@@ -74,7 +74,7 @@ completed.
 
 ### FW-005 - Website traffic analytics
 
-- **Status:** In Progress
+- **Status:** Done
 - **Priority:** Medium
 - **Goal:** Add Google Analytics or an equivalent service to understand site
   traffic, popular pages, devices, and referral sources.
@@ -87,8 +87,8 @@ completed.
 - **Implementation note:** Production-only GA4 SPA page-view tracking is
   configured for measurement ID `G-QF3GFZHVJ2`. It records initial loads and
   Angular route navigation without query strings or URL fragments. Local
-  development remains untracked. Completion requires deploying the frontend and
-  confirming page views in the GA4 Realtime report.
+  development remains untracked. Production collection was verified on
+  November 6, 2026.
 
 ### FW-006 - Cross-page print styles
 
