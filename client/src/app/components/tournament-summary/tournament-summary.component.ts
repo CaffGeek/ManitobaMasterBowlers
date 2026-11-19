@@ -159,12 +159,17 @@ export class TournamentSummaryComponent implements OnChanges {
   }
 
   eventHeader(tournamentNumber: number): string {
+    const location = this.eventLocation(tournamentNumber);
+
+    return location ? `${tournamentNumber} - ${location}` : `${tournamentNumber}`;
+  }
+
+  eventLocation(tournamentNumber: number): string {
     const tournament = this.tournaments?.find(
       (item) => item.TournamentNumber === tournamentNumber
     );
-    const location = tournament?.TournamentLocation?.trim();
 
-    return location ? `${tournamentNumber} - ${location}` : `${tournamentNumber}`;
+    return tournament?.TournamentLocation?.trim() || '';
   }
 
   private buildDisplayedColumns(tournamentCount: number): string[] {
