@@ -158,6 +158,15 @@ export class TournamentSummaryComponent implements OnChanges {
     this.resort(false);
   }
 
+  eventHeader(tournamentNumber: number): string {
+    const tournament = this.tournaments?.find(
+      (item) => item.TournamentNumber === tournamentNumber
+    );
+    const location = tournament?.TournamentLocation?.trim();
+
+    return location ? `${tournamentNumber} - ${location}` : `${tournamentNumber}`;
+  }
+
   private buildDisplayedColumns(tournamentCount: number): string[] {
     const totalCount = Math.min(tournamentCount || 0, 6);
     const scratchTotals = Array.from({ length: totalCount }, (_, index) => `Scratch${index + 1}`);

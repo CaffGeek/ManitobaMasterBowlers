@@ -143,6 +143,27 @@ completed.
   intact, existing data has been reconciled, and all dependent screens and
   queries use a clearly documented source of truth.
 
+### FW-008 - Route cleanup and URL-driven filters
+
+- **Status:** Idea
+- **Priority:** Medium
+- **Goal:** Make application routes consistent, predictable, and capable of
+  representing the complete state of each page in a shareable URL.
+- **Known issue:** Results and tournament-summary pages do not properly encode
+  or restore the selected gender filter from the URL. A shared link, browser
+  refresh, or back/forward navigation can therefore show a different gender
+  selection than intended.
+- **Initial scope:** Audit route definitions and navigation calls, remove or
+  redirect obsolete and ambiguous routes, define consistent parameter names,
+  and synchronize division, season, tournament, gender, and other meaningful
+  filters with route or query parameters.
+- **Open decisions:** Whether gender belongs in the path or query string, the
+  canonical URL format for results pages, compatibility redirects for existing
+  links, and which other filters should be URL-driven.
+- **Done when:** Supported pages can be refreshed, bookmarked, and shared while
+  preserving their selected state; browser back/forward navigation works; and
+  old route forms redirect to documented canonical URLs.
+
 ## Completed
 
 Move completed items here or leave them above with `Status: Done`. Preserve the

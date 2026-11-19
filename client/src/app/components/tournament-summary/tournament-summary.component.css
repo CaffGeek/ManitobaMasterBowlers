@@ -8,6 +8,26 @@
     min-width: 0;
 }
 
+.event-column-header {
+    height: 165px;
+    padding: 8px 4px;
+    vertical-align: bottom;
+}
+
+.event-header-label {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    line-height: 1.1;
+}
+
+:host ::ng-deep .event-column-header .mat-sort-header-container {
+    height: 100%;
+    align-items: flex-end;
+    justify-content: center;
+}
+
 :host ::ng-deep .best-filter-field .mat-mdc-form-field-subscript-wrapper {
     display: none;
 }
