@@ -23,6 +23,8 @@
     align-items: center;
     gap: 5px;
     width: 100%;
+    min-height: 62px;
+    justify-content: flex-start;
     text-align: center;
     line-height: 1.15;
 }
@@ -43,6 +45,7 @@
 .event-location {
     display: -webkit-box;
     max-width: 108px;
+    min-height: 2.3em;
     overflow: hidden;
     color: #555;
     font-size: 0.76rem;
@@ -51,6 +54,10 @@
     overflow-wrap: anywhere;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+}
+
+.event-location:empty {
+    display: none;
 }
 
 :host ::ng-deep .event-column-header .mat-sort-header-container {

@@ -169,7 +169,7 @@ export class TournamentSummaryComponent implements OnChanges {
       (item) => item.TournamentNumber === tournamentNumber
     );
 
-    return tournament?.TournamentLocation?.trim() || '';
+    return (tournament?.TournamentLocation?.trim() || '').replace(/\//g, '/\u200b');
   }
 
   private buildDisplayedColumns(tournamentCount: number): string[] {
