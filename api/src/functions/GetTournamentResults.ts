@@ -11,6 +11,23 @@ const sqlInput = input.generic({
             coalesce(b.CanonicalBowlerId, b.ID) as EffectiveBowlerId,
             canonical.Name as EffectiveBowler,
             canonical.Gender as EffectiveGender,
+            cast(case when exists (
+                select 1
+                from MasterSeasonList as seasonList
+                join MasterList as seasonBowler
+                    on seasonBowler.ID = seasonList.BowlerId
+                where seasonList.SeasonYear = tournament.SeasonCode
+                    and coalesce(seasonBowler.CanonicalBowlerId, seasonBowler.ID)
+                        = coalesce(b.CanonicalBowlerId, b.ID)
+                    and (
+                        (lower(ltrim(rtrim(tournament.Division))) = 'tournament'
+                            and isnull(seasonList.TournamentFlag, 0) = 1)
+                        or (lower(ltrim(rtrim(tournament.Division))) = 'teaching'
+                            and isnull(seasonList.TeachingFlag, 0) = 1)
+                        or (lower(ltrim(rtrim(tournament.Division))) in ('senior', 'seniors')
+                            and isnull(seasonList.SeniorFlag, 0) = 1)
+                    )
+            ) then 1 else 0 end as bit) as IsEligibleForDivision,
             t.Game1,
             t.Game2,
             t.Game3,
@@ -27,6 +44,8 @@ const sqlInput = input.generic({
             on t.BowlerId = b.ID
         join MasterList as canonical
             on canonical.ID = coalesce(b.CanonicalBowlerId, b.ID)
+        join TournamentTable as tournament
+            on tournament.ID = t.TournamentId
         where t.TournamentId = @id or t.TournamentId = ISNULL(@id, t.TournamentId)`,
     parameters: '@id={id}',
     commandType: 'Text',

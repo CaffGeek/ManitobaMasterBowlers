@@ -121,6 +121,9 @@ completed.
   Senior eligibility flags; it is also needed for bowlers who are eligible in a
   season but have no uploaded results, including older contingent-only seasons.
   Member averages and the season bowler administration page currently read it.
+  Tournament summary pages also require the matching division flag from this
+  table as their inclusion gate, resolving duplicate records through each
+  bowler's canonical ID. This keeps unflagged guest results out of summaries.
 - **Recommended direction:** Keep the season-membership concept (possibly rename
   the table to make its purpose clearer), and make result uploads upsert missing
   season rows and set the applicable division flag inferred from the tournament.

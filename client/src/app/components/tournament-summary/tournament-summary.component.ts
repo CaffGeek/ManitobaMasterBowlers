@@ -114,6 +114,7 @@ export class TournamentSummaryComponent implements OnChanges {
           if (!tournament) return;
 
           results
+            .filter((x) => x.IsEligibleForDivision)
             //.filter(x => !this.genderFilter || x.Gender.localeCompare(this.genderFilter, undefined, {sensitivity: 'base'}) === 0)
             .forEach((x) => {
             const effectiveBowlerId = x.EffectiveBowlerId || x.BowlerId;
